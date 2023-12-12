@@ -53,7 +53,7 @@ router.use(usersLogs);
  *                 type: string
  *     responses:
  *       '201':
- *         description: User account created successfully!
+ *         description: User account created successfully.
  *         content:
  *           application/json:
  *             schema:
@@ -64,15 +64,15 @@ router.use(usersLogs);
  *                 pseudo:
  *                   type: string
  *       '400':
- *         description: Incorrect query due to missing param!
+ *         description: Incorrect query due to missing param.
  *       '409':
- *         description: Email or pseudo already used!
+ *         description: Email or pseudo already used.
  *       '422':
- *         description: Incorrect query due to invalid data!
+ *         description: Incorrect query due to invalid URI or data.
  *       '429':
- *         description: Too many registration attempts, please try again later!
+ *         description: Too many registration attempts, please try again later.
  *       '500':
- *         description: Server error while creating account!
+ *         description: Server error while creating account.
  */
 router.post('/register', [
     emailValidationRule,
@@ -199,6 +199,8 @@ router.get('/',
  *                       type: string
  *       '404':
  *         description: User not found.
+ *       '422':
+ *         description: Incorrect query due to invalid URI or data.
  *       '500':
  *         description: Server error while retrieving a single user.
  */
@@ -262,9 +264,11 @@ router.get('/:id',
  *                 message:
  *                   type: string
  *       '400':
- *         description: Invalid update data.
+ *         description: Incorrect query due to missing param.
  *       '404':
  *         description: User not found.
+ *       '422':
+ *         description: Incorrect query due to invalid URI or data.
  *       '500':
  *         description: Server error while updating a single user.
  */
@@ -333,6 +337,8 @@ router.patch('/:id', [
  *         description: Single user deleted successfully.
  *       '404':
  *         description: User not found.
+ *       '422':
+ *         description: Incorrect query due to invalid URI or data.
  *       '500':
  *         description: Server error while deleting a single user.
  */
