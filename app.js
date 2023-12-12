@@ -89,5 +89,5 @@ app.get('*', (_req, res) => res.status(404).send('What the hell are you doing!!?
 const port = process.env.SERVER_PORT;
 app.listen(port, () => {
 	console.log(`This server is running on port ${port}. Have fun!`);
-	open(`http://localhost:${port}`);
+	// open(`http://localhost:${port}`);
 });
