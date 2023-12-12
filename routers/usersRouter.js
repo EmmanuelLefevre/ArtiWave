@@ -15,6 +15,7 @@ const pseudoValidationRules = require('../_validators/pseudoValidator');
 
 const { usersLogs } = require('../_logs/users/usersLogger');
 
+
 /*============ EXPRESS ROUTER ============*/
 let router = express.Router();
 
