@@ -58,7 +58,7 @@ mkdircd _certs
 openssl genrsa -out pvt.pem 4096
 ```
 ```shell
-openssl rsa -in pvt.pem -outform PEM -pubout -out pub.pem
+openssl rsa -in pvt.pem -outform PEM -pubout -out pbl.pem
 ```
 #### Check private key
 ```shell
