@@ -17,7 +17,7 @@ exports.createArticle = async (req, res) => {
             title: title,
             content: content,
             author: author,
-            createdAt: date || new Date()
+            createdAt: new Date()
         });
 
         // Save article in database
