@@ -70,7 +70,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 /*============ MAIN ROUTER PARAMETERS ============*/
 
 /*=== HOME ===*/
-app.get('/', (_req, res) => res.send(`I'm online. All is OK !`))
+app.get('/', (_req, res) => res.send(`Application is online!`))
 
 /*=== AUTH ===*/
 app.use('/auth', auth_router);
