@@ -3,6 +3,7 @@ const express = require('express');
 const { validationResult } = require('express-validator');
 
 const usersController = require('../controllers/usersController');
+const { registerLimiter } = require('../middleware/rateLimiter');
 const checkTokenMiddleware = require('../middleware/checkToken');
 
 const ErrorHandler = require('../miscellaneous/errorHandler');
@@ -25,6 +26,86 @@ router.use(usersLogs);
 
 
 /*============ ROUTES FOR USERS ============*/
+
+/*=== REGISTER ===*/
+/**
+ * @swagger
+ * /register:
+ *   post:
+ *     summary: Create user account
+ *     description: Registers a new user with an email, password and pseudo.
+ *     tags:
+ *       - Authentification
+ *     requestBody:
+ *       description: User details to create
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *               pseudo:
+ *                 type: string
+ *     responses:
+ *       '201':
+ *         description: User account created successfully!
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *       '400':
+ *         description: Incorrect query due to missing param!
+ *       '409':
+ *         description: Email or pseudo already used!
+ *       '422':
+ *         description: Incorrect query due to invalid data!
+ *       '429':
+ *         description: Too many registration attempts, please try again later!
+ *       '500':
+ *         description: Server error while creating account!
+ */
+router.post('/register', [
+    emailValidationRule,
+    passwordValidationRules,
+    pseudoValidationRules,
+    registerLimiter,
+    (req, res, next) => {
+        try {
+            // Check presence of parameters email && password && pseudo
+            const { email, password, pseudo } = req.body;
+
+            if (!email || !password || !pseudo) {
+                return res.status(400).json({ message: 'Missing or empty parameter!' });
+            }
+
+            // Pass to validation middleware
+            next();
+        }
+        catch (err) {
+            return ErrorHandler.sendInternalServerError(res, err);
+        };
+    }
+], async (req, res) => {
+    try {
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            return ValidationErrorHandler.handle(res, errors);
+        }
+
+        await usersController.register(req, res);
+    }
+    catch (err) {
+        return ErrorHandler.sendInternalServerError(res, err);
+    }
+});
 
 /*=== GET ALL USERS ===*/
 router.get('/',

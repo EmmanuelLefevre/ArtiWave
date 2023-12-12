@@ -7,6 +7,47 @@ const ErrorHandler = require('../miscellaneous/errorHandler');
 
 /*============ USERS ============*/
 
+/*=== ARGON2 ===*/
+const timeCost = parseInt(process.env.ARGON2_TIME_COST);
+const memoryCost = parseInt(process.env.ARGON2_MEMORY_COST);
+
+/*=== REGISTER ===*/
+exports.register = async (req, res) => {
+    // Extract email && pseudo && password properties from request
+    const { email, pseudo, password } = req.body;
+
+    try {
+        // Password Hash
+        const hash = await argon2.hash(password, {
+            saltLength: 8,
+            timeCost: timeCost,
+            memoryCost: memoryCost
+        });
+        // Create User model instance
+        const newUser = new User({
+            email: email,
+            pseudo: pseudo,
+            password: hash,
+            registeredAt: new Date()
+        });
+
+        // Save user in database
+        let user = await newUser.save();
+
+        return res.status(201).json({ message: 'User created successfully!', data: user });
+    }
+    catch (err) {
+        if (err.code === 11000) {
+            if (err.keyPattern.email) {
+                return res.status(409).json({ message: 'Account already exists!' });
+            } else if (err.keyPattern.pseudo) {
+                return res.status(409).json({ message: 'Pseudo is already used!' });
+            }
+        }
+        return ErrorHandler.sendDatabaseError(res, err);
+    }
+}
+
 /*=== GET ALL USERS ===*/
 exports.getAllUsers = async (_req, res) => {
     try {
