@@ -3,6 +3,8 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const sassMiddleware = require('node-sass-middleware');
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./swagger');
 const path = require('path');
 const open = require('better-opn');
 
@@ -31,6 +33,9 @@ app.use(cors({
 	methods: ['GET', 'POST', 'PATCH', 'DELETE'],
 	allowedHeaders: "Origin, X-Requested-With, x-access-token, role, Content, Accept, Content-Type, Authorization"
 }));
+
+/*=== SWAGGER ===*/
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 /*=== OTHERS ===*/
 app.use(express.json());
