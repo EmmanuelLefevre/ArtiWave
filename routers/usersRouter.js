@@ -173,7 +173,7 @@ router.get('/',
  *       - in: path
  *         name: id
  *         required: true
- *         description: User ID
+ *         description: User Id
  *         schema:
  *           type: string
  *     responses:
@@ -227,15 +227,15 @@ router.get('/:id',
  * @swagger
  * /users/{id}:
  *   patch:
- *     summary: Update user by ID
- *     description: Update user details by their ID.
+ *     summary: Update user by Id
+ *     description: Update user details by their Id.
  *     tags:
  *       - Users
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
- *         description: User ID
+ *         description: User Id
  *         schema:
  *           type: string
  *     requestBody:
