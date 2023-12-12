@@ -12,7 +12,7 @@ const extractBearer = authorization => {
     }
     // Regexp to isole token
     const matches = authorization.match(/(bearer)\s+(\S+)/i);
-    // console.log('Matches:', matches);
+
     return matches && matches[2];
 }
 
@@ -20,11 +20,8 @@ const extractBearer = authorization => {
 /*============ CHECK IF TOKEN IS PRESENT AND CHECK IT ============*/
 const checkTokenMiddleware = (req, res, next) => {
     try {
-        // console.log('Type of authorization header:', typeof req.headers.authorization);
-        // console.log('Authorization Header:', req.headers.authorization);
         const token = req.headers.authorization && extractBearer(req.headers.authorization);
-        // console.log('### HEADERS:', req.headers);
-        console.log('### TOKEN:', token);
+
         if (!token) {
             return res.status(401).json({ message: 'Nice try!!!'});
         }
@@ -35,10 +32,9 @@ const checkTokenMiddleware = (req, res, next) => {
 
         jwt.verify(token, publicKey, { algorithms: ['RS256'] }, function (err, decodedToken) {
             if (err) {
-                console.log('ERR TOKEN:', err);
                 return res.status(401).json({message: 'False token!'});
             }
-            console.log('DECODED TOKEN:', decodedToken);
+
             next();
         });
     }
