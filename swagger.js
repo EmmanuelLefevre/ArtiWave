@@ -13,8 +13,8 @@ const options = {
         },
     },
     apis: ['./routers/authRouter.js',
-        './routers/usersRouter.js',
-        './routers/articlesRouter.js']
+            './routers/usersRouter.js',
+            './routers/articlesRouter.js']
 };
 
 const swaggerSpec = swaggerJSDoc(options);
