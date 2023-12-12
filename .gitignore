@@ -1,0 +1,6 @@
+package-lock.json
+/node_modules
+/_logs/articles/_articlesLogs.txt
+/_logs/auth/_authLogs.txt
+/_logs/users/_usersLogs.txt
+/_certs
