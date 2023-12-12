@@ -34,7 +34,7 @@ exports.register = async (req, res) => {
         // Save user in database
         let user = await newUser.save();
 
-        return res.status(201).json({ message: 'User created successfully!', data: user });
+        return res.status(201).json({ message: 'User created successfully!', pseudo: user.pseudo });
     }
     catch (err) {
         if (err.code === 11000) {
