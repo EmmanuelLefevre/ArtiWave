@@ -57,10 +57,6 @@ exports.login = async (req, res) => {
     // Extract email && password properties from request
     const { email, password } = req.body;
 
-    if (!email || !password){
-        return res.status(400).json({ message: 'Bad credentials!'})
-    }
-
     try {
         // Check if user exist
         let user = await User.findOne({ email: email }).exec();
