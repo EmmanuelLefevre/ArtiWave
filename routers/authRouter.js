@@ -50,6 +50,13 @@ router.use(authLogs);
  *     responses:
  *       '201':
  *         description: User account created successfully!
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
  *       '400':
  *         description: Incorrect query due to missing param!
  *       '409':
