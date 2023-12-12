@@ -24,7 +24,11 @@ const articleSchema = new mongoose.Schema({
         required: true,
 		default: Date.now,
         immutable: true
-    }
+    },
+	updatedAt: {
+		type: Date,
+		default: Date.now,
+	}
 });
 
 // Creating compound index on title && author properties
