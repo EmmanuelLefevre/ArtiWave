@@ -61,6 +61,10 @@ openssl rsa -in pvt.pem -outform PEM -pubout -out pub.pem
 ```shell
 openssl rsa -check -in _certs/pvt.pem
 ```
+#### Install Node LTS 20.10.0
+```shell
+nvm install 20.10.0
+```
 
 
 ### 2. Docker
