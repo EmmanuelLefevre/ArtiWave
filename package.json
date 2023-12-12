@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
+  "engines": {
+    "node": "20.10.0"
+  },
   "scripts": {
     "start": "node -r dotenv/config app.js",
     "dev": "nodemon -r dotenv/config app.js"
@@ -26,6 +29,7 @@
     "serve-favicon": "^2.5.0"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.3.1",
     "better-opn": "^3.0.2",
     "nodemon": "^3.0.2"
   }

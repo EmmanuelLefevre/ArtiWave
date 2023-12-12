@@ -8,12 +8,15 @@ help: ## List of commands
 
 
 ## ============ EXPRESS SERVER ============
-svp: ## Launch Express prod server
-	npm run start
+# Get Node version from .nvmrc file
+NODE_VERSION := $(shell type .nvmrc 2> nul)
+
+psv: ## Launch Express prod server
+	nvm use $(NODE_VERSION) && npm run start
 .PHONY: sv
 
-svd: ## Launch Express dev server
-	npm run dev
+dsv: ## Launch Express dev server
+	nvm use $(NODE_VERSION) && npm run dev
 .PHONY: sv
 
 
