@@ -31,10 +31,20 @@ const loginLimiter = rateLimiter({
     legacyHeaders: false
 })
 
+/*=== CREATE ARTICLE LIMITER ===*/
+const createArticleLimiter = rateLimiter({
+    max: 5,
+    windowsMs: 24 * 60 * 60 * 1000, // 1 heure
+    message:"You can only create 5 articles per day!",
+    standartHeaders: false,
+    legacyHeaders: false
+})
+
 
 /*============ EXPORT MODULE ============*/
 module.exports = {
     requestsLimiter,
     registerLimiter,
-    loginLimiter
+    loginLimiter,
+    createArticleLimiter
 };
