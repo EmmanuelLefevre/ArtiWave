@@ -334,7 +334,7 @@ router.patch('/:id', [
  *       '404':
  *         description: User not found.
  *       '500':
- *         description: Server error while updating a single user.
+ *         description: Server error while deleting a single user.
  */
 router.delete('/:id',
     checkTokenMiddleware,
