@@ -3,8 +3,10 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const sassMiddleware = require('node-sass-middleware');
-const swaggerUi = require('swagger-ui-express');
+
 const swaggerSpec = require('./swagger');
+const swaggerUi = require('swagger-ui-express');
+
 const path = require('path');
 const open = require('better-opn');
 
@@ -35,7 +37,7 @@ app.use(cors({
 }));
 
 /*=== SWAGGER ===*/
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 /*=== OTHERS ===*/
 app.use(express.json());
