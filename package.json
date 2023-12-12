@@ -8,7 +8,8 @@
   },
   "scripts": {
     "start": "node -r dotenv/config app.js",
-    "dev": "nodemon -r dotenv/config app.js"
+    "dev": "nodemon -r dotenv/config app.js",
+    "fixtures": "node _dataFixtures/fixtures.js"
   },
   "keywords": [],
   "author": "",
@@ -20,7 +21,6 @@
     "express": "^4.18.2",
     "express-rate-limit": "^7.1.5",
     "express-validator": "^7.0.1",
-    "faker": "^5.5.3",
     "helmet": "^7.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.0.2",
