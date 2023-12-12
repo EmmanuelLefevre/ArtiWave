@@ -55,6 +55,8 @@ router.use(authLogs);
  *                   type: string
  *                 message:
  *                   type: string
+ *                 pseudo:
+ *                   type: string
  *       '400':
  *         description: Incorrect query due to missing param.
  *       '401':

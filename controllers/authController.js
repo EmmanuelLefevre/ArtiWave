@@ -47,7 +47,7 @@ exports.login = async (req, res) => {
             registeredAt: user.registeredAt
         }, privateKey, { expiresIn: process.env.JWT_TTL, algorithm: 'RS256'});
 
-        return res.status(200).json({ access_token: token, message: 'User connected!' });
+        return res.status(200).json({ access_token: token, message: 'User connected!', pseudo: user.pseudo });
     }
     catch (err) {
         return ErrorHandler.sendDatabaseError(res, err);

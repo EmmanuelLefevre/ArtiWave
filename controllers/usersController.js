@@ -28,7 +28,8 @@ exports.register = async (req, res) => {
             email: email,
             pseudo: pseudo,
             password: hash,
-            registeredAt: new Date()
+            registeredAt: new Date(),
+            updatedAt: new Date()
         });
 
         // Save user in database
@@ -51,7 +52,7 @@ exports.register = async (req, res) => {
 /*=== GET ALL USERS ===*/
 exports.getAllUsers = async (_req, res) => {
     try {
-        const users = await User.find({}, 'id email pseudo');
+        const users = await User.find({}, 'id email pseudo registeredAt updatedAt');
 
         // Count users
         const dataCount = users.length;
@@ -68,7 +69,7 @@ exports.getUser = async (req, res) => {
     let userId = req.params.id;
 
     try {
-        let user = await User.findById(userId, { _id: 1, email: 1, pseudo: 1 });
+        let user = await User.findById(userId, { _id: 1, email: 1, pseudo: 1, registeredAt: 1, updatedAt: 1 });
 
         if (!user) {
             return ErrorHandler.handleUserNotFound(res);
@@ -97,6 +98,9 @@ exports.updateUser = async (req, res) => {
         if ('password' in req.body) {
             req.body.password = await argon2.hash(req.body.password);
         }
+
+        // Set updatedAt to the current date
+        req.body.updatedAt = new Date();
 
         // Save user in database
         await user.updateOne(req.body);

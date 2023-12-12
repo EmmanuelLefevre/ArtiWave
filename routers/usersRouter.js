@@ -3,6 +3,7 @@ const express = require('express');
 const { validationResult } = require('express-validator');
 
 const usersController = require('../controllers/usersController');
+
 const { registerLimiter } = require('../middleware/rateLimiter');
 const checkTokenMiddleware = require('../middleware/checkToken');
 
@@ -137,6 +138,10 @@ router.post('/register', [
  *                         type: string
  *                       pseudo:
  *                         type: string
+ *                       registeredAt:
+ *                          type: string
+ *                       updatedAt:
+ *                          type: string
  *                 dataCount:
  *                   type: integer
  *                   description: Total count of users in the response.
@@ -187,6 +192,10 @@ router.get('/',
  *                     email:
  *                       type: string
  *                     pseudo:
+ *                       type: string
+ *                     registeredAt:
+ *                       type: string
+ *                     updatedAt:
  *                       type: string
  *       '404':
  *         description: User not found.
