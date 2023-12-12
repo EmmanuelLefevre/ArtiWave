@@ -25,6 +25,42 @@ router.use(authLogs);
 /*============ ROUTES FOR AUTHENTIFICATION ============*/
 
 /*=== REGISTER ===*/
+/**
+ * @swagger
+ * /register:
+ *   post:
+ *     summary: Create user account
+ *     description: Registers a new user with an email, password and pseudo.
+ *     tags:
+ *       - Authentification
+ *     requestBody:
+ *       description: User details to create
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *               pseudo:
+ *                 type: string
+ *     responses:
+ *       '201':
+ *         description: User account created successfully!
+ *       '400':
+ *         description: Incorrect query due to missing param!
+ *       '409':
+ *         description: Email or pseudo already used!
+ *       '422':
+ *         description: Incorrect query due to invalid data!
+ *       '429':
+ *         description: Too many registration attempts, please try again later!
+ *       '500':
+ *         description: Server error while creating account!
+ */
 router.post('/register', [
     emailValidationRule,
     passwordValidationRules,
@@ -63,6 +99,46 @@ router.post('/register', [
 
 
 /*=== LOGIN ===*/
+/**
+ * @swagger
+ * /login:
+ *   post:
+ *     summary: Login user account
+ *     tags:
+ *       - Authentification
+ *     requestBody:
+ *       description: User details to connect
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       '200':
+ *         description: User connected!
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 access_token:
+ *                   type: string
+ *                 message:
+ *                   type: string
+ *       '400':
+ *         description: Incorrect query due to missing param!
+ *       '401':
+ *         description: Incorrect email or password!
+ *       '429':
+ *         description: Too many connection attempts, please try again later!
+ *       '500':
+ *         description: Server error while connecting account!
+ */
 router.post('/login', [
     emailValidationRule,
     loginLimiter,
