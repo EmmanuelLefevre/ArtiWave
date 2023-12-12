@@ -9,7 +9,7 @@ const ErrorHandler = require('../miscellaneous/errorHandler');
 /*=== CREATE ARTICLE ===*/
 exports.createArticle = async (req, res) => {
     // Extract title && content && author && date properties from request
-    const { title, content, author, date } = req.body;
+    const { title, content, author } = req.body;
 
     try {
         // Create Article model instance
@@ -17,13 +17,17 @@ exports.createArticle = async (req, res) => {
             title: title,
             content: content,
             author: author,
-            createdAt: new Date()
+            createdAt: new Date(),
+            updatedAt: new Date()
         });
 
         // Save article in database
         await newArticle.save();
 
-        return res.status(201).json({ message: 'Article created successfully!' });
+        // Set Author in response
+        const user = await User.findById(author);
+
+        return res.status(201).json({ message: 'Article created successfully!', author: user.pseudo });
     }
     catch (err) {
         if (err.code === 11000 && err.keyPattern && err.keyPattern.title) {
@@ -36,7 +40,7 @@ exports.createArticle = async (req, res) => {
 exports.getAllArticles = async (_req, res) => {
 
     try {
-        let articles = await Article.find({}, 'title content author date');
+        let articles = await Article.find({}, 'title content author createdAt updatedAt');
 
         // Add author's pseudo and id for each articles
         articles = await Promise.all(articles.map(getArticleWithPseudo));
@@ -57,7 +61,7 @@ exports.getArticle = async (req, res) => {
     let articleId = req.params.id;
 
     try {
-        let article = await Article.findById(articleId, { _id: 1, title: 1, content: 1, author: 1, date: 1 });
+        let article = await Article.findById(articleId, { _id: 1, title: 1, content: 1, author: 1, createdAt: 1, updatedAt: 1 });
 
         if (!article) {
             return ErrorHandler.handleArticleNotFound(res);
@@ -79,12 +83,20 @@ exports.getArticlesByUser = async (req, res) => {
     let userId = req.params.userId;
 
     try {
-        let articles = await Article.find({ author: userId }, { _id: 1, title: 1, content: 1, author: 1, date: 1 });
+        // Count articles for user
+        const articleCount = await Article.countDocuments({ author: userId });
+
+        let articles = await Article.find({ author: userId }, { _id: 1, title: 1, content: 1, author: 1, createdAt: 1, updatedAt: 1 });
 
         // Add author's pseudo and id for each articles
         articles = await Promise.all(articles.map(getArticleWithPseudo));
 
-        return res.status(200).json({ data: articles });
+        const response = {
+            data: articles,
+            dataCount: articleCount
+        };
+
+        return res.status(200).json(response);
     }
     catch (err) {
         return ErrorHandler.sendDatabaseError(res, err);
@@ -102,6 +114,12 @@ exports.updateArticle = async (req, res) => {
         if (!article) {
             return ErrorHandler.handleArticleNotFound(res);
         }
+
+        // Set updatedAt to the current date
+        req.body.updatedAt = new Date();
+
+        // Save article in database
+        await article.updateOne(req.body);
 
         return res.status(200).json({ message: 'Article updated!' });
     }
