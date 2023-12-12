@@ -26,7 +26,7 @@ router.use(authLogs);
 /*=== LOGIN ===*/
 /**
  * @swagger
- * /login:
+ * /auth/login:
  *   post:
  *     summary: Login user account
  *     tags:
@@ -45,7 +45,7 @@ router.use(authLogs);
  *                 type: string
  *     responses:
  *       '200':
- *         description: User connected!
+ *         description: User connected.
  *         content:
  *           application/json:
  *             schema:
@@ -56,13 +56,13 @@ router.use(authLogs);
  *                 message:
  *                   type: string
  *       '400':
- *         description: Incorrect query due to missing param!
+ *         description: Incorrect query due to missing param.
  *       '401':
- *         description: Incorrect email or password!
+ *         description: Incorrect email or password.
  *       '429':
- *         description: Too many connection attempts, please try again later!
+ *         description: Too many connection attempts, please try again later.
  *       '500':
- *         description: Server error while connecting account!
+ *         description: Server error while connecting account.
  */
 router.post('/login', [
     emailValidationRule,
