@@ -144,7 +144,7 @@ router.post('/register', [
  *                          type: string
  *                 dataCount:
  *                   type: integer
- *                   description: Total count of users in the response.
+ *                   description: Total count of users.
  *       '500':
  *         description: Server error while retrieving all users.
  */
