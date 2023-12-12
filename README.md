@@ -57,7 +57,7 @@ openssl genrsa -out pvt.pem 4096
 ```shell
 openssl rsa -in pvt.pem -outform PEM -pubout -out pub.pem
 ```
-#### Check keys
+#### Check private key
 ```shell
 openssl rsa -check -in _certs/pvt.pem
 ```
