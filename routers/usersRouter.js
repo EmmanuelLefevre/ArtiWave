@@ -231,7 +231,6 @@ router.get('/:id',
  *           type: string
  *     requestBody:
  *       description: User details to update
- *       required: true
  *       content:
  *         application/json:
  *           schema:
