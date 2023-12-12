@@ -87,7 +87,7 @@ exports.login = async (req, res) => {
             id: user.id,
             pseudo: user.pseudo,
             registeredAt: user.registeredAt
-        }, privateKey, { expiresIn: process.env.JWT_TTL, algorithm: 'RS512'});
+        }, privateKey, { expiresIn: process.env.JWT_TTL, algorithm: 'RS256'});
 
         return res.status(200).json({ access_token: token, message: 'User connected!' });
     }
