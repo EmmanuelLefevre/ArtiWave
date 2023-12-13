@@ -17,8 +17,7 @@ exports.createArticle = async (req, res) => {
             title: title,
             content: content,
             author: author,
-            createdAt: new Date(),
-            updatedAt: new Date()
+            createdAt: new Date()
         });
 
         // Save article in database
@@ -30,8 +29,8 @@ exports.createArticle = async (req, res) => {
         return res.status(201).json({ message: 'Article created successfully!', author: user.nickname });
     }
     catch (err) {
-        if (err.code === 11000 && err.keyPattern && err.keyPattern.title) {
-            return res.status(409).json({ message: 'Article already exists!' });
+        if (err.code === 11000 && err.keyPattern.title) {
+            return res.status(409).json({ message: 'Article with same title already posted!' });
         }
     }
 }
@@ -109,7 +108,7 @@ exports.updateArticle = async (req, res) => {
     let articleId = req.params.id;
 
     try {
-        let article = await Article.findByIdAndUpdate(articleId, req.body);
+        let article = await Article.findById(articleId, req.body);
 
         if (!article) {
             return ErrorHandler.handleArticleNotFound(res);
@@ -124,6 +123,9 @@ exports.updateArticle = async (req, res) => {
         return res.status(200).json({ message: 'Article updated!' });
     }
     catch (err) {
+        if (err.code === 11000 && err.keyPattern.title) {
+            return res.status(409).json({ message: 'Article with same title already posted!' });
+        }
         return ErrorHandler.sendDatabaseError(res, err);
     }
 }
