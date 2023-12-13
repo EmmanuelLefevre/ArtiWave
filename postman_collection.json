@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"email\": \"emmanuel@yahoo.fr\",\r\n  \"pseudo\": \"Emmanuel\",\r\n  \"password\": \"Xxggxx1!\"\r\n}",
+					"raw": "{\r\n  \"email\": \"emmanuel@yahoo.fr\",\r\n  \"nickname\": \"Emmanuel\",\r\n  \"password\": \"Xxggxx1!\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
