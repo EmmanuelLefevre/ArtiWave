@@ -12,12 +12,18 @@ class ErrorHandler {
         }
     }
 
+    static sendValidationResponseError(res, error) {
+        if (error) {
+            return res.status(500).json({ message: 'Validation Response Error!', error: error.message });
+        }
+    }
+
     static handleUserNotFound(res) {
         return res.status(404).json({ message: 'This user does not exist!' });
     }
 
     static handleArticleNotFound(res) {
-        return res.status(404).json({ message: 'This article does not exists!' });
+        return res.status(404).json({ message: 'No article was found!' });
     }
 }
 
