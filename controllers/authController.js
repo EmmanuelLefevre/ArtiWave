@@ -40,26 +40,27 @@ exports.login = async (req, res) => {
         // JWT generation
         const privateKeyPath = process.env.PRIVATE_KEY_PATH;
         const privateKey = fs.readFileSync(privateKeyPath);
-
         const token = jwt.sign({
             id: user.id,
             nickname: user.nickname,
             registeredAt: user.registeredAt
         }, privateKey, { expiresIn: process.env.JWT_TTL, algorithm: 'RS256'});
 
+        // Create response
+        const response = {
+            access_token: token,
+            nickname: user.nickname
+        }
+
         // Validate response format
         try {
-            await userTokenResponseValidation.validate({ access_token: token, nickname: user.nickname }, { abortEarly: false });
+            await userTokenResponseValidation.validate(response, { abortEarly: false });
         }
         catch (validationError) {
             return ErrorHandler.sendValidationResponseError(res, validationError);
         }
 
         // Return token and nickname
-        const response = {
-            access_token: token,
-            nickname: user.nickname
-        }
         return res.status(200).json(response);
     }
     catch (err) {
