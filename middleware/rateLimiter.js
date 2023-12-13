@@ -7,7 +7,7 @@ const rateLimiter = require('express-rate-limit');
 /*=== REQUEST LIMITER ===*/
 const requestsLimiter = rateLimiter({
     max: 10,
-    windowsMs: 1000, // 1 seconde
+    windowMs: 1000, // 1 seconde
     message:"Stop that Mr Robot!",
     standartHeaders: false,
     legacyHeaders: false
@@ -16,7 +16,7 @@ const requestsLimiter = rateLimiter({
 /*=== REGISTER LIMITER ===*/
 const registerLimiter = rateLimiter({
     max: 1,
-    windowsMs: 24 * 60 * 60 * 1000, // 24 heures
+    windowMs: 24 * 60 * 60 * 1000, // 24 hours
     message:"You can only create one account per day!",
     standartHeaders: false,
     legacyHeaders: false
@@ -25,7 +25,7 @@ const registerLimiter = rateLimiter({
 /*=== LOGIN LIMITER ===*/
 const loginLimiter = rateLimiter({
     max: 5,
-    windowsMs: 60 * 60 * 1000, // 1 heure
+    windowMs: 60 * 60 * 1000, // 1 hour
     message:"The number of connection attempts is limited to 3 per hour!",
     standartHeaders: false,
     legacyHeaders: false
@@ -34,7 +34,7 @@ const loginLimiter = rateLimiter({
 /*=== CREATE ARTICLE LIMITER ===*/
 const createArticleLimiter = rateLimiter({
     max: 5,
-    windowsMs: 24 * 60 * 60 * 1000, // 1 heure
+    windowMs: 24 * 60 * 60 * 1000, // 24 hours
     message:"You can only create 5 articles per day!",
     standartHeaders: false,
     legacyHeaders: false
