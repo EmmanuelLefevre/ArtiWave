@@ -5,10 +5,9 @@ const { validationResult } = require('express-validator');
 const authController = require('../controllers/authController');
 const { loginLimiter } = require('../middleware/rateLimiter');
 
-const ErrorHandler = require('../miscellaneous/errorHandler');
-const ValidationErrorHandler = require('../miscellaneous/validationErrorHandler');
-const userValidationRule = require('../_validators/userValidator');
-
+const ErrorHandler = require('../_errors/errorHandler');
+const ValidationErrorHandler = require('../_validation/validationErrorHandler');
+const userValidationRule = require('../_validation/validators/userValidator');
 
 const { authLogs } = require('../_logs/auth/authLogger');
 

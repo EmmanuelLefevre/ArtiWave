@@ -1,7 +1,7 @@
 /*============ IMPORT USED MODULES ============*/
 const Article = require('../_models/IArticle');
 const User = require('../_models/IUser');
-const ErrorHandler = require('../miscellaneous/errorHandler');
+const ErrorHandler = require('../_errors/errorHandler');
 
 
 /*============ ARTICLES ============*/

@@ -6,11 +6,10 @@ const articlesController = require('../controllers/articlesController');
 
 const { createArticleLimiter } = require('../middleware/rateLimiter');
 
-const ErrorHandler = require('../miscellaneous/errorHandler');
-const ValidationErrorHandler = require('../miscellaneous/validationErrorHandler');
-const validateURIParam = require('../miscellaneous/validateURIParam');
-
-const articleValidationRules = require('../_validators/articleValidator');
+const ErrorHandler = require('../_errors/errorHandler');
+const ValidationErrorHandler = require('../_validation/validationErrorHandler');
+const validateURIParam = require('../_validation/URI/validateURIParam');
+const articleValidationRules = require('../_validation/validators/articleValidator');
 
 const { articlesLogs } = require('../_logs/articles/articlesLogger');
 

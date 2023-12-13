@@ -4,13 +4,13 @@ const { validationResult } = require('express-validator');
 
 const usersController = require('../controllers/usersController');
 
+const { registerLimiter } = require('../middleware/rateLimiter');
 const checkTokenMiddleware = require('../middleware/checkToken');
 
-const ErrorHandler = require('../miscellaneous/errorHandler');
-const ValidationErrorHandler = require('../miscellaneous/validationErrorHandler');
-const validateURIParam = require('../miscellaneous/validateURIParam');
-
-const userValidationRule = require('../_validators/userValidator');
+const ErrorHandler = require('../_errors/errorHandler');
+const ValidationErrorHandler = require('../_validation/validationErrorHandler');
+const validateURIParam = require('../_validation/URI/validateURIParam');
+const userValidationRule = require('../_validation/validators/userValidator');
 
 const { usersLogs } = require('../_logs/users/usersLogger');
 
@@ -28,6 +28,7 @@ router.use(usersLogs);
 /*=== REGISTER ===*/
 router.post('/register', [
     userValidationRule,
+    registerLimiter,
     (req, res, next) => {
         try {
             // Check presence of parameters email && password && nickname

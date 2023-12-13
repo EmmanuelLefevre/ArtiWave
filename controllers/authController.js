@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const fs = require('fs');
 
 const User = require('../_models/IUser');
-const ErrorHandler = require('../miscellaneous/errorHandler');
+const ErrorHandler = require('../_errors/errorHandler');
 
 
 /*============ AUTHENTIFICATION ============*/

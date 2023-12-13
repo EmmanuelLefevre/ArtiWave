@@ -2,7 +2,7 @@
 const argon2 = require('argon2');
 
 const User = require('../_models/IUser');
-const ErrorHandler = require('../miscellaneous/errorHandler');
+const ErrorHandler = require('../_errors/errorHandler');
 
 
 /*============ USERS ============*/

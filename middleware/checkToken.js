@@ -2,7 +2,7 @@
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
 
-const ErrorHandler = require('../miscellaneous/errorHandler');
+const ErrorHandler = require('../_errors/errorHandler');
 
 
 /*============ EXTRACT TOKEN FROM HEADER ============*/
