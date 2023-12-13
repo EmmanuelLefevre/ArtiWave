@@ -1,0 +1,195 @@
+{
+	"info": {
+		"_postman_id": "b7ca087f-8871-4b95-b9ce-e948ab1093ee",
+		"name": "TP",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "8988890"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"emmanuel@yahoo.fr\",\r\n  \"pseudo\": \"Emmanuel\",\r\n  \"password\": \"Xxggxx1!\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:9000/users/register"
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"emmanuel@yahoo.fr\",\r\n  \"password\":\"Xxggxx1!\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:9000/login"
+			},
+			"response": []
+		},
+		{
+			"name": "Article",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": ""
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"title\": \"Hello world\",\r\n  \"content\":\" lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. \",\r\n  \"author\": \"6572f39b4bf59dcf946d676f\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:9000/articles"
+			},
+			"response": []
+		},
+		{
+			"name": "User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": ""
+					}
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "bearer eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NzJmMzliNGJmNTlkY2Y5NDZkNjc2ZiIsInBzZXVkbyI6IkRhcmthIiwiaWF0IjoxNzAyMzE1ODEzLCJleHAiOjE3MDIzMTU4OTl9.cMc5ZSj76XmOte474WslLJEC_Yl0v_Ip24vO9LjmwfXf3u4yc4p-mbipC7clyYRK9glCLEni26YZ50UraymY_aUkfiv0O_fQCZbvX_84gSlKONHCEwMblk6F-LzZS4z_p-qJFFc5K3rPI2q97R2vU1688B6OWfdUkl5G2LMd09kms0GHc60DpT262dtyIzJplrP0l0mPK3cJRHhb3OXukn0zI5YpI59qgIwCvIzEjlVXnjKejSChqqPZfvng4aqlnvqz6wpWNnNKcLDkpZLEIogxvf-cm2Qm3mzjkZr97hL1btohryzhIBfa2E07DgsHqJ2hI9tO4y7sRBMm7HJamYI-ge-lZlk_iIozHDTjSiMtRcRUk23asYt1wvf8PGzqgN8b9QyB-qHbYEnJ7VFhwtvmM7o2w-Sz6I_QMmjgyXcYPVdb0M1UOpBBONuWENBtO21Kn7aVk-qq9quO8ViZE6x7oJm8WUDpJsB4y3Zv-zhlJ1tIGgaAj3so02VLoBMJh1czkyNdu9jnPcX5Ei4wCu_pzvYULJ6UP5iIcsEuwWdiRy106keEz2e24O2vvq5kpHpIm_lZ0z7827W6LlMnmtTnt5_buCGNVLeqqOUdMo3ruzV2jmCAbK9er__EA9XM2hAh7IeJgq2UM11OhBgcWSIkelcE4ED6keyLZ15DHyc",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": "http://localhost:9000/users/6572f39b4bf59dcf946d676f"
+			},
+			"response": []
+		},
+		{
+			"name": "AllUsers",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": ""
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": "http://localhost:9000/users"
+			},
+			"response": []
+		},
+		{
+			"name": "Article",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:9000/articles/``6572f41b0c975c1ea1de30a6"
+			},
+			"response": []
+		},
+		{
+			"name": "AllArticles",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:9000/articles"
+			},
+			"response": []
+		},
+		{
+			"name": "ArticlesByUser",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:9000/articles/user/657301380f4c1c74c6bcb366"
+			},
+			"response": []
+		},
+		{
+			"name": "User",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"password\": \"Xxggxx!1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:9000/users/6573590a850ceaea01cebb99"
+			},
+			"response": []
+		},
+		{
+			"name": "Article",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"content\": \"Waouh mon premier article modifié, waouh c'est super génial je kiffe ce nouveau framework Express avec toutes ces library qu'il met à notre disposition!!!\",\r\n    \"author\": \"Thierry\",\r\n    \"date\": \"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:9000/articles/6572f39b4bf59dcf946d676f"
+			},
+			"response": []
+		},
+		{
+			"name": "User",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "http://localhost:9000/users/6573616a164bfde75b5b5b94"
+			},
+			"response": []
+		},
+		{
+			"name": "Article",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "http://localhost:9000/articles/6573249ac1b2b4136b5df93c"
+			},
+			"response": []
+		}
+	]
+}
