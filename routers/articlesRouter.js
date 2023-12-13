@@ -43,7 +43,7 @@ router.post('/', [
         }
         catch (err) {
             return ErrorHandler.sendInternalServerError(res, err);
-        };
+        }
     }
 ], async (req, res) => {
     try {
