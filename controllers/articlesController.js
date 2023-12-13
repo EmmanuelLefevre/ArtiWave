@@ -3,6 +3,8 @@ const Article = require('../_models/IArticle');
 const User = require('../_models/IUser');
 const ErrorHandler = require('../_errors/errorHandler');
 
+const { articleResponseValidation, articlesResponseValidation } = require('../_validation/responses/articleResponseValidation');
+
 
 /*============ ARTICLES ============*/
 
@@ -12,6 +14,12 @@ exports.createArticle = async (req, res) => {
     const { title, content, author } = req.body;
 
     try {
+        // Check if user exists
+        const existingUser = await User.findById(author);
+        if (!existingUser) {
+            return ErrorHandler.handleUserNotFound(res, err);
+        }
+
         // Create Article model instance
         const newArticle = new Article({
             title: title,
@@ -23,18 +31,19 @@ exports.createArticle = async (req, res) => {
         // Save article in database
         await newArticle.save();
 
-        // Set Author in response
-        const user = await User.findById(author);
+        // Fetch created article with author.id and author.nickname
+        const createdArticle = await getArticleWithNickname(newArticle);
 
-        // Fetch created article by Id
-        const createdArticle = await Article.findById(newArticle._id);
+        // Validate response format
+        try {
+            await articleResponseValidation.validate(createdArticle, { abortEarly: false });
+        }
+        catch (validationError) {
+            return ErrorHandler.sendValidationResponseError(res, validationError);
+        }
 
-        // Return modified article with all its properties
-        return res.status(201).json({
-            message: 'Article created successfully!',
-            author: user.nickname,
-            article: createdArticle
-        });
+        // Return created article
+        return res.status(201).json(createdArticle);
     }
     catch (err) {
         if (err.code === 11000 && err.keyPattern.title) {
@@ -51,13 +60,30 @@ exports.getAllArticles = async (_req, res) => {
     try {
         let articles = await Article.find({}, 'title content author createdAt updatedAt');
 
+        if (articles === 0) {
+            return ErrorHandler.handleArticleNotFound(res);
+        }
+
         // Add author's nickname and id for each articles
         articles = await Promise.all(articles.map(getArticleWithNickname));
 
         // Count articles
-        const dataCount = articles.length;
+        const articleCount = articles.length;
 
-        return res.status(200).json({ data: articles, dataCount });
+        // Validate response format
+        try {
+            await articlesResponseValidation.validate({ data: articles, dataCount: articleCount }, { abortEarly: false });
+        }
+        catch (validationError) {
+            return ErrorHandler.sendValidationResponseError(res, validationError);
+        }
+
+        // Return all articles
+        const response = {
+            data: articles,
+            dataCount: articleCount
+        };
+        return res.status(200).json(response);
     }
     catch (err) {
         return ErrorHandler.sendDatabaseError(res, err);
@@ -79,7 +105,16 @@ exports.getArticle = async (req, res) => {
         // Add author's nickname and id for article
         article = await getArticleWithNickname(article);
 
-        return res.status(200).json({ data: article });
+        // Validate response format
+        try {
+            await articleResponseValidation.validate(article, { abortEarly: false });
+        }
+        catch (validationError) {
+            return ErrorHandler.sendValidationResponseError(res, validationError);
+        }
+
+        // Return single article
+        return res.status(200).json(article);
     }
     catch (err) {
         return ErrorHandler.sendDatabaseError(res, err);
@@ -92,19 +127,43 @@ exports.getArticlesByUser = async (req, res) => {
     let userId = req.params.userId;
 
     try {
+        // Check if user exists
+        const existingUser = await User.findById(userId);
+
+        if (!existingUser) {
+            return ErrorHandler.handleUserNotFound(res, err);
+        }
+
         // Count articles for user
         const articleCount = await Article.countDocuments({ author: userId });
+        if (articleCount === 0) {
+            return ErrorHandler.handleArticleNotFound(res);
+        }
 
         let articles = await Article.find({ author: userId }, { _id: 1, title: 1, content: 1, author: 1, createdAt: 1, updatedAt: 1 });
+
+        articles = articles.map(article => {
+            // Ajoutez votre champ supplémentaire ici
+            article.newField = "Valeur de champ supplémentaire";
+            return article;
+        });
 
         // Add author's nickname and id for each articles
         articles = await Promise.all(articles.map(getArticleWithNickname));
 
+        // Validate response format
+        try {
+            await articlesResponseValidation.validate({ data: articles, dataCount: articleCount }, { abortEarly: false });
+        }
+        catch (validationError) {
+            return ErrorHandler.sendValidationResponseError(res, validationError);
+        }
+
+        // Return all articles owned by a single user
         const response = {
             data: articles,
             dataCount: articleCount
         };
-
         return res.status(200).json(response);
     }
     catch (err) {
@@ -130,16 +189,19 @@ exports.updateArticle = async (req, res) => {
         // Save article in database
         await article.updateOne(req.body);
 
-        // Fetch updated article by Id
-        const updatedArticle = await Article.findById(articleId);
+        // Add author's nickname and id for article
+        article = await getArticleWithNickname(article);
 
-        // Set Author in response
-        const user = await User.findById(updatedArticle.author);
+        // Validate response format
+        try {
+            await articleResponseValidation.validate(article, { abortEarly: false });
+        }
+        catch (validationError) {
+            return ErrorHandler.sendValidationResponseError(res, validationError);
+        }
 
-        return res.status(200).json({
-            message: 'Article updated!',
-            author: user.nickname,
-            article: updatedArticle});
+        // Return updated article
+        return res.status(200).json(article);
     }
     catch (err) {
         if (err.code === 11000 && err.keyPattern.title) {
@@ -171,7 +233,7 @@ exports.deleteArticle =  async (req, res) => {
 
 
 
-
+/*============ FUNCTIONS ============*/
 
 /*=== GET NICKNAME ===*/
 async function getUserNickname(userId) {
