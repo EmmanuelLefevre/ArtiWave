@@ -130,7 +130,16 @@ exports.updateArticle = async (req, res) => {
         // Save article in database
         await article.updateOne(req.body);
 
-        return res.status(200).json({ message: 'Article updated!' });
+        // Fetch updated article by Id
+        const updatedArticle = await Article.findById(articleId);
+
+        // Set Author in response
+        const user = await User.findById(updatedArticle.author);
+
+        return res.status(200).json({
+            message: 'Article updated!',
+            author: user.nickname,
+            article: updatedArticle});
     }
     catch (err) {
         if (err.code === 11000 && err.keyPattern.title) {
