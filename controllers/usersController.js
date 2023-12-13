@@ -96,7 +96,11 @@ exports.updateUser = async (req, res) => {
 
         // If password parameter hash it before insert
         if ('password' in req.body) {
-            req.body.password = await argon2.hash(req.body.password);
+            req.body.password = await argon2.hash(req.body.password, {
+                saltLength: 8,
+                timeCost: timeCost,
+                memoryCost: memoryCost
+            });
         }
 
         // Set updatedAt to the current date
