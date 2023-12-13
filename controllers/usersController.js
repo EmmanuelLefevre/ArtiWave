@@ -28,8 +28,7 @@ exports.register = async (req, res) => {
             email: email,
             nickname: nickname,
             password: hash,
-            registeredAt: new Date(),
-            updatedAt: new Date()
+            registeredAt: new Date()
         });
 
         // Save user in database
@@ -88,7 +87,7 @@ exports.updateUser = async (req, res) => {
     let userId = req.params.id;
 
     try {
-        let user = await User.findByIdAndUpdate(userId, req.body);
+        let user = await User.findById(userId, req.body);
 
         if (!user) {
             return ErrorHandler.handleUserNotFound(res);
@@ -112,6 +111,10 @@ exports.updateUser = async (req, res) => {
         return res.status(200).json({ message: 'User updated!' });
     }
     catch (err) {
+        if (err.code === 11000 && err.keyPattern.nickname) {
+            return res.status(409).json({ message: 'Nickname is already used!' });
+        }
+
         return ErrorHandler.sendDatabaseError(res, err);
     }
 }
