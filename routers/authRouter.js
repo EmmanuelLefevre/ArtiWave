@@ -7,7 +7,7 @@ const { loginLimiter } = require('../middleware/rateLimiter');
 
 const ErrorHandler = require('../miscellaneous/errorHandler');
 const ValidationErrorHandler = require('../miscellaneous/validationErrorHandler');
-const emailValidationRule = require('../_validators/emailValidator');
+const userValidationRule = require('../_validators/userValidator');
 
 
 const { authLogs } = require('../_logs/auth/authLogger');
@@ -25,7 +25,7 @@ router.use(authLogs);
 
 /*=== LOGIN ===*/
 router.post('/', [
-    emailValidationRule,
+    userValidationRule,
     loginLimiter,
     (req, res, next) => {
         try {
