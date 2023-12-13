@@ -70,19 +70,21 @@ exports.getAllArticles = async (_req, res) => {
         // Count articles
         const articleCount = articles.length;
 
+        // Create response
+        const response = {
+            data: articles,
+            dataCount: articleCount
+        };
+
         // Validate response format
         try {
-            await articlesResponseValidation.validate({ data: articles, dataCount: articleCount }, { abortEarly: false });
+            await articlesResponseValidation.validate(response, { abortEarly: false });
         }
         catch (validationError) {
             return ErrorHandler.sendValidationResponseError(res, validationError);
         }
 
         // Return all articles
-        const response = {
-            data: articles,
-            dataCount: articleCount
-        };
         return res.status(200).json(response);
     }
     catch (err) {
@@ -151,19 +153,21 @@ exports.getArticlesByUser = async (req, res) => {
         // Add author's nickname and id for each articles
         articles = await Promise.all(articles.map(getArticleWithNickname));
 
+        // Create response
+        const response = {
+            data: articles,
+            dataCount: articleCount
+        };
+
         // Validate response format
         try {
-            await articlesResponseValidation.validate({ data: articles, dataCount: articleCount }, { abortEarly: false });
+            await articlesResponseValidation.validate(response, { abortEarly: false });
         }
         catch (validationError) {
             return ErrorHandler.sendValidationResponseError(res, validationError);
         }
 
         // Return all articles owned by a single user
-        const response = {
-            data: articles,
-            dataCount: articleCount
-        };
         return res.status(200).json(response);
     }
     catch (err) {
