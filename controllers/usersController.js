@@ -4,6 +4,10 @@ const argon2 = require('argon2');
 const User = require('../_models/IUser');
 const ErrorHandler = require('../_errors/errorHandler');
 
+const { userResponseValidation,
+        usersResponseValidation,
+        userUpdatedResponseValidation } = require('../_validation/responses/userResponseValidation');
+
 
 /*============ USERS ============*/
 
@@ -23,6 +27,7 @@ exports.register = async (req, res) => {
             timeCost: timeCost,
             memoryCost: memoryCost
         });
+
         // Create User model instance
         const newUser = new User({
             email: email,
@@ -34,7 +39,25 @@ exports.register = async (req, res) => {
         // Save user in database
         let user = await newUser.save();
 
-        return res.status(201).json({ message: 'User created successfully!', nickname: user.nickname });
+        // Create response
+        const response = {
+            _id: user._id,
+            email: user.email,
+            nickname: user.nickname,
+            registeredAt: user.registeredAt,
+            updatedAt: user.updatedAt
+        }
+
+        // Validate response format
+        try {
+            await userResponseValidation.validate(user, { abortEarly: false });
+        }
+        catch (validationError) {
+            return ErrorHandler.sendValidationResponseError(res, validationError);
+        }
+
+        // Return updated user
+        return res.status(201).json(response);
     }
     catch (err) {
         if (err.code === 11000) {
@@ -52,11 +75,31 @@ exports.register = async (req, res) => {
 /*=== GET ALL USERS ===*/
 exports.getAllUsers = async (_req, res) => {
     try {
-        const users = await User.find({}, 'id email nickname registeredAt updatedAt');
+        let users = await User.find({}, 'id email nickname registeredAt updatedAt');
+
+        if (users === 0) {
+            return ErrorHandler.handleUserNotFound(res);
+        }
 
         // Count users
-        const dataCount = users.length;
-        return res.status(200).json({ data: users, dataCount });
+        const usersCount = users.length;
+
+        // Create response
+        const response = {
+            data: users,
+            dataCount: usersCount
+        };
+
+        // Validate response format
+        try {
+            await usersResponseValidation.validate(response, { abortEarly: false });
+        }
+        catch (validationError) {
+            return ErrorHandler.sendValidationResponseError(res, validationError);
+        }
+
+        // Return all users
+        return res.status(200).json(response);
     }
     catch (err) {
         return sendDatabaseError(res, err);
@@ -75,7 +118,16 @@ exports.getUser = async (req, res) => {
             return ErrorHandler.handleUserNotFound(res);
         }
 
-        return res.status(200).json({ data: user });
+        // Validate response format
+        try {
+            await userResponseValidation.validate(user, { abortEarly: false });
+        }
+        catch (validationError) {
+            return ErrorHandler.sendValidationResponseError(res, validationError);
+        }
+
+        // Return single user
+        return res.status(200).json(user);
     }
     catch (err) {
         return ErrorHandler.sendDatabaseError(res, err);
@@ -117,18 +169,29 @@ exports.updateUser = async (req, res) => {
 
         // Identify modified properties from req.body
         const modifiedProperties = Object.keys(req.body).reduce((acc, key) => {
-            if (originalUserData[key] !== updatedUser[key]) {
+            // Do not include the password in the modified properties
+            if (key !== 'password' && originalUserData[key] !== updatedUser[key]) {
                 acc[key] = updatedUser[key];
             }
             return acc;
         }, {});
 
-        // Do not include the password in the modified properties
-        if ('password' in modifiedProperties) {
-            delete modifiedProperties.password;
+        // Create response
+        const response = {
+            data: [updatedUser.toObject()],
+            modifiedProperties: modifiedProperties,
+        };
+
+        // Validate response format
+        try {
+            await userUpdatedResponseValidation.validate(response, { abortEarly: false });
+        }
+        catch (validationError) {
+            return ErrorHandler.sendValidationResponseError(res, validationError);
         }
 
-        return res.status(200).json({ message: 'User updated!', modifiedProperties });
+        // Return updated user
+        return res.status(200).json(response);
     }
     catch (err) {
         if (err.code === 11000 && err.keyPattern.nickname) {
