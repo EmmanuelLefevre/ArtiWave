@@ -13,7 +13,7 @@ const validateURIParam = require('../miscellaneous/validateURIParam');
 
 const emailValidationRule = require('../_validators/emailValidator');
 const passwordValidationRules = require('../_validators/passwordValidator');
-const pseudoValidationRules = require('../_validators/pseudoValidator');
+const nicknameValidationRules = require('../_validators/nicknameValidator');
 
 const { usersLogs } = require('../_logs/users/usersLogger');
 
@@ -32,14 +32,14 @@ router.use(usersLogs);
 router.post('/register', [
     emailValidationRule,
     passwordValidationRules,
-    pseudoValidationRules,
+    nicknameValidationRules,
     registerLimiter,
     (req, res, next) => {
         try {
-            // Check presence of parameters email && password && pseudo
-            const { email, password, pseudo } = req.body;
+            // Check presence of parameters email && password && nickname
+            const { email, password, nickname } = req.body;
 
-            if (!email || !password || !pseudo) {
+            if (!email || !password || !nickname) {
                 return res.status(400).json({ message: 'Missing or empty parameter!' });
             }
 
@@ -106,13 +106,13 @@ router.patch('/:id', [
     // Custom validation rules
     emailValidationRule,
     passwordValidationRules,
-    pseudoValidationRules,
+    nicknameValidationRules,
     (req, res, next) => {
 
         try {
-            // Check presence of at least parameter email || pseudo || password
+            // Check presence of at least parameter email || nickname || password
             if (req.method === 'PATCH') {
-                const allowedProperties = ['email', 'pseudo', 'password'];
+                const allowedProperties = ['email', 'nickname', 'password'];
                 const isValidUpdate = Object.keys(req.body).some(prop => allowedProperties.includes(prop));
 
                 if (!isValidUpdate) {

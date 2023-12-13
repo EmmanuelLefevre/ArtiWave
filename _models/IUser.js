@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
 		required: true,
 		unique: true
 	},
-	pseudo: {
+	nickname: {
 		type: String,
 		required: true,
 		unique: true

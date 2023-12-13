@@ -43,11 +43,11 @@ exports.login = async (req, res) => {
 
         const token = jwt.sign({
             id: user.id,
-            pseudo: user.pseudo,
+            nickname: user.nickname,
             registeredAt: user.registeredAt
         }, privateKey, { expiresIn: process.env.JWT_TTL, algorithm: 'RS256'});
 
-        return res.status(200).json({ access_token: token, message: 'User connected!', pseudo: user.pseudo });
+        return res.status(200).json({ access_token: token, message: 'User connected!', nickname: user.nickname });
     }
     catch (err) {
         return ErrorHandler.sendDatabaseError(res, err);

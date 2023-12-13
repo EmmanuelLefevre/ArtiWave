@@ -27,7 +27,7 @@ exports.createArticle = async (req, res) => {
         // Set Author in response
         const user = await User.findById(author);
 
-        return res.status(201).json({ message: 'Article created successfully!', author: user.pseudo });
+        return res.status(201).json({ message: 'Article created successfully!', author: user.nickname });
     }
     catch (err) {
         if (err.code === 11000 && err.keyPattern && err.keyPattern.title) {
@@ -42,8 +42,8 @@ exports.getAllArticles = async (_req, res) => {
     try {
         let articles = await Article.find({}, 'title content author createdAt updatedAt');
 
-        // Add author's pseudo and id for each articles
-        articles = await Promise.all(articles.map(getArticleWithPseudo));
+        // Add author's nickname and id for each articles
+        articles = await Promise.all(articles.map(getArticleWithNickname));
 
         // Count articles
         const dataCount = articles.length;
@@ -67,8 +67,8 @@ exports.getArticle = async (req, res) => {
             return ErrorHandler.handleArticleNotFound(res);
         }
 
-        // Add author's pseudo and id for article
-        article = await getArticleWithPseudo(article);
+        // Add author's nickname and id for article
+        article = await getArticleWithNickname(article);
 
         return res.status(200).json({ data: article });
     }
@@ -88,8 +88,8 @@ exports.getArticlesByUser = async (req, res) => {
 
         let articles = await Article.find({ author: userId }, { _id: 1, title: 1, content: 1, author: 1, createdAt: 1, updatedAt: 1 });
 
-        // Add author's pseudo and id for each articles
-        articles = await Promise.all(articles.map(getArticleWithPseudo));
+        // Add author's nickname and id for each articles
+        articles = await Promise.all(articles.map(getArticleWithNickname));
 
         const response = {
             data: articles,
@@ -151,22 +151,22 @@ exports.deleteArticle =  async (req, res) => {
 
 
 
-/*=== GET PSEUDO ===*/
-async function getUserPseudo(userId) {
+/*=== GET NICKNAME ===*/
+async function getUserNickname(userId) {
     try {
-        let user = await User.findById(userId, 'pseudo');
-        return user ? user.pseudo : null;
+        let user = await User.findById(userId, 'nickname');
+        return user ? user.nickname : null;
     }
     catch (err) {
-        throw new Error('Error retrieving user\'s pseudo!');
+        throw new Error('Error retrieving user\'s nickname!');
     }
 }
 
-/*=== SET ARTICLE WITH AUTHOR'S PSEUDO AND ID ===*/
-async function getArticleWithPseudo(article) {
-    let pseudo = await getUserPseudo(article.author);
+/*=== SET ARTICLE WITH AUTHOR'S NICKNAME AND ID ===*/
+async function getArticleWithNickname(article) {
+    let nickname = await getUserNickname(article.author);
     return {
         ...article.toObject(),
-        author: { _id: article.author, pseudo: pseudo }
+        author: { _id: article.author, nickname: nickname }
     };
 }

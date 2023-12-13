@@ -57,7 +57,7 @@ swaggerSpec.paths['/login'] = {
                                 message: {
                                     type: 'string',
                                 },
-                                pseudo: {
+                                nickname: {
                                     type: 'string',
                                 },
                             },
@@ -88,7 +88,7 @@ swaggerSpec.paths['/login'] = {
 swaggerSpec.paths['/users/register'] = {
     post: {
         summary: 'Create user account',
-        description: 'Registers a new user with an email, password, and pseudo.',
+        description: 'Registers a new user with an email, password, and nickname.',
         tags: ['Users'],
         requestBody: {
             description: 'User details to create',
@@ -104,7 +104,7 @@ swaggerSpec.paths['/users/register'] = {
                             password: {
                                 type: 'string',
                             },
-                            pseudo: {
+                            nickname: {
                                 type: 'string',
                             },
                         },
@@ -123,7 +123,7 @@ swaggerSpec.paths['/users/register'] = {
                                 message: {
                                     type: 'string',
                                 },
-                                pseudo: {
+                                nickname: {
                                     type: 'string',
                                 },
                             },
@@ -135,7 +135,7 @@ swaggerSpec.paths['/users/register'] = {
                 description: 'Incorrect query due to missing param.',
             },
             '409': {
-                description: 'Email or pseudo already exists.',
+                description: 'Email or nickname already exists.',
             },
             '422': {
                 description: 'Incorrect query due to invalid URI or data.',
@@ -175,7 +175,7 @@ swaggerSpec.paths['/users'] = {
                                             email: {
                                                 type: 'string',
                                             },
-                                            pseudo: {
+                                            nickname: {
                                                 type: 'string',
                                             },
                                             registeredAt: {
@@ -237,7 +237,7 @@ swaggerSpec.paths['/users/{id}'] = {
                                         email: {
                                             type: 'string',
                                         },
-                                        pseudo: {
+                                        nickname: {
                                             type: 'string',
                                         },
                                         registeredAt: {
@@ -292,7 +292,7 @@ swaggerSpec.paths['/users/{id}'].patch = {
                         email: {
                             type: 'string',
                         },
-                        pseudo: {
+                        nickname: {
                             type: 'string',
                         },
                         password: {
@@ -468,7 +468,7 @@ swaggerSpec.paths['/articles'].get = {
                                                 _id: {
                                                     type: 'string',
                                                 },
-                                                pseudo: {
+                                                nickname: {
                                                     type: 'string',
                                                 },
                                             },
@@ -526,7 +526,7 @@ swaggerSpec.paths['/articles/{id}'] = {
                                 content: 'string',
                                 author: {
                                     _id: 'string',
-                                    pseudo: 'string',
+                                    nickname: 'string',
                                 },
                                 createdAt: 'string',
                                 updatedAt: 'string',
@@ -594,7 +594,7 @@ swaggerSpec.paths['/articles/user/{userId}'] = {
                                                     _id: {
                                                         type: 'string',
                                                     },
-                                                    pseudo: {
+                                                    nickname: {
                                                         type: 'string',
                                                     },
                                                 },
@@ -656,7 +656,7 @@ swaggerSpec.paths['/articles/{id}'].patch = {
                         email: {
                             type: 'string',
                         },
-                        pseudo: {
+                        nickname: {
                             type: 'string',
                         },
                         password: {

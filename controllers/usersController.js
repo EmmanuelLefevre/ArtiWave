@@ -13,8 +13,8 @@ const memoryCost = parseInt(process.env.ARGON2_MEMORY_COST);
 
 /*=== REGISTER ===*/
 exports.register = async (req, res) => {
-    // Extract email && pseudo && password properties from request
-    const { email, pseudo, password } = req.body;
+    // Extract email && nickname && password properties from request
+    const { email, nickname, password } = req.body;
 
     try {
         // Password Hash
@@ -26,7 +26,7 @@ exports.register = async (req, res) => {
         // Create User model instance
         const newUser = new User({
             email: email,
-            pseudo: pseudo,
+            nickname: nickname,
             password: hash,
             registeredAt: new Date(),
             updatedAt: new Date()
@@ -35,14 +35,14 @@ exports.register = async (req, res) => {
         // Save user in database
         let user = await newUser.save();
 
-        return res.status(201).json({ message: 'User created successfully!', pseudo: user.pseudo });
+        return res.status(201).json({ message: 'User created successfully!', nickname: user.nickname });
     }
     catch (err) {
         if (err.code === 11000) {
             if (err.keyPattern.email) {
                 return res.status(409).json({ message: 'Account already exists!' });
-            } else if (err.keyPattern.pseudo) {
-                return res.status(409).json({ message: 'Pseudo is already used!' });
+            } else if (err.keyPattern.nickname) {
+                return res.status(409).json({ message: 'Nickname is already used!' });
             }
         }
         return ErrorHandler.sendDatabaseError(res, err);
@@ -52,7 +52,7 @@ exports.register = async (req, res) => {
 /*=== GET ALL USERS ===*/
 exports.getAllUsers = async (_req, res) => {
     try {
-        const users = await User.find({}, 'id email pseudo registeredAt updatedAt');
+        const users = await User.find({}, 'id email nickname registeredAt updatedAt');
 
         // Count users
         const dataCount = users.length;
@@ -69,7 +69,7 @@ exports.getUser = async (req, res) => {
     let userId = req.params.id;
 
     try {
-        let user = await User.findById(userId, { _id: 1, email: 1, pseudo: 1, registeredAt: 1, updatedAt: 1 });
+        let user = await User.findById(userId, { _id: 1, email: 1, nickname: 1, registeredAt: 1, updatedAt: 1 });
 
         if (!user) {
             return ErrorHandler.handleUserNotFound(res);
