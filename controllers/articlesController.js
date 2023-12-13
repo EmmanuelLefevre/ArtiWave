@@ -32,6 +32,8 @@ exports.createArticle = async (req, res) => {
         if (err.code === 11000 && err.keyPattern.title) {
             return res.status(409).json({ message: 'Article with same title already posted!' });
         }
+
+        return ErrorHandler.sendDatabaseError(res, err);
     }
 }
 
@@ -126,6 +128,7 @@ exports.updateArticle = async (req, res) => {
         if (err.code === 11000 && err.keyPattern.title) {
             return res.status(409).json({ message: 'Article with same title already posted!' });
         }
+
         return ErrorHandler.sendDatabaseError(res, err);
     }
 }
