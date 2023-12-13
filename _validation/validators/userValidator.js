@@ -1,8 +1,8 @@
 /*============ IMPORT USED MODULES ============*/
 const { body } = require('express-validator');
 
-const trimInput = require('../../utils/trimInput');
-const capitalizeEachWord = require('../../utils/capitalizeEachWord');
+const trimInput = require('../../_utils/trimInput');
+const capitalizeEachWord = require('../../_utils/capitalizeEachWord');
 
 
 /*============ USER VALIDATION ============*/
