@@ -8,7 +8,7 @@ const User = require('./../_models/IUser');
 const generateFakeUserData = () => {
     return {
         email: faker.internet.email(),
-        pseudo: faker.internet.userName(),
+        nickname: faker.internet.userName(),
         password: faker.internet.password(),
         registeredAt: faker.date.past()
     };
