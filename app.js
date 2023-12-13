@@ -80,7 +80,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', (_req, res) => res.send(`Application is online!`))
 
 /*=== AUTH ===*/
-app.use('/auth', auth_router);
+app.use('/login', auth_router);
 
 /*=== USERS ===*/
 app.use('/users', users_router);
