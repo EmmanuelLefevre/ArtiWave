@@ -28,8 +28,16 @@ const usersResponseValidation = object({
 });
 
 
+/*=== USER UPDATED RESPONSE VALIDATION ===*/
+const userUpdatedResponseValidation = object({
+    data: array().of(userResponseValidation).required(),
+    modifiedProperties: object().required()
+});
+
+
 /*============ EXPORT MODULE ============*/
 module.exports = {
+    userUpdatedResponseValidation,
     userResponseValidation,
     usersResponseValidation,
     userTokenResponseValidation
