@@ -88,11 +88,14 @@ exports.updateUser = async (req, res) => {
     let userId = req.params.id;
 
     try {
-        let user = await User.findById(userId, req.body);
+        let user = await User.findById(userId);
 
         if (!user) {
             return ErrorHandler.handleUserNotFound(res);
         }
+
+        // Save original user data
+        const originalUserData = user.toObject();
 
         // If password parameter hash it before insert
         if ('password' in req.body) {
@@ -109,7 +112,23 @@ exports.updateUser = async (req, res) => {
         // Save user in database
         await user.updateOne(req.body);
 
-        return res.status(200).json({ message: 'User updated!' });
+        // Fetch the updated user by its ID
+        const updatedUser = await User.findById(userId);
+
+        // Identify modified properties from req.body
+        const modifiedProperties = Object.keys(req.body).reduce((acc, key) => {
+            if (originalUserData[key] !== updatedUser[key]) {
+                acc[key] = updatedUser[key];
+            }
+            return acc;
+        }, {});
+
+        // Do not include the password in the modified properties
+        if ('password' in modifiedProperties) {
+            delete modifiedProperties.password;
+        }
+
+        return res.status(200).json({ message: 'User updated!', modifiedProperties });
     }
     catch (err) {
         if (err.code === 11000 && err.keyPattern.nickname) {
