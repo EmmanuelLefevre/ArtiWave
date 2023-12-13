@@ -325,6 +325,9 @@ swaggerSpec.paths['/users/{id}'].patch = {
         '404': {
             description: 'User not found.',
         },
+        '409': {
+            description: 'Nickname already exists.',
+        },
         '422': {
             description: 'Incorrect query due to invalid URI or data.',
         },
@@ -688,6 +691,9 @@ swaggerSpec.paths['/articles/{id}'].patch = {
         },
         '404': {
             description: 'User not found.',
+        },
+        '409': {
+            description: 'Article with same title already posted',
         },
         '422': {
             description: 'Incorrect query due to invalid URI or data.',
