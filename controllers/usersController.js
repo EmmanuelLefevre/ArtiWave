@@ -44,6 +44,7 @@ exports.register = async (req, res) => {
                 return res.status(409).json({ message: 'Nickname is already used!' });
             }
         }
+
         return ErrorHandler.sendDatabaseError(res, err);
     }
 }
