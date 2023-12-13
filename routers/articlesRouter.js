@@ -118,7 +118,7 @@ router.patch('/:id', [
             const forbiddenParams = Object.keys(req.body).filter(param => params.includes(param));
 
             if (forbiddenParams.length > 0) {
-                const errorMessage = `These parameters can't be modified: ${forbiddenParams.join(' and ')}${forbiddenParams.length > 1 ? '' : ''}!`;
+                const errorMessage = `These parameters can't be modified: ${forbiddenParams.join(' and ')}`;
                 return res.status(400).json({ message: errorMessage });
             }
 
