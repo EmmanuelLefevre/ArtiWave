@@ -6,6 +6,8 @@ const fs = require('fs');
 const User = require('../_models/IUser');
 const ErrorHandler = require('../_errors/errorHandler');
 
+const { userTokenResponseValidation } = require('../_validation/responses/userResponseValidation');
+
 
 /*============ AUTHENTIFICATION ============*/
 
@@ -15,7 +17,7 @@ exports.login = async (req, res) => {
     const { email, password } = req.body;
 
     try {
-        // Check if user exist
+        // Check if user exists
         let user = await User.findOne({ email: email }).exec();
 
         if (user === null) {
@@ -45,7 +47,20 @@ exports.login = async (req, res) => {
             registeredAt: user.registeredAt
         }, privateKey, { expiresIn: process.env.JWT_TTL, algorithm: 'RS256'});
 
-        return res.status(200).json({ access_token: token, message: 'User connected!', nickname: user.nickname });
+        // Validate response format
+        try {
+            await userTokenResponseValidation.validate({ access_token: token, nickname: user.nickname }, { abortEarly: false });
+        }
+        catch (validationError) {
+            return ErrorHandler.sendValidationResponseError(res, validationError);
+        }
+
+        // Return token and nickname
+        const response = {
+            access_token: token,
+            nickname: user.nickname
+        }
+        return res.status(200).json(response);
     }
     catch (err) {
         return ErrorHandler.sendDatabaseError(res, err);
