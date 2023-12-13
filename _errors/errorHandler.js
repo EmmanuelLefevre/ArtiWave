@@ -19,7 +19,7 @@ class ErrorHandler {
     }
 
     static handleUserNotFound(res) {
-        return res.status(404).json({ message: 'This user does not exist!' });
+        return res.status(404).json({ message: 'No user was found!' });
     }
 
     static handleArticleNotFound(res) {
