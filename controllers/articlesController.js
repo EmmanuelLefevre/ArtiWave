@@ -26,7 +26,15 @@ exports.createArticle = async (req, res) => {
         // Set Author in response
         const user = await User.findById(author);
 
-        return res.status(201).json({ message: 'Article created successfully!', author: user.nickname });
+        // Fetch created article by Id
+        const createdArticle = await Article.findById(newArticle._id);
+
+        // Return modified article with all its properties
+        return res.status(201).json({
+            message: 'Article created successfully!',
+            author: user.nickname,
+            article: createdArticle
+        });
     }
     catch (err) {
         if (err.code === 11000 && err.keyPattern.title) {
