@@ -9,11 +9,6 @@ const ErrorHandler = require('../miscellaneous/errorHandler');
 
 /*============ AUTHENTIFICATION ============*/
 
-/*=== ARGON2 ===*/
-const timeCost = parseInt(process.env.ARGON2_TIME_COST);
-const memoryCost = parseInt(process.env.ARGON2_MEMORY_COST);
-
-
 /*=== LOGIN ===*/
 exports.login = async (req, res) => {
     // Extract email && password properties from request
@@ -28,6 +23,9 @@ exports.login = async (req, res) => {
         }
 
         // Password check
+        const timeCost = parseInt(process.env.ARGON2_TIME_COST);
+        const memoryCost = parseInt(process.env.ARGON2_MEMORY_COST);
+
         let passwordMatch  = await argon2.verify(user.password, password, {
             timeCost: timeCost,
             memoryCost: memoryCost
