@@ -50,7 +50,7 @@ exports.register = async (req, res) => {
 
         // Validate response format
         try {
-            await userResponseValidation.validate(user, { abortEarly: false });
+            await userResponseValidation.validate(response, { abortEarly: false });
         }
         catch (validationError) {
             return ErrorHandler.sendValidationResponseError(res, validationError);
