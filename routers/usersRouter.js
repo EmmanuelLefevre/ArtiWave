@@ -28,7 +28,6 @@ router.use(usersLogs);
 /*=== REGISTER ===*/
 router.post('/register', [
     userValidationRule,
-    registerLimiter,
     (req, res, next) => {
         try {
             // Check presence of parameters email && password && nickname
@@ -44,21 +43,34 @@ router.post('/register', [
         catch (err) {
             return ErrorHandler.sendInternalServerError(res, err);
         }
-    }
-], async (req, res) => {
-    try {
-        const errors = validationResult(req);
+    },
+    async (req, res, next) => {
+        try {
+            const errors = validationResult(req);
 
-        if (!errors.isEmpty()) {
-            return ValidationErrorHandler.handle(res, errors);
+            if (!errors.isEmpty()) {
+                return ValidationErrorHandler.handle(res, errors);
+            }
+
+            // Pass to registerLimiter middleware
+            next();
         }
+        catch (err) {
+            return ErrorHandler.sendInternalServerError(res, err);
+        }
+    },
+    registerLimiter,
+    async (req, res) => {
+        try {
+            // Validation successful, proceed with registration
+            await usersController.register(req, res);
+        }
+        catch (err) {
+            return ErrorHandler.sendInternalServerError(res, err);
+        }
+    }
+]);
 
-        await usersController.register(req, res);
-    }
-    catch (err) {
-        return ErrorHandler.sendInternalServerError(res, err);
-    }
-});
 
 /*=== GET ALL USERS ===*/
 router.get('/',
