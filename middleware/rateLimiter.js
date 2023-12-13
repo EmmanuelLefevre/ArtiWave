@@ -26,7 +26,7 @@ const registerLimiter = rateLimiter({
 const loginLimiter = rateLimiter({
     max: 5,
     windowMs: 60 * 60 * 1000, // 1 hour
-    message:"The number of connection attempts is limited to 3 per hour!",
+    message:"The number of connection attempts is limited to 5 per hour!",
     standartHeaders: false,
     legacyHeaders: false
 })
