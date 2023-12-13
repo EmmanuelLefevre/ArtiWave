@@ -118,7 +118,7 @@ exports.updateArticle = async (req, res) => {
     let articleId = req.params.id;
 
     try {
-        let article = await Article.findById(articleId, req.body);
+        let article = await Article.findById(articleId);
 
         if (!article) {
             return ErrorHandler.handleArticleNotFound(res);
