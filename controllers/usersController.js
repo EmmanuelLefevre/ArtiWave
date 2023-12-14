@@ -2,6 +2,7 @@
 const argon2 = require('argon2');
 
 const User = require('../_models/IUser');
+const Article = require('../_models/IArticle');
 const ErrorHandler = require('../_errors/errorHandler');
 
 const { userResponseValidation,
@@ -208,11 +209,17 @@ exports.deleteUser =  async (req, res) => {
     let userId = req.params.id;
 
     try {
-        let user = await User.findByIdAndDelete(userId);
+        let user = await User.findById(userId);
 
         if (!user) {
             return ErrorHandler.handleUserNotFound(res);
         }
+
+        // Delete user
+        await User.deleteOne({ _id: userId });
+
+        // Cascade delete
+        await Article.deleteMany({ author: userId });
 
         return res.status(204).json({});
     }
