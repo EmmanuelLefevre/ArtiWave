@@ -7,7 +7,6 @@ const connectDB = require('./../db.config');
 
 const User = require('./../_models/IUser');
 const Article = require('./../_models/IArticle');
-const ErrorHandler = require('../_errors/errorHandler');
 
 
 /*============ APP INITIALIZATION ============*/
@@ -88,9 +87,6 @@ const createArticles = async () => {
     try {
         // Get all users
         const users = await User.find();
-        if (users === 0) {
-            return ErrorHandler.handleUserNotFound(res);
-        }
 
         // Drop articles if collection not empty
         console.log('\n-----------------------------------------\n');
