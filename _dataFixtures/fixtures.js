@@ -39,6 +39,7 @@ const createFixtures = async (res) => {
                 email: 'emmanuel@protonmail.com',
                 nickname: 'Manu',
                 password: hash,
+                role: 'admin',
                 registeredAt: faker.date.past(),
             },
             {
