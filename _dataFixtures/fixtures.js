@@ -27,7 +27,7 @@ const memoryCost = parseInt(process.env.ARGON2_MEMORY_COST);
 /*=== USERS ===*/
 const password = 'Xxggxx!1';
 
-const createUsers = async (res) => {
+const createFixtures = async (res) => {
     try {
         const hash = await argon2.hash(password, {
             saltLength: 8,
@@ -63,6 +63,9 @@ const createUsers = async (res) => {
         // Add users
         await User.insertMany(users);
         console.log('Users added!');
+
+        // Call createArticles() after users insert
+        await createArticles(res);
     }
     catch (err) {
         return ErrorHandler.sendDatabaseError(res, err);
@@ -105,8 +108,7 @@ const createArticles = async (res) => {
 }
 
 /*============ INSERT FIXTURES ============*/
-createUsers();
-createArticles();
+createFixtures();
 
 
 /*============ LAUNCH SERVER WITH DB TEST ============*/
