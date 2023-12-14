@@ -87,7 +87,6 @@ router.get('/',
 
 /*=== GET USER ===*/
 router.get('/:id',
-    checkTokenMiddleware,
     validateURIParam('id'),
     async (req, res) => {
 
@@ -108,7 +107,6 @@ router.get('/:id',
 
 /*=== UPDATE USER ===*/
 router.patch('/:id', [
-    checkTokenMiddleware,
     validateURIParam('id'),
     // Custom validation rules
     userValidationRule,
@@ -151,7 +149,6 @@ router.patch('/:id', [
 
 /*=== DELETE USER ===*/
 router.delete('/:id',
-    checkTokenMiddleware,
     validateURIParam('id'),
     async (req, res) => {
 
