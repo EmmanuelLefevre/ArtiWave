@@ -27,6 +27,7 @@ router.post('/', [
     userValidationRule,
     loginLimiter,
     (req, res, next) => {
+
         try {
             // Check presence of parameters email && password
             const { email, password } = req.body;
