@@ -1,10 +1,23 @@
-// /*============ IMPORT USED MODULES ============*/
+/*============ IMPORT USED MODULES ============*/
+const express = require('express');
 const { faker } = require('@faker-js/faker');
+
+const connectDB = require('./../db.config');
 
 const User = require('./../_models/IUser');
 
 
-// /*============ GENERATE FIXTURES ============*/
+/*============ APP INITIALIZATION ============*/
+const app = express();
+
+
+/*============ DATABASE SINGLETON CONNEXION ============*/
+connectDB();
+
+
+/*============ FIXTURES ============*/
+
+/*=== USER ===*/
 const generateFakeUserData = () => {
     return {
         email: faker.internet.email(),
@@ -20,13 +33,35 @@ const createFakeUser = async () => {
     try {
         const newUser = new User(fakeUserData);
         await newUser.save();
-        console.log('Utilisateur ajouté à la base de données:', newUser);
+        console.log('User added:', newUser);
     }
     catch (error) {
-        console.error('Erreur lors de l\'ajout de l\'utilisateur à la base de données:', error);
+        console.error('Error adding user in database:', error);
     }
 };
 
-// Générer un utilisateur fictif et l'ajouter à la base de données
-createFakeUser();
 
+/*============ DROP EXISTING USERS ============*/
+const dropExistingUsers = async () => {
+    try {
+        await User.deleteMany({});
+        console.log('All users deleted!');
+    } catch (error) {
+        console.error('Error deleting users in database:', error);
+    }
+};
+
+
+/*============ INSERT FIXTURES ============*/
+// Check if collection contains users, then delete them
+dropExistingUsers().then(() => {
+    // Generate user
+    createFakeUser();
+
+});
+
+/*============ LAUNCH SERVER WITH DB TEST ============*/
+const port = process.env.SERVER_PORT;
+app.listen(port, () => {
+    console.log(`This server is running on port ${port}. Have fun!`);
+});
