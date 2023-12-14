@@ -24,5 +24,5 @@ dsv: ## Launch Express dev server
 
 ## ============ FIXTURES ============
 lf: ## Launch fixtures
-	node dataFixtures/fixture.js
+	npm run fixtures
 .PHONY: lf
