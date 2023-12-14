@@ -103,7 +103,7 @@ exports.getAllUsers = async (_req, res) => {
         return res.status(200).json(response);
     }
     catch (err) {
-        return sendDatabaseError(res, err);
+        return ErrorHandler.sendDatabaseError(res, err);
     }
 }
 
