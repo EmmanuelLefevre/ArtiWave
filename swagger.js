@@ -256,9 +256,6 @@ swaggerSpec.paths['/users/{id}'] = {
                     },
                 },
             },
-            '403': {
-                description: 'You are not authorized to access this resource',
-            },
             '404': {
                 description: 'User not found.',
             },
@@ -509,9 +506,6 @@ swaggerSpec.paths['/articles'].get = {
                 },
             },
         },
-        '403': {
-            description: 'You are not authorized to access this resource',
-        },
         '500': {
             description: 'Server error while retrieving all articles.',
         },
@@ -555,9 +549,6 @@ swaggerSpec.paths['/articles/{id}'] = {
                         },
                     },
                 },
-            },
-            '403': {
-                description: 'You are not authorized to access this resource',
             },
             '404': {
                 description: 'Article not found.',
@@ -643,9 +634,6 @@ swaggerSpec.paths['/articles/user/{userId}'] = {
             },
             '400': {
                 description: 'Bad Request',
-            },
-            '403': {
-                description: 'You are not authorized to access this resource',
             },
             '422': {
                 description: 'Incorrect query due to invalid URI or data.',
