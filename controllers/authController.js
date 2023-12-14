@@ -42,6 +42,7 @@ exports.login = async (req, res) => {
         const privateKey = fs.readFileSync(privateKeyPath);
         const token = jwt.sign({
             id: user.id,
+            role: user.role,
             nickname: user.nickname,
             registeredAt: user.registeredAt
         }, privateKey, { expiresIn: process.env.JWT_TTL, algorithm: 'RS256'});
