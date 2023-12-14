@@ -5,7 +5,7 @@ const { validationResult } = require('express-validator');
 const usersController = require('../controllers/usersController');
 
 const { registerLimiter } = require('../middleware/rateLimiter');
-const jwtCheckMiddleware = require('../middleware/jwtCheck');
+const jwtCheck = require('../middleware/jwtCheck');
 
 const ErrorHandler = require('../_errors/errorHandler');
 const ValidationErrorHandler = require('../_validation/validationErrorHandler');
@@ -75,7 +75,7 @@ router.post('/register', [
 
 /*=== GET ALL USERS ===*/
 router.get('/',
-    jwtCheckMiddleware,
+    jwtCheck,
     async (req, res) => {
 
     try {
@@ -109,7 +109,7 @@ router.get('/:id',
 
 /*=== UPDATE USER ===*/
 router.patch('/:id', [
-    jwtCheckMiddleware,
+    jwtCheck,
     validateURIParam('id'),
     // Custom validation rules
     userValidationRule,
@@ -152,7 +152,7 @@ router.patch('/:id', [
 
 /*=== DELETE USER ===*/
 router.delete('/:id',
-    jwtCheckMiddleware,
+    jwtCheck,
     validateURIParam('id'),
     async (req, res) => {
 
