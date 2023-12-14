@@ -1,10 +1,12 @@
 /*============ IMPORT USED MODULES ============*/
 const express = require('express');
+const argon2 = require('argon2');
 const { faker } = require('@faker-js/faker');
 
 const connectDB = require('./../db.config');
 
 const User = require('./../_models/IUser');
+const ErrorHandler = require('../_errors/errorHandler');
 
 
 /*============ APP INITIALIZATION ============*/
@@ -17,48 +19,59 @@ connectDB();
 
 /*============ FIXTURES ============*/
 
+/*=== ARGON2 ===*/
+const timeCost = parseInt(process.env.ARGON2_TIME_COST);
+const memoryCost = parseInt(process.env.ARGON2_MEMORY_COST);
+
 /*=== USER ===*/
-const generateFakeUserData = () => {
-    return {
-        email: faker.internet.email(),
-        nickname: faker.internet.userName(),
-        password: faker.internet.password(),
-        registeredAt: faker.date.past()
-    };
-};
+const password = 'Xxggxx!1';
 
-const createFakeUser = async () => {
-    const fakeUserData = generateFakeUserData();
-
+const createUsers = async (res) => {
     try {
-        const newUser = new User(fakeUserData);
-        await newUser.save();
-        console.log('User added:', newUser);
-    }
-    catch (error) {
-        console.error('Error adding user in database:', error);
-    }
-};
+        const hash = await argon2.hash(password, {
+            saltLength: 8,
+            timeCost: timeCost,
+            memoryCost: memoryCost
+        });
 
+        const users = [
+            {
+                email: 'emmanuel@protonmail.com',
+                nickname: 'Manu',
+                password: hash,
+                registeredAt: faker.date.past(),
+            },
+            {
+                email: 'charlotte@yahoo.fr',
+                nickname: 'Charlotte',
+                password: hash,
+                registeredAt: faker.date.past(),
+            },
+            {
+                email: 'florent@orange.fr',
+                nickname: 'Florent',
+                password: hash,
+                registeredAt: faker.date.past(),
+            },
+        ];
 
-/*============ DROP EXISTING USERS ============*/
-const dropExistingUsers = async () => {
-    try {
+        // Drop users if collection not empty
         await User.deleteMany({});
         console.log('All users deleted!');
-    } catch (error) {
-        console.error('Error deleting users in database:', error);
+
+        // Add users
+        await User.insertMany(users);
+        console.log('Users added!');
+    }
+    catch (error) {
+        return ErrorHandler.sendDatabaseError(res, error);
     }
 };
 
 
 /*============ INSERT FIXTURES ============*/
-// Check if collection contains users, then delete them
-dropExistingUsers().then(() => {
-    // Generate user
-    createFakeUser();
+createUsers();
 
-});
 
 /*============ LAUNCH SERVER WITH DB TEST ============*/
 const port = process.env.SERVER_PORT;
