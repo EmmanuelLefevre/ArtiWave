@@ -6,6 +6,7 @@ const { faker } = require('@faker-js/faker');
 const connectDB = require('./../db.config');
 
 const User = require('./../_models/IUser');
+const Article = require('./../_models/IArticle');
 const ErrorHandler = require('../_errors/errorHandler');
 
 
@@ -23,7 +24,7 @@ connectDB();
 const timeCost = parseInt(process.env.ARGON2_TIME_COST);
 const memoryCost = parseInt(process.env.ARGON2_MEMORY_COST);
 
-/*=== USER ===*/
+/*=== USERS ===*/
 const password = 'Xxggxx!1';
 
 const createUsers = async (res) => {
@@ -63,14 +64,49 @@ const createUsers = async (res) => {
         await User.insertMany(users);
         console.log('Users added!');
     }
-    catch (error) {
-        return ErrorHandler.sendDatabaseError(res, error);
+    catch (err) {
+        return ErrorHandler.sendDatabaseError(res, err);
     }
 };
 
+/*=== ARTICLES ===*/
+const createArticles = async (res) => {
+    try {
+        // Get all users
+        const users = await User.find();
+        if (users === 0) {
+            return ErrorHandler.handleUserNotFound(res);
+        }
+
+        // Create 5 articles for each user
+        const articles = [];
+        users.forEach((user) => {
+            for (let i = 1; i <= 5; i++) {
+                articles.push({
+                    title: faker.lorem.words(4),
+                    content: faker.lorem.paragraph({ min: 3, max: 6 }),
+                    author: user._id,
+                    createdAt: faker.date.past()
+                });
+            }
+        });
+
+        // Drop articles if collection not empty
+        await Article.deleteMany({});
+        console.log('All articles deleted!');
+
+        // Add articles
+        await Article.insertMany(articles);
+        console.log('Articles added!');
+    }
+    catch (err) {
+        return ErrorHandler.sendDatabaseError(res, err);
+    }
+}
 
 /*============ INSERT FIXTURES ============*/
 createUsers();
+createArticles();
 
 
 /*============ LAUNCH SERVER WITH DB TEST ============*/
