@@ -40,7 +40,7 @@ exports.register = async (req, res) => {
         // Save user in database
         let user = await newUser.save();
 
-        // Create response
+        // Set response
         const response = {
             _id: user._id,
             email: user.email,
@@ -85,7 +85,7 @@ exports.getAllUsers = async (_req, res) => {
         // Count users
         const usersCount = users.length;
 
-        // Create response
+        // Set response
         const response = {
             data: users,
             dataCount: usersCount
@@ -177,7 +177,7 @@ exports.updateUser = async (req, res) => {
             return acc;
         }, {});
 
-        // Create response
+        // Set response
         const response = {
             data: [updatedUser.toObject()],
             modifiedProperties: modifiedProperties,

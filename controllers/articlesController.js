@@ -70,7 +70,7 @@ exports.getAllArticles = async (_req, res) => {
         // Count articles
         const articleCount = articles.length;
 
-        // Create response
+        // Set response
         const response = {
             data: articles,
             dataCount: articleCount
@@ -153,7 +153,7 @@ exports.getArticlesByUser = async (req, res) => {
         // Add author's nickname and id for each articles
         articles = await Promise.all(articles.map(getArticleWithNickname));
 
-        // Create response
+        // Set response
         const response = {
             data: articles,
             dataCount: articleCount

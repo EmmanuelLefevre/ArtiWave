@@ -46,7 +46,7 @@ exports.login = async (req, res) => {
             registeredAt: user.registeredAt
         }, privateKey, { expiresIn: process.env.JWT_TTL, algorithm: 'RS256'});
 
-        // Create response
+        // Set response
         const response = {
             access_token: token,
             nickname: user.nickname
