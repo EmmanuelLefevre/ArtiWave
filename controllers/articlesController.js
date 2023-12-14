@@ -190,7 +190,12 @@ exports.updateArticle = async (req, res) => {
         // Set updatedAt to the current date
         req.body.updatedAt = new Date();
 
-        // Save article in database
+        // Check if author article matches userId making request
+        if (article.author.toString() !== req.userId) {
+            return res.status(403).json({ message: 'You are not allowed to update an article that does not belong to you!' });
+        }
+
+        // If author matches save article
         await article.updateOne(req.body);
 
         // Add author's nickname and id for article
@@ -222,11 +227,19 @@ exports.deleteArticle =  async (req, res) => {
     let articleId = req.params.id;
 
     try {
-        let article = await Article.findByIdAndDelete(articleId);
+        let article = await Article.findById(articleId);
 
         if (!article) {
             return ErrorHandler.handleArticleNotFound(res);
         }
+
+        // Check if author article matches userId making request
+        if (article.author.toString() !== req.userId) {
+            return res.status(403).json({ message: 'You are not allowed to delete an article that does not belong to you!' });
+        }
+
+        // If author matches delete article
+        await Article.deleteOne({ _id: articleId });
 
         return res.sendStatus(204);
     }

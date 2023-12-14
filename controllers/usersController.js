@@ -162,7 +162,12 @@ exports.updateUser = async (req, res) => {
         // Set updatedAt to the current date
         req.body.updatedAt = new Date();
 
-        // Save user in database
+        // Check if user matches userId making request
+        if (user._id.toString() !== req.userId) {
+            return res.status(403).json({ message: 'You are not allowed to update a user other than yourself!' });
+        }
+
+        // If user matches save user
         await user.updateOne(req.body);
 
         // Fetch the updated user by its ID
@@ -215,7 +220,12 @@ exports.deleteUser =  async (req, res) => {
             return ErrorHandler.handleUserNotFound(res);
         }
 
-        // Delete user
+        // Check if user matches userId making request
+        if (user._id.toString() !== req.userId) {
+            return res.status(403).json({ message: 'You are not allowed to delete a user other than yourself!' });
+        }
+
+        // If user matches delete user
         await User.deleteOne({ _id: userId });
 
         // Cascade delete
