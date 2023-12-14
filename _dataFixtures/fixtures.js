@@ -57,8 +57,11 @@ const createFixtures = async (res) => {
         ];
 
         // Drop users if collection not empty
-        await User.deleteMany({});
-        console.log('All users deleted!');
+        deleteResult = await User.deleteMany({});
+        console.log('\n-----------------------------------------\n');
+        if (deleteResult.deletedCount > 0) {
+            console.log('All users deleted!');
+        }
 
         // Add users
         await User.insertMany(users);
@@ -66,19 +69,34 @@ const createFixtures = async (res) => {
 
         // Call createArticles() after users insert
         await createArticles(res);
+        console.log('\n-----------------------------------------\n');
+        console.log('ALL FIXTURES LOADED!');
+
+        // Close server
+        console.log('\n-----------------------------------------\n');
+        console.log(`This server running on port ${port} was closed. Goodbye see you soon!`);
+        process.exit(0);
     }
     catch (err) {
-        return ErrorHandler.sendDatabaseError(res, err);
+        console.error('An error occurred:', err);
+        process.exit(1);
     }
 };
 
 /*=== ARTICLES ===*/
-const createArticles = async (res) => {
+const createArticles = async () => {
     try {
         // Get all users
         const users = await User.find();
         if (users === 0) {
             return ErrorHandler.handleUserNotFound(res);
+        }
+
+        // Drop articles if collection not empty
+        console.log('\n-----------------------------------------\n');
+        deleteResult = await Article.deleteMany({});
+        if (deleteResult.deletedCount > 0) {
+            console.log('All articles deleted!');
         }
 
         // Create 5 articles for each user
@@ -94,16 +112,13 @@ const createArticles = async (res) => {
             }
         });
 
-        // Drop articles if collection not empty
-        await Article.deleteMany({});
-        console.log('All articles deleted!');
-
         // Add articles
         await Article.insertMany(articles);
         console.log('Articles added!');
     }
     catch (err) {
-        return ErrorHandler.sendDatabaseError(res, err);
+        console.error('An error occurred:', err);
+        process.exit(1);
     }
 }
 
