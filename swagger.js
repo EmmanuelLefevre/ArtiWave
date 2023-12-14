@@ -196,6 +196,9 @@ swaggerSpec.paths['/users'] = {
                     },
                 },
             },
+            '403': {
+                description: 'You are not authorized to access this resource',
+            },
             '500': {
                 description: 'Server error while retrieving all users.',
             },
@@ -252,6 +255,9 @@ swaggerSpec.paths['/users/{id}'] = {
                         },
                     },
                 },
+            },
+            '403': {
+                description: 'You are not authorized to access this resource',
             },
             '404': {
                 description: 'User not found.',
@@ -322,6 +328,9 @@ swaggerSpec.paths['/users/{id}'].patch = {
         '400': {
             description: 'Incorrect query due to missing param.',
         },
+        '403': {
+            description: 'You are not authorized to access this resource',
+        },
         '404': {
             description: 'User not found.',
         },
@@ -356,6 +365,9 @@ swaggerSpec.paths['/users/{id}'].delete = {
     responses: {
         '204': {
             description: 'Single user deleted successfully.',
+        },
+        '403': {
+            description: 'You are not authorized to access this resource',
         },
         '404': {
             description: 'User not found.',
@@ -421,6 +433,9 @@ swaggerSpec.paths['/articles'] = {
             },
             '400': {
                 description: 'Incorrect query due to missing param.',
+            },
+            '403': {
+                description: 'You are not authorized to access this resource',
             },
             '409': {
                 description: 'Article already exists.',
@@ -494,6 +509,9 @@ swaggerSpec.paths['/articles'].get = {
                 },
             },
         },
+        '403': {
+            description: 'You are not authorized to access this resource',
+        },
         '500': {
             description: 'Server error while retrieving all articles.',
         },
@@ -537,6 +555,9 @@ swaggerSpec.paths['/articles/{id}'] = {
                         },
                     },
                 },
+            },
+            '403': {
+                description: 'You are not authorized to access this resource',
             },
             '404': {
                 description: 'Article not found.',
@@ -623,6 +644,9 @@ swaggerSpec.paths['/articles/user/{userId}'] = {
             '400': {
                 description: 'Bad Request',
             },
+            '403': {
+                description: 'You are not authorized to access this resource',
+            },
             '422': {
                 description: 'Incorrect query due to invalid URI or data.',
             },
@@ -689,6 +713,9 @@ swaggerSpec.paths['/articles/{id}'].patch = {
         '400': {
             description: 'Incorrect query due to forbidden or missing param.',
         },
+        '403': {
+            description: 'You are not authorized to access this resource',
+        },
         '404': {
             description: 'User not found.',
         },
@@ -723,6 +750,9 @@ swaggerSpec.paths['/articles/{id}'].delete = {
     responses: {
         '204': {
             description: 'Single article deleted successfully.',
+        },
+        '403': {
+            description: 'You are not authorized to access this resource',
         },
         '404': {
             description: 'Article not found.',
