@@ -64,6 +64,10 @@ openssl rsa -in pvt.pem -outform PEM -pubout -out pbl.pem
 ```shell
 openssl rsa -check -in _certs/pvt.pem
 ```
+#### Load fixtures
+```shell
+make lf
+```
 
 
 ### 2. Docker
