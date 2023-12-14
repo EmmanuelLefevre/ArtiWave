@@ -5,7 +5,7 @@ const { validationResult } = require('express-validator');
 const articlesController = require('../controllers/articlesController');
 
 const { createArticleLimiter } = require('../middleware/rateLimiter');
-const checkTokenMiddleware = require('../middleware/checkToken');
+const jwtCheckMiddleware = require('../middleware/jwtCheck');
 
 const ErrorHandler = require('../_errors/errorHandler');
 const ValidationErrorHandler = require('../_validation/validationErrorHandler');
@@ -27,7 +27,7 @@ router.use(articlesLogs);
 
 /*=== CREATE ARTICLE ===*/
 router.post('/', [
-    checkTokenMiddleware,
+    jwtCheckMiddleware,
     articleValidationRules(),
     createArticleLimiter,
     (req, res, next) => {
@@ -119,7 +119,7 @@ router.get('/user/:userId',
 
 /*=== UPDATE ARTICLE ===*/
 router.patch('/:id', [
-    checkTokenMiddleware,
+    jwtCheckMiddleware,
     validateURIParam('id'),
     articleValidationRules(),
     (req, res, next) => {
@@ -169,7 +169,7 @@ router.patch('/:id', [
 
 /*=== DELETE ARTICLE ===*/
 router.delete('/:id',
-    checkTokenMiddleware,
+    jwtCheckMiddleware,
     validateURIParam('id'),
     async (req, res) => {
 

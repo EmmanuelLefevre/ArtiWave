@@ -18,7 +18,7 @@ const extractBearer = authorization => {
 
 
 /*============ CHECK IF TOKEN IS PRESENT AND CHECK IT ============*/
-const checkTokenMiddleware = (req, res, next) => {
+const jwtCheckMiddleware = (req, res, next) => {
     try {
         const token = req.headers.authorization && extractBearer(req.headers.authorization);
 
@@ -35,6 +35,13 @@ const checkTokenMiddleware = (req, res, next) => {
                 return res.status(401).json({message: 'False token!'});
             }
 
+            // Check if user Id in token matches Id param in URL
+            const userIdFromToken = decodedToken.id;
+            const userIdFromUrl = req.params.id;
+            if (userIdFromToken !== userIdFromUrl) {
+                return res.status(403).json({ message: 'You are not authorized to access this resource!' });
+            }
+
             next();
         });
     }
@@ -45,4 +52,4 @@ const checkTokenMiddleware = (req, res, next) => {
 
 
 /*============ EXPORT MODULE ============*/
-module.exports = checkTokenMiddleware;
+module.exports = jwtCheckMiddleware;
