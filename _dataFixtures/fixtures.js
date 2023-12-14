@@ -46,6 +46,7 @@ const createFixtures = async (res) => {
                 email: 'charlotte@yahoo.fr',
                 nickname: 'Charlotte',
                 password: hash,
+                role: 'moderator',
                 registeredAt: faker.date.past(),
             },
             {
@@ -54,6 +55,12 @@ const createFixtures = async (res) => {
                 password: hash,
                 registeredAt: faker.date.past(),
             },
+            {
+                email: 'corinne@hotmail.com',
+                nickname: 'Corinne',
+                password: hash,
+                registeredAt: faker.date.past(),
+            }
         ];
 
         // Drop users if collection not empty
