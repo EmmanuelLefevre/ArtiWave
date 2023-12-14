@@ -5,6 +5,7 @@ const { validationResult } = require('express-validator');
 const articlesController = require('../controllers/articlesController');
 
 const { createArticleLimiter } = require('../middleware/rateLimiter');
+const checkTokenMiddleware = require('../middleware/checkToken');
 
 const ErrorHandler = require('../_errors/errorHandler');
 const ValidationErrorHandler = require('../_validation/validationErrorHandler');
