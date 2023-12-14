@@ -31,6 +31,12 @@ const userSchema = new mongoose.Schema({
 	updatedAt: {
 		type: Date,
 		default: Date.now,
+	},
+	role: {
+		type: String,
+		required: true,
+		enum: ['admin', 'user'],
+		default: 'user'
 	}
 });
 
