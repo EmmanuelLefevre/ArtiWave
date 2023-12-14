@@ -228,7 +228,7 @@ exports.deleteArticle =  async (req, res) => {
             return ErrorHandler.handleArticleNotFound(res);
         }
 
-        return res.status(204).json({});
+        return res.sendStatus(204);
     }
     catch (err) {
         return ErrorHandler.sendDatabaseError(res, err);

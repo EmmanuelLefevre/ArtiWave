@@ -221,7 +221,7 @@ exports.deleteUser =  async (req, res) => {
         // Cascade delete
         await Article.deleteMany({ author: userId });
 
-        return res.status(204).json({});
+        return res.sendStatus(204);
     }
     catch (err) {
         return ErrorHandler.sendDatabaseError(res, err);
