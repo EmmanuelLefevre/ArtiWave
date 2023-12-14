@@ -27,9 +27,11 @@ router.use(articlesLogs);
 
 /*=== CREATE ARTICLE ===*/
 router.post('/', [
+    checkTokenMiddleware,
     articleValidationRules(),
     createArticleLimiter,
     (req, res, next) => {
+
         try {
             // Check presence of parameters title && content && author
             const { title, content, author } = req.body;
@@ -62,7 +64,9 @@ router.post('/', [
 
 
 /*=== GET ALL ARTICLES ===*/
-router.get('/', async (req, res) => {
+router.get('/',
+    async (req, res) => {
+
     try {
         await articlesController.getAllArticles(req, res);
     }
@@ -73,7 +77,10 @@ router.get('/', async (req, res) => {
 
 
 /*=== GET ARTICLE ===*/
-router.get('/:id', validateURIParam('id'), async (req, res) => {
+router.get('/:id',
+    validateURIParam('id'),
+    async (req, res) => {
+
     try {
         const errors = validationResult(req);
 
@@ -90,7 +97,10 @@ router.get('/:id', validateURIParam('id'), async (req, res) => {
 
 
 /*=== GET ARTICLES BY USER ===*/
-router.get('/user/:userId', validateURIParam('userId'), async (req, res) => {
+router.get('/user/:userId',
+    validateURIParam('userId'),
+    async (req, res) => {
+
     try {
         const errors = validationResult(req);
 
@@ -109,9 +119,11 @@ router.get('/user/:userId', validateURIParam('userId'), async (req, res) => {
 
 /*=== UPDATE ARTICLE ===*/
 router.patch('/:id', [
+    checkTokenMiddleware,
     validateURIParam('id'),
     articleValidationRules(),
     (req, res, next) => {
+
         try {
             // Check presence of forbidden paramaters author || date
             const params = ['author', 'date'];
@@ -156,7 +168,11 @@ router.patch('/:id', [
 
 
 /*=== DELETE ARTICLE ===*/
-router.delete('/:id', validateURIParam('id'), async (req, res) => {
+router.delete('/:id',
+    checkTokenMiddleware,
+    validateURIParam('id'),
+    async (req, res) => {
+
     try {
         const errors = validationResult(req);
 

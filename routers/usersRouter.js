@@ -29,6 +29,7 @@ router.use(usersLogs);
 router.post('/register', [
     userValidationRule,
     (req, res, next) => {
+
         try {
             // Check presence of parameters email && password && nickname
             const { email, password, nickname } = req.body;
@@ -74,6 +75,7 @@ router.post('/register', [
 
 /*=== GET ALL USERS ===*/
 router.get('/',
+    checkTokenMiddleware,
     async (req, res) => {
 
     try {
@@ -107,6 +109,7 @@ router.get('/:id',
 
 /*=== UPDATE USER ===*/
 router.patch('/:id', [
+    checkTokenMiddleware,
     validateURIParam('id'),
     // Custom validation rules
     userValidationRule,
@@ -149,6 +152,7 @@ router.patch('/:id', [
 
 /*=== DELETE USER ===*/
 router.delete('/:id',
+    checkTokenMiddleware,
     validateURIParam('id'),
     async (req, res) => {
 
