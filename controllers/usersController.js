@@ -260,7 +260,7 @@ exports.updateUser = async (req, res) => {
                 break;
         }
 
-        // If not admin role
+        // Role user and certified
         if (req.userRole !== "admin") {
             // Add user email to the responseObject
             responseObject.data[0].email = user.email;
