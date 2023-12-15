@@ -196,8 +196,8 @@ swaggerSpec.paths['/users'] = {
                     },
                 },
             },
-            '403': {
-                description: 'You are not authorized to access this resource',
+            '401': {
+                description: 'You are not allowed to search all users.',
             },
             '500': {
                 description: 'Server error while retrieving all users.',
@@ -255,6 +255,9 @@ swaggerSpec.paths['/users/{id}'] = {
                         },
                     },
                 },
+            },
+            '401': {
+                description: 'This feature is reserved for members who own an account.',
             },
             '404': {
                 description: 'User not found.',
@@ -326,7 +329,7 @@ swaggerSpec.paths['/users/{id}'].patch = {
             description: 'Incorrect query due to missing param.',
         },
         '403': {
-            description: 'You are not authorized to access this resource',
+            description: 'You are not allowed to update a user other than yourself.',
         },
         '404': {
             description: 'User not found.',
@@ -364,7 +367,7 @@ swaggerSpec.paths['/users/{id}'].delete = {
             description: 'Single user deleted successfully.',
         },
         '403': {
-            description: 'You are not authorized to access this resource',
+            description: 'You are not allowed to delete a user other than yourself.',
         },
         '404': {
             description: 'User not found.',
@@ -431,8 +434,8 @@ swaggerSpec.paths['/articles'] = {
             '400': {
                 description: 'Incorrect query due to missing param.',
             },
-            '403': {
-                description: 'You are not authorized to access this resource',
+            '401': {
+                description: 'You\'re not allowed to create articles.',
             },
             '409': {
                 description: 'Article already exists.',
@@ -633,7 +636,10 @@ swaggerSpec.paths['/articles/user/{userId}'] = {
                 },
             },
             '400': {
-                description: 'Bad Request',
+                description: 'Bad Request.',
+            },
+            '401': {
+                description: 'This feature is reserved for members who own an account.',
             },
             '422': {
                 description: 'Incorrect query due to invalid URI or data.',
@@ -702,7 +708,10 @@ swaggerSpec.paths['/articles/{id}'].patch = {
             description: 'Incorrect query due to forbidden or missing param.',
         },
         '403': {
-            description: 'You are not authorized to access this resource',
+            description: 'Only certified members are allowed to update an article.',
+        },
+        '403': {
+            description: 'You are not allowed to update an article that does not belong to you.',
         },
         '404': {
             description: 'User not found.',
@@ -740,7 +749,10 @@ swaggerSpec.paths['/articles/{id}'].delete = {
             description: 'Single article deleted successfully.',
         },
         '403': {
-            description: 'You are not authorized to access this resource',
+            description: 'Only certified members are allowed to delete an article.',
+        },
+        '403': {
+            description: 'You are not allowed to delete an article that does not belong to you.',
         },
         '404': {
             description: 'Article not found.',
