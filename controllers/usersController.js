@@ -277,6 +277,9 @@ exports.deleteAllUsers = async (req, res) => {
         // Delete all users except admin
         await User.deleteMany({ roles: { $ne: 'admin' } });
 
+        // Cascade delete articles except those owned by admin
+        await Article.deleteMany({ author: { $ne: req.userId } });
+
         return res.sendStatus(204);
     }
     catch (err) {
