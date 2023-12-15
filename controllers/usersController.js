@@ -77,7 +77,7 @@ exports.register = async (req, res) => {
 exports.getAllUsers = async (req, res) => {
     // Check if user has required role (admin or certified)
     if (!(req.isAdmin || req.isCertified)) {
-        return res.status(403).json({ message: 'You are not allowed to search all users!' });
+        return res.status(401).json({ message: 'You are not allowed to search all users!' });
     }
 
     try {

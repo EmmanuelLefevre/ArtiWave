@@ -15,7 +15,7 @@ exports.createArticle = async (req, res) => {
 
     // Check if user has required role (admin or certified)
     if (!(req.isAdmin || req.isCertified)) {
-        return res.status(403).json({ message: 'You\'re not allowed to create articles!' });
+        return res.status(401).json({ message: 'You\'re not allowed to create articles!' });
     }
 
     try {
