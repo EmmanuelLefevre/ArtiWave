@@ -342,26 +342,30 @@ exports.deleteUser =  async (req, res) => {
 
 /*=== CREATE RESPONSE USER OBJECT BASED ON ROLE ===*/
 const createResponseUserObject = (user, userRole) => {
-    const commonFields = {
-        nickname: user.nickname,
-        registeredAt: user.registeredAt,
-        updatedAt: user.updatedAt
-    };
+    try {
+        const commonFields = {
+            nickname: user.nickname,
+            registeredAt: user.registeredAt,
+            updatedAt: user.updatedAt
+        };
 
-    switch (userRole) {
-        case 'admin':
-            return {
-                _id: user._id,
-                email: user.email,
-                nickname: user.nickname,
-                registeredAt: user.registeredAt,
-                updatedAt: user.updatedAt
-            };
-        case 'certified':
-            return commonFields;
-        case 'user':
-            return commonFields;
-        default:
-            throw new Error('Invalid user role!');
+        switch (userRole) {
+            case 'admin':
+                return {
+                    _id: user._id,
+                    email: user.email,
+                    nickname: user.nickname,
+                    registeredAt: user.registeredAt,
+                    updatedAt: user.updatedAt
+                };
+            case 'certified':
+                return commonFields;
+            case 'user':
+                return commonFields;
+            default:
+                throw new Error('Invalid user role!');
+        }
+    } catch (err) {
+        return ErrorHandler.sendCreationResponseObjectError(res, err);
     }
 };
