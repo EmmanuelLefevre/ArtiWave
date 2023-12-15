@@ -62,7 +62,7 @@ exports.register = async (req, res) => {
             return ErrorHandler.sendValidationResponseError(res, validationError);
         }
 
-        // Return updated user
+        // Return created user
         return res.status(201).json(response);
     }
     catch (err) {
@@ -207,7 +207,7 @@ exports.updateUser = async (req, res) => {
             // Check if user is admin
             if (req.isAdmin) {
                 // Allow admin to update any user
-                await User.updateOne(req.body);
+                await User.updateOne({ _id: userId }, req.body);
             }
             else {
                 return res.status(403).json({ message: 'You are not allowed to update a user other than yourself!' });
@@ -215,7 +215,7 @@ exports.updateUser = async (req, res) => {
         }
         else {
             // If user matches, save user
-            await User.updateOne(req.body);
+            await User.updateOne({ _id: userId }, req.body);
         }
 
         // Fetch the updated user by its ID
@@ -230,22 +230,44 @@ exports.updateUser = async (req, res) => {
             return acc;
         }, {});
 
-        // Set response
-        const response = {
-            data: [updatedUser.toObject()],
-            modifiedProperties: modifiedProperties,
-        };
+        let responseValidationSchema;
+        let responseObject;
+
+        // Set response and determine the response validation schema based on user role
+        switch (req.userRole) {
+            case 'admin':
+                responseValidationSchema = userUpdatedResponseValidationRoleAdmin;
+                responseObject = {
+                    data: [createResponseUserObject(updatedUser, req.userRole)]
+                };
+                break;
+            case 'certified':
+                responseValidationSchema = userUpdatedResponseValidationRoleCertified;
+                responseObject = {
+                    data: [createResponseUserObject(updatedUser, req.userRole)]
+                };
+                break;
+            case 'user':
+                responseValidationSchema = userUpdatedResponseValidationRoleUser;
+                responseObject = {
+                    data: [createResponseUserObject(updatedUser, req.userRole)]
+                };
+                break;
+        }
+
+        // Add modified property to the responseObject
+        responseObject.modifiedProperties = modifiedProperties;
 
         // Validate response format
         try {
-            await userUpdatedResponseValidation.validate(response, { abortEarly: false });
+            await responseValidationSchema.validate(responseObject, { abortEarly: false });
         }
         catch (validationError) {
             return ErrorHandler.sendValidationResponseError(res, validationError);
         }
 
         // Return updated user
-        return res.status(200).json(response);
+        return res.status(200).json(responseObject);
     }
     catch (err) {
         if (err.code === 11000 && err.keyPattern.nickname) {
