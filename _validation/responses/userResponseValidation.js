@@ -23,16 +23,9 @@ const userResponseValidationRoleAdmin = object({
     updatedAt: string().required()
 });
 
-/*----- CERTIFIED RESPONSE VALIDATION -----*/
-const userResponseValidationRoleCertified = object({
-    email: string().required(),
-    nickname: string().required(),
-    registeredAt: string().required(),
-    updatedAt: string().required()
-});
-
-/*----- USER RESPONSE VALIDATION -----*/
-const userResponseValidationRoleUser = object({
+/*----- BASE USER RESPONSE VALIDATION -----*/
+const userResponseValidationBase = object({
+    email: string(),
     nickname: string().required(),
     registeredAt: string().required(),
     updatedAt: string().required()
@@ -50,7 +43,7 @@ const usersResponseValidationRoleAdmin = object({
 
 /*----- CERTIFIED GET ALL USERS RESPONSE VALIDATION -----*/
 const usersResponseValidationRoleCertified = object({
-    data: array().of(userResponseValidationRoleCertified).required(),
+    data: array().of(userResponseValidationBase).required(),
     dataCount: number().integer().required()
 });
 
@@ -64,15 +57,9 @@ const userUpdatedResponseValidationRoleAdmin = object({
     modifiedProperties: object().required()
 });
 
-/*----- CERTIFIED USER UPDATED RESPONSE VALIDATION -----*/
-const userUpdatedResponseValidationRoleCertified = object({
-    data: array().of(userResponseValidationRoleCertified).required(),
-    modifiedProperties: object().required()
-});
-
-/*----- USER UPDATED RESPONSE VALIDATION -----*/
-const userUpdatedResponseValidationRoleUser = object({
-    data: array().of(userResponseValidationRoleUser).required(),
+/*----- BASE USER UPDATED RESPONSE VALIDATION -----*/
+const userUpdatedResponseValidationBase = object({
+    data: array().of(userResponseValidationBase).required(),
     modifiedProperties: object().required()
 });
 
@@ -81,11 +68,9 @@ const userUpdatedResponseValidationRoleUser = object({
 module.exports = {
     userTokenResponseValidation,
     userResponseValidationRoleAdmin,
-    userResponseValidationRoleCertified,
-    userResponseValidationRoleUser,
+    userResponseValidationBase,
     usersResponseValidationRoleAdmin,
     usersResponseValidationRoleCertified,
     userUpdatedResponseValidationRoleAdmin,
-    userUpdatedResponseValidationRoleCertified,
-    userUpdatedResponseValidationRoleUser
+    userUpdatedResponseValidationBase
 };

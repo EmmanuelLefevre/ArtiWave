@@ -6,13 +6,11 @@ const Article = require('../_models/IArticle');
 const ErrorHandler = require('../_errors/errorHandler');
 
 const { userResponseValidationRoleAdmin,
-        userResponseValidationRoleCertified,
-        userResponseValidationRoleUser,
+        userResponseValidationBase,
         usersResponseValidationRoleAdmin,
         usersResponseValidationRoleCertified,
         userUpdatedResponseValidationRoleAdmin,
-        userUpdatedResponseValidationRoleCertified,
-        userUpdatedResponseValidationRoleUser } = require('../_validation/responses/userResponseValidation');
+        userUpdatedResponseValidationBase } = require('../_validation/responses/userResponseValidation');
 
 
 /*============ USERS ============*/
@@ -45,35 +43,24 @@ exports.register = async (req, res) => {
         // Save user in database
         let user = await newUser.save();
 
-        let responseValidationSchema;
-        let responseObject;
-
-        // Set response and determine the response validation schema based on user role
-        switch (req.userRole) {
-            case 'admin':
-                responseValidationSchema = userResponseValidationRoleAdmin;
-                responseObject = createResponseUserObject(user, req.userRole);
-                break;
-            case 'certified':
-                responseValidationSchema = userResponseValidationRoleCertified;
-                responseObject = createResponseUserObject(user, req.userRole);
-                break;
-            case 'user':
-                responseValidationSchema = userResponseValidationRoleUser;
-                responseObject = createResponseUserObject(user, req.userRole);
-                break;
+        // Set response
+        const response = {
+            email: user.email,
+            nickname: user.nickname,
+            registeredAt: user.registeredAt,
+            updatedAt: user.updatedAt
         }
 
         // Validate response format
         try {
-            await responseValidationSchema.validate(responseObject, { abortEarly: false });
+            await userResponseValidationBase.validate(response, { abortEarly: false });
         }
         catch (validationError) {
             return ErrorHandler.sendValidationResponseError(res, validationError);
         }
 
         // Return created user
-        return res.status(201).json(responseObject);
+        return res.status(201).json(response);
     }
     catch (err) {
         if (err.code === 11000) {
@@ -160,11 +147,11 @@ exports.getUser = async (req, res) => {
                 responseObject = createResponseUserObject(user, req.userRole);
                 break;
             case 'certified':
-                responseValidationSchema = userResponseValidationRoleCertified;
+                responseValidationSchema = userResponseValidationBase;
                 responseObject = createResponseUserObject(user, req.userRole);
                 break;
             case 'user':
-                responseValidationSchema = userResponseValidationRoleUser;
+                responseValidationSchema = userResponseValidationBase;
                 responseObject = createResponseUserObject(user, req.userRole);
                 break;
         }
@@ -248,19 +235,19 @@ exports.updateUser = async (req, res) => {
             case 'admin':
                 responseValidationSchema = userUpdatedResponseValidationRoleAdmin;
                 responseObject = {
-                    data: [createResponseUserObject(updatedUser, req.userRole)]
+                    data: [createResponseUserObject(user, req.userRole)]
                 };
                 break;
             case 'certified':
-                responseValidationSchema = userUpdatedResponseValidationRoleCertified;
+                responseValidationSchema = userUpdatedResponseValidationBase;
                 responseObject = {
-                    data: [createResponseUserObject(updatedUser, req.userRole)]
+                    data: [createResponseUserObject(user, req.userRole)]
                 };
                 break;
             case 'user':
-                responseValidationSchema = userUpdatedResponseValidationRoleUser;
+                responseValidationSchema = userUpdatedResponseValidationBase;
                 responseObject = {
-                    data: [createResponseUserObject(updatedUser, req.userRole)]
+                    data: [createResponseUserObject(user, req.userRole)]
                 };
                 break;
         }
@@ -335,6 +322,12 @@ exports.deleteUser =  async (req, res) => {
 
 /*=== CREATE RESPONSE USER OBJECT BASED ON ROLE ===*/
 const createResponseUserObject = (user, userRole) => {
+    const commonFields = {
+        nickname: user.nickname,
+        registeredAt: user.registeredAt,
+        updatedAt: user.updatedAt
+    };
+
     switch (userRole) {
         case 'admin':
             return {
@@ -345,17 +338,8 @@ const createResponseUserObject = (user, userRole) => {
                 updatedAt: user.updatedAt
             };
         case 'certified':
-            return {
-                email: user.email,
-                nickname: user.nickname,
-                registeredAt: user.registeredAt,
-                updatedAt: user.updatedAt
-            };
+            return commonFields;
         case 'user':
-            return {
-                nickname: user.nickname,
-                registeredAt: user.registeredAt,
-                updatedAt: user.updatedAt
-            };
+            return commonFields;
     }
 };
