@@ -167,6 +167,20 @@ router.patch('/:id', [
 });
 
 
+/*=== DELETE ALL ARTICLES ===*/
+router.delete('/admin',
+    jwtCheck,
+    async (req, res) => {
+
+    try {
+        await articlesController.deleteAllArticles(req, res);
+    }
+    catch (err) {
+        return ErrorHandler.sendInternalServerError(res, err);
+    }
+});
+
+
 /*=== DELETE ARTICLE ===*/
 router.delete('/:id',
     jwtCheck,

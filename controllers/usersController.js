@@ -279,7 +279,7 @@ exports.deleteAllUsers = async (req, res) => {
 
         return res.sendStatus(204);
     }
-    catch {
+    catch (err) {
         return ErrorHandler.sendDatabaseError(res, err);
     }
 }
