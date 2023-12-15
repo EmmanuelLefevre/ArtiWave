@@ -2,7 +2,7 @@
 // Check if user has required role (admin or certified)
 const premiumCheck = (req, res, next) => {
     if (!(req.isAdmin || req.isCertified)) {
-        return res.status(401).json({ message: 'You are not allowed to search all users!' });
+        return res.status(401).json({ message: 'Premium functionality!' });
     }
 
     next();
