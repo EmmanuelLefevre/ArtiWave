@@ -69,7 +69,7 @@ openssl rsa -check -in _certs/pvt.pem
 make lf
 ```
 #### Launch server
-If you're not confident that you're on the required NodeJs version (20.10.0) and NVM is locally installed on your computer =>  
+If NVM is locally installed on your computer and you're not confident that you're on the required Node v20.10.0 LTS =>  
 ```shell
 make dsv
 ```
