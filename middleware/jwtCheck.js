@@ -18,7 +18,7 @@ const extractBearer = authorization => {
 
 
 /*============ CHECK IF TOKEN IS PRESENT AND CHECK IT ============*/
-const jwtCheckMiddleware = (req, res, next) => {
+const jwtCheck = (req, res, next) => {
     try {
         const token = req.headers.authorization && extractBearer(req.headers.authorization);
 
@@ -35,12 +35,17 @@ const jwtCheckMiddleware = (req, res, next) => {
                 return res.status(401).json({message: 'False token!'});
             }
 
-            // Check if user Id in token matches Id param in URL
-            const userIdFromToken = decodedToken.id;
-            const userIdFromUrl = req.params.id;
-            if (userIdFromToken !== userIdFromUrl) {
-                return res.status(403).json({ message: 'You are not authorized to access this resource!' });
-            }
+            // Set userId from JWT in request object
+            req.userId = decodedToken.id;
+
+            // Set user role from JWT in request object
+            req.userRole = decodedToken.roles;
+            // Check if admin role exists in JWT
+            req.isAdmin = decodedToken.roles && decodedToken.roles === 'admin';
+            // Check if certified role exists in JWT
+            req.isCertified = decodedToken.roles && decodedToken.roles === 'certified';
+            // Check if user role exists in JWT
+            req.isUser = decodedToken.roles && decodedToken.roles === 'user';
 
             next();
         });
@@ -52,4 +57,4 @@ const jwtCheckMiddleware = (req, res, next) => {
 
 
 /*============ EXPORT MODULE ============*/
-module.exports = jwtCheckMiddleware;
+module.exports = jwtCheck;
