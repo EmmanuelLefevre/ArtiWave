@@ -18,6 +18,12 @@ class ErrorHandler {
         }
     }
 
+    static sendCreationResponseObjectError(res, error) {
+        if (error) {
+            return res.status(500).json({ message: 'Creation Response Object Error!', error: error.message });
+        }
+    }
+
     static handleUserNotFound(res) {
         return res.status(404).json({ message: 'No user was found!' });
     }
