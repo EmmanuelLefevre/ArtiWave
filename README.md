@@ -71,11 +71,18 @@ make lf
 #### Launch server
 If NVM is locally installed on your computer and you're not confident that you're on the required Node v20.10.0 LTS you could execute this command line =>  
 ```shell
-make dsv
+nvm use 20.10.0
 ```
 Otherwise you could launch server with NPM =>  
 ```shell
 npm run dev
+```
+Or with makefile  
+```shell
+make dev
+```
+```shell
+make nvm
 ```
 
 

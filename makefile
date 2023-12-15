@@ -13,9 +13,13 @@ NODE_VERSION := $(shell type .nvmrc 2> nul)
 
 
 ## ============ EXPRESS SERVER ============
-dsv: ## Launch Express dev server
+nvm: ## Launch Express dev server with NVM
 	nvm use $(NODE_VERSION) && npm run dev
-.PHONY: sv
+.PHONY: nvm
+
+dev: ## Launch Express dev server with NPM
+	npm run dev
+.PHONY: dev
 
 
 ## ============ FIXTURES ============
