@@ -356,6 +356,46 @@ swaggerSpec.paths['/users/{id}'].patch = {
     },
 };
 
+/*=== UPGRADE USER ROLE ===*/
+swaggerSpec.paths['/admin/upgrade_user/{id}'].patch = {
+    summary: 'Upgrade user to certified.',
+    description: 'Upgrade the user\'s role to certified.',
+    tags: ['Users'],
+    security: [
+        {
+            bearerAuth: [],
+        },
+    ],
+    parameters: [
+        {
+            in: 'path',
+            name: 'id',
+            required: true,
+            description: 'ID of the user to upgrade.',
+            schema: {
+                type: 'string',
+            },
+        },
+    ],
+    responses: {
+        '200': {
+            description: 'User upgraded successfully.',
+        },
+        '403': {
+            description: 'Permission denied.',
+        },
+        '404': {
+            description: 'User not found.',
+        },
+        '422': {
+            description: 'Incorrect query due to invalid URI or data.',
+        },
+        '500': {
+            description: 'Server error while deleting a single user.',
+        },
+    }
+};
+
 /*=== DELETE USER ===*/
 swaggerSpec.paths['/users/{id}'].delete = {
     summary: 'Delete user by Id',
@@ -824,8 +864,8 @@ swaggerSpec.paths['/articles/{id}'].delete = {
 /*=== DELETE ALL ARTICLES ===*/
 swaggerSpec.paths['/articles/admin'] = {
     delete: {
-        summary: 'Delete all articles except those from admin',
-        description: 'Delete all articles except those from admin.',
+        summary: 'Delete all articles except those owned by admin',
+        description: 'Delete all articles except those owned by admin.',
         tags: ['Articles'],
         security: [
             {
