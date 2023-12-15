@@ -277,7 +277,7 @@ exports.deleteAllUsers = async (req, res) => {
         // Delete all users except admin
         await User.deleteMany({ roles: { $ne: 'admin' } });
 
-        res.status(200).json({ message: "All users have been deleted successfully!" });
+        return res.sendStatus(204);
     }
     catch {
         return ErrorHandler.sendDatabaseError(res, err);
