@@ -10,13 +10,13 @@ const { articleResponseValidation, articlesResponseValidation } = require('../_v
 
 /*=== CREATE ARTICLE ===*/
 exports.createArticle = async (req, res) => {
-    // Extract title && content && author && date properties from request
-    const { title, content, author } = req.body;
-
     // Check if user has required role (admin or certified)
     if (!(req.isAdmin || req.isCertified)) {
         return res.status(401).json({ message: 'You\'re not allowed to create articles!' });
     }
+
+    // Extract title && content && author && date properties from request
+    const { title, content, author } = req.body;
 
     try {
         // Check if user exists
@@ -131,12 +131,12 @@ exports.getArticle = async (req, res) => {
 
 /*=== GET ARTICLES BY USER ===*/
 exports.getArticlesByUser = async (req, res) => {
-    let userId = req.params.userId;
-
     // Check user own an account
     if (!req.headers.authorization) {
         return res.status(401).json({ message: 'This feature is reserved for members who own an account!' });
     }
+
+    let userId = req.params.userId;
 
     try {
         // Check if user exists
