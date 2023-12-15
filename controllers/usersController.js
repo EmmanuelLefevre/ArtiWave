@@ -156,6 +156,14 @@ exports.getUser = async (req, res) => {
                 break;
         }
 
+        // Check if userId in JWT matches userId in URL
+        if (req.userId === userId) {
+            if (req.userRole !== "admin") {
+                // Add user email to the responseObject
+                responseObject.email = user.email;
+            }
+        }
+
         // Validate response format
         try {
             await responseValidationSchema.validate(responseObject, { abortEarly: false });
