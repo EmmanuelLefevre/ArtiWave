@@ -365,7 +365,8 @@ const createResponseUserObject = (user, userRole) => {
             default:
                 throw new Error('Invalid user role!');
         }
-    } catch (err) {
+    }
+    catch (err) {
         return ErrorHandler.sendCreationResponseObjectError(res, err);
     }
 };
