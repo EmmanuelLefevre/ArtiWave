@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"email\": \"emmanuel@yahoo.fr\",\r\n  \"password\":\"Xxggxx1!\"\r\n}",
+							"raw": "{\r\n  \"email\": \"emmanuel@protonmail.com\",\r\n  \"password\":\"Xxggxx!1\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -32,24 +32,6 @@
 		{
 			"name": "User",
 			"item": [
-				{
-					"name": "Register",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"email\": \"emmanuel@yahoo.fr\",\r\n  \"pseudo\": \"Emmanuel\",\r\n  \"password\": \"Xxggxx1!\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "http://localhost:9000/users/register"
-					},
-					"response": []
-				},
 				{
 					"name": "User",
 					"request": {
@@ -95,6 +77,24 @@
 					"response": []
 				},
 				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"test@yahoo.fr\",\r\n  \"nickname\": \"test\",\r\n  \"password\": \"Xxggxx!1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:9000/users/register"
+					},
+					"response": []
+				},
+				{
 					"name": "User",
 					"request": {
 						"method": "PATCH",
@@ -129,30 +129,6 @@
 				{
 					"name": "Article",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": {
-								"token": ""
-							}
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"title\": \"Hello world\",\r\n  \"content\":\" lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. \",\r\n  \"author\": \"6572f39b4bf59dcf946d676f\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "http://localhost:9000/articles"
-					},
-					"response": []
-				},
-				{
-					"name": "Article",
-					"request": {
 						"method": "GET",
 						"header": [],
 						"url": "http://localhost:9000/articles/``6572f41b0c975c1ea1de30a6"
@@ -180,6 +156,30 @@
 				{
 					"name": "Article",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": ""
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Hello world\",\r\n  \"content\":\" lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. \",\r\n  \"author\": \"6572f39b4bf59dcf946d676f\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:9000/articles"
+					},
+					"response": []
+				},
+				{
+					"name": "Article",
+					"request": {
 						"method": "PATCH",
 						"header": [],
 						"body": {
@@ -201,6 +201,56 @@
 						"method": "DELETE",
 						"header": [],
 						"url": "http://localhost:9000/articles/6573249ac1b2b4136b5df93c"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admins",
+			"item": [
+				{
+					"name": "UpgradeUserRole",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1N2M1ODkxNDRjNmEyMDEyN2ZiZTA1NyIsInJvbGVzIjoidXNlciIsIm5pY2tuYW1lIjoiRmxvcmVudCIsInJlZ2lzdGVyZWRBdCI6IjIwMjMtMDYtMjBUMDY6Mzg6NTMuNDY4WiIsImlhdCI6MTcwMjY0ODAzNSwiZXhwIjoxNzAyODIwODM1fQ.BRVicocRNZ99Ty-7gCSU2Mi6FdSen5vVripclDiUIqwUCokH_Fy0k11QNKgvmq8kXM75L5svUigbaR-gwRty3JJHoGH5x_GWtN5ti7AMId65y8sjLpeH3hYBAzxqTQpzGRf5rMH2u3Wy9aIlvL1FzK6qf-210hprlzV9CtU-GONLbM3o19gnklZcVJoOQguw7KvnwjN-mMVraqh4t8onGN5FzWRs5RZESY_9MwIps3V45rifZ0llJWOoQWprNKt2LLD-wagMAH54rlTzqOUfBHMFHskY1mgW4MQk-1LezJmHfRIXIplCPNWzBsX2Rb9A3uLDw_roo3XXdVlPTkJkAEv5kNCRaC51W1grmxPPNM6UK9Ro65xEVw586C9soD7U5ghU_O0w3zJZL3GiF8XHLOTsi0UkJrVJyFp338yYMWS5y6UDBCnQyakCX9l1wlevBVuoPyMqQdfIXBR2t4TLE1pfAa8IlYgSaFwC2SHe_mDAvbEX_VJPQmIw7LV_lI43o6gHSz4MZosF4dteddIVxW7bQ6ql0DdT26dnG71i1oaTPu22uqKYD-CzeUVxdRTJOQ2OlGZcBqRt3SsQ5rJ0gYZzLYi7Ggu0qm8Z0lRslLL6UmoRSEDUt_ZOTQYhNE2R4CGQKtxnjFZ0SjVNPnq4pZVJt5VQp-OuLxiC8z0Z6hI"
+							}
+						},
+						"method": "PATCH",
+						"header": [],
+						"url": "http://localhost:9000/admins/upgrade_user_role/657c589144c6a20127fbe058"
+					},
+					"response": []
+				},
+				{
+					"name": "AllArticles",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1N2M0ZmVlNTBjYWIzODIyOWExM2ZlZCIsInJvbGVzIjoiYWRtaW4iLCJuaWNrbmFtZSI6IkVtbWFudWVsIiwicmVnaXN0ZXJlZEF0IjoiMjAyMy0wMi0xM1QwNzozNjoxNy4xNTJaIiwiaWF0IjoxNzAyNjQ1NzUyLCJleHAiOjE3MDI4MTg1NTJ9.NTwXK_qvzYNbUQLP0w9WP8xUptxZdvsjEDVnAnieYutif_oEfKuYEKaYnV6BLfVmNoobE1SybjJdS4ptQVXx4w6CFkw0UFsvzu7pd0msNJ4Mjab3Fr3DqsPG3kDiyVsOoE2b4OGaJk3fkj_4wy69jJAwAf8uJXe3wKABCFswUmY5ylU-LRNVZECA5W1FLgQZd_eRj-Nd36FXqFW6oHxAB6rVnAVbEdiiCvqcl8KLS0e82vOV4efWjIpjhLkdFU9qycMEeiZ7Vq81h1KDKZNx50XepTrlMbF8w4HzCHPxQQKzgK6eGly-bMCIdsTVg0zvHcOD0OVuylx_Y95f5xXOL9QEZySqMW7SllA0ZWOFyeRtIoXGYvc2gLdwENMRTJIr-0g7_6IresvDGv_B0Ocy9sOx1fi1-K80yZueBgkI7saJcrYBilxbZL8BNx19lHxS1XGWfkxejbVLTBYiM9HcEH7EPDRXUq6i1e5D-Xzuyz6KGTMPsjUCtqLVeGW1QFuCU1dYtMhZucMhj97dnTxJXiCpJsD7bqAORY3Cj8k8szE-W3nTuS4Uj86fHek1Xk7lClyP-pgaKaGkAT5XWWSumkEFlRdx0Qqr-7EWZYDy9nftD9hdYD-x4rwmCZsni9Wg9WC_1dAJxeAfi-aw5MjSRLRPYVdTEZS_jAWjX7muxow"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:9000/admins/delete_all_articles"
+					},
+					"response": []
+				},
+				{
+					"name": "AllUsers",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1N2M1MmQwNGQ5OTM5ZWZkOWVlYWUzMSIsInJvbGVzIjoiYWRtaW4iLCJuaWNrbmFtZSI6IkVtbWFudWVsIiwicmVnaXN0ZXJlZEF0IjoiMjAyMy0wNC0xNlQxMDozNzoyMy4zMzVaIiwiaWF0IjoxNzAyNjQ2NDg3LCJleHAiOjE3MDI4MTkyODd9.QYuR3t1UML8TKkZP797pDml-tKauSZM26u4dIHjH9pnJcWn_48Se7cOQu_rDrmM80JdXmKICXqaOtmv6p_pY-F9TlGZbQq8Wf-fHTxicILeys6sAP1_3cOJOEmv8LyohwtRaUx50Fh6tRMia3kzqPAMP7EdOrixiCrxwKbcqxlrgZ9MY1KUWk-gIptFyo_t06j68ozHrV8dRYwt0oAy2YibxsHG3DOd5fCELoj5vDKR3B6vCAtnr0FbhCRHVI2wpq0jW5HjIPep76lbaQN1FZNeeZqdATG8hRBwIS9VeibmROtJE2U4-cL0E9z5J9M21skIIA2TqRljcBU2K29P5X4Scn3E1AVTPVrN0wp_N_3izaLLq1gnfaraV7dfJsvtpyFlz1HQNCjvcQKnwJI5nMPfZ6uC06oC5jngURcBd_K1-gzpF23W6NZBgSKIkhcr8tBNeu5JVryNDbIKB-t56oDx_pGI-QUs6ws9YJ9Pqbk5JhceGo6p8yKZKqSSeQpEJDI_FtJMRPWjZPtrlizGekvJExIc4x4FFvYCPXKYj3rrKZlqNqAptJedFksUiu-x6qGMoGR_-bg38sNMgkyclBG0d48eS0DccACU25h_4nNeBd0JEMy9bfhtiIpnziSV9_MKBORsPpEr4DH6S0qcbDhM9U9PWWQoSoqP8jYE13Ds"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:9000/admins/delete_all_users"
 					},
 					"response": []
 				}
