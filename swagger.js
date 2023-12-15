@@ -262,7 +262,7 @@ swaggerSpec.paths['/users/{id}'] = {
                 },
             },
             '401': {
-                description: 'This feature is reserved for members who own an account.',
+                description: 'This feature is reserved for users who own an account.',
             },
             '404': {
                 description: 'User not found.',
@@ -660,7 +660,7 @@ swaggerSpec.paths['/articles/user/{userId}'] = {
                 description: 'Bad Request.',
             },
             '401': {
-                description: 'This feature is reserved for members who own an account.',
+                description: 'This feature is reserved for users who own an account.',
             },
             '422': {
                 description: 'Incorrect query due to invalid URI or data.',
