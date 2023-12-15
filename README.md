@@ -68,6 +68,26 @@ openssl rsa -check -in _certs/pvt.pem
 ```shell
 make lf
 ```
+#### Launch server
+If you're not confident that you're on the required NodeJs version (20.10.0) and NVM is installed on your computer =>  
+Prod  
+```shell
+make psv
+```
+Dev  
+```shell
+make dsv
+```
+Otherwise you could launch server with NPM =>
+Prod  
+```shell
+npm run start
+```
+Dev  
+```shell
+npm run dev
+```
+
 
 
 ### 2. Docker
