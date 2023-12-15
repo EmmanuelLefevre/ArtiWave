@@ -202,7 +202,7 @@ swaggerSpec.paths['/users'] = {
                 },
             },
             '401': {
-                description: 'You are not allowed to search all users.',
+                description: 'Premium functionality.',
             },
             '500': {
                 description: 'Server error while retrieving all users.',
@@ -456,7 +456,7 @@ swaggerSpec.paths['/articles'] = {
                 description: 'Incorrect query due to missing param.',
             },
             '401': {
-                description: 'You\'re not allowed to create articles.',
+                description: 'Premium functionality.',
             },
             '409': {
                 description: 'Article already exists.',
