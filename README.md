@@ -73,17 +73,19 @@ If NVM is locally installed on your computer and you're not confident that you'r
 ```shell
 nvm use 20.10.0
 ```
-Otherwise you could launch server with NPM =>  
+Or check your version with =>  
 ```shell
-npm run dev
+node -v
 ```
-Or with makefile  
+Then you could launch server with makefile =>  
 ```shell
 make dev
 ```
+Otherwise with NPM  
 ```shell
-make nvm
+npm run dev
 ```
+
 
 
 
