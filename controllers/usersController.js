@@ -45,25 +45,35 @@ exports.register = async (req, res) => {
         // Save user in database
         let user = await newUser.save();
 
-        // Set response
-        const response = {
-            _id: user._id,
-            email: user.email,
-            nickname: user.nickname,
-            registeredAt: user.registeredAt,
-            updatedAt: user.updatedAt
+        let responseValidationSchema;
+        let responseObject;
+
+        // Set response and determine the response validation schema based on user role
+        switch (req.userRole) {
+            case 'admin':
+                responseValidationSchema = userResponseValidationRoleAdmin;
+                responseObject = createResponseUserObject(user, req.userRole);
+                break;
+            case 'certified':
+                responseValidationSchema = userResponseValidationRoleCertified;
+                responseObject = createResponseUserObject(user, req.userRole);
+                break;
+            case 'user':
+                responseValidationSchema = userResponseValidationRoleUser;
+                responseObject = createResponseUserObject(user, req.userRole);
+                break;
         }
 
         // Validate response format
         try {
-            await userResponseValidationRoleUser.validate(response, { abortEarly: false });
+            await responseValidationSchema.validate(responseObject, { abortEarly: false });
         }
         catch (validationError) {
             return ErrorHandler.sendValidationResponseError(res, validationError);
         }
 
         // Return created user
-        return res.status(201).json(response);
+        return res.status(201).json(responseObject);
     }
     catch (err) {
         if (err.code === 11000) {
