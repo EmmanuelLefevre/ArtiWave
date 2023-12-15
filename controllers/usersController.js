@@ -260,6 +260,12 @@ exports.updateUser = async (req, res) => {
                 break;
         }
 
+        // If not admin role
+        if (req.userRole !== "admin") {
+            // Add user email to the responseObject
+            responseObject.data[0].email = user.email;
+        }
+
         // Add modified property to the responseObject
         responseObject.modifiedProperties = modifiedProperties;
 
