@@ -76,7 +76,7 @@ router.get('/',
 });
 
 
-/*=== GET ARTICLE ===*/
+/*=== GET SINGLE ARTICLE ===*/
 router.get('/:id',
     validateURIParam('id'),
     async (req, res) => {

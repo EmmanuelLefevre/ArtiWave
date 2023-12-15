@@ -87,7 +87,7 @@ router.get('/',
 });
 
 
-/*=== GET USER ===*/
+/*=== GET SINGLE USER ===*/
 router.get('/:id',
     validateURIParam('id'),
     async (req, res) => {

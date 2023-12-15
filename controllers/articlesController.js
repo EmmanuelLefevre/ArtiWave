@@ -13,6 +13,11 @@ exports.createArticle = async (req, res) => {
     // Extract title && content && author && date properties from request
     const { title, content, author } = req.body;
 
+    // Check if user has required role (admin or certified)
+    if (!(req.isAdmin || req.isCertified)) {
+        return res.status(403).json({ message: 'You\'re not allowed to create articles!' });
+    }
+
     try {
         // Check if user exists
         const existingUser = await User.findById(author);
@@ -128,6 +133,11 @@ exports.getArticle = async (req, res) => {
 exports.getArticlesByUser = async (req, res) => {
     let userId = req.params.userId;
 
+    // Check user own an account
+    if (!req.headers.authorization) {
+        return res.status(401).json({ message: 'This feature is reserved for members who own an account!' });
+    }
+
     try {
         // Check if user exists
         const existingUser = await User.findById(userId);
@@ -192,11 +202,22 @@ exports.updateArticle = async (req, res) => {
 
         // Check if author article matches userId making request
         if (article.author.toString() !== req.userId) {
-            return res.status(403).json({ message: 'You are not allowed to update an article that does not belong to you!' });
+            // Check if user is admin
+            if (req.isAdmin) {
+                // Allow admin to update article of any user
+                await Article.updateOne(req.body);
+            }
+            else if (req.isUser) {
+                return res.status(403).json({ message: 'Only certified members are allowed to update an article!' });
+            }
+            else {
+                return res.status(403).json({ message: 'You are not allowed to update an article that does not belong to you!' });
+            }
         }
-
-        // If author matches save article
-        await article.updateOne(req.body);
+        else {
+            // If author matches save article
+            await Article.updateOne(req.body);
+        }
 
         // Add author's nickname and id for article
         article = await getArticleWithNickname(article);
@@ -235,7 +256,19 @@ exports.deleteArticle =  async (req, res) => {
 
         // Check if author article matches userId making request
         if (article.author.toString() !== req.userId) {
-            return res.status(403).json({ message: 'You are not allowed to delete an article that does not belong to you!' });
+            // Check if user is admin
+            if (req.isAdmin) {
+                // Allow admin to delete articles of any user
+                await Article.deleteOne({ _id: articleId });
+
+                return res.sendStatus(204);
+            }
+            else if (req.isUser) {
+                return res.status(403).json({ message: 'Only certified members are allowed to delete an article!' });
+            }
+            else {
+                return res.status(403).json({ message: 'You are not allowed to delete an article that does not belong to you!' });
+            }
         }
 
         // If author matches delete article
@@ -247,6 +280,8 @@ exports.deleteArticle =  async (req, res) => {
         return ErrorHandler.sendDatabaseError(res, err);
     }
 }
+
+
 
 
 

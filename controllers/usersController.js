@@ -74,7 +74,12 @@ exports.register = async (req, res) => {
 }
 
 /*=== GET ALL USERS ===*/
-exports.getAllUsers = async (_req, res) => {
+exports.getAllUsers = async (req, res) => {
+    // Check if user has required role (admin or certified)
+    if (!(req.isAdmin || req.isCertified)) {
+        return res.status(403).json({ message: 'You are not allowed to search all users!' });
+    }
+
     try {
         let users = await User.find({}, 'id email nickname registeredAt updatedAt');
 
@@ -111,6 +116,11 @@ exports.getAllUsers = async (_req, res) => {
 /*=== GET SINGLE USER ===*/
 exports.getUser = async (req, res) => {
     let userId = req.params.id;
+
+    // Check user own an account
+    if (!req.headers.authorization) {
+        return res.status(401).json({ message: 'This feature is reserved for members who own an account!' });
+    }
 
     try {
         let user = await User.findById(userId, { _id: 1, email: 1, nickname: 1, registeredAt: 1, updatedAt: 1 });
@@ -164,11 +174,19 @@ exports.updateUser = async (req, res) => {
 
         // Check if user matches userId making request
         if (user._id.toString() !== req.userId) {
-            return res.status(403).json({ message: 'You are not allowed to update a user other than yourself!' });
+            // Check if user is admin
+            if (req.isAdmin) {
+                // Allow admin to update any user
+                await User.updateOne(req.body);
+            }
+            else {
+                return res.status(403).json({ message: 'You are not allowed to update a user other than yourself!' });
+            }
         }
-
-        // If user matches save user
-        await user.updateOne(req.body);
+        else {
+            // If user matches, save user
+            await User.updateOne(req.body);
+        }
 
         // Fetch the updated user by its ID
         const updatedUser = await User.findById(userId);
@@ -222,7 +240,16 @@ exports.deleteUser =  async (req, res) => {
 
         // Check if user matches userId making request
         if (user._id.toString() !== req.userId) {
-            return res.status(403).json({ message: 'You are not allowed to delete a user other than yourself!' });
+            // Check if user is admin
+            if (req.isAdmin) {
+                // Allow admin to delete any user
+                await User.deleteOne({ _id: userId });
+
+                return res.sendStatus(204);
+            }
+            else {
+                return res.status(403).json({ message: 'You are not allowed to delete a user other than yourself!' });
+            }
         }
 
         // If user matches delete user
