@@ -201,7 +201,7 @@ swaggerSpec.paths['/users'] = {
                     },
                 },
             },
-            '401': {
+            '403': {
                 description: 'Premium functionality.',
             },
             '500': {
@@ -455,7 +455,7 @@ swaggerSpec.paths['/articles'] = {
             '400': {
                 description: 'Incorrect query due to missing param.',
             },
-            '401': {
+            '403': {
                 description: 'Premium functionality.',
             },
             '409': {
