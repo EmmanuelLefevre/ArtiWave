@@ -14,7 +14,8 @@ const options = {
     },
     apis: ['./routers/authRouter.js',
             './routers/usersRouter.js',
-            './routers/articlesRouter.js']
+            './routers/articlesRouter.js',
+            './routers/adminsRouter.js']
 };
 
 const swaggerSpec = swaggerJSDoc(options);
@@ -161,6 +162,17 @@ swaggerSpec.paths['/users'] = {
                 bearerAuth: [],
             },
         ],
+        parameters: [
+            {
+                name: 'Bearer Token',
+                in: 'header',
+                required: true,
+                description: '',
+                schema: {
+                    type: 'string',
+                },
+            },
+        ],
         responses: {
             '200': {
                 description: 'List of users retrieved successfully.',
@@ -289,6 +301,15 @@ swaggerSpec.paths['/users/{id}'].patch = {
     ],
     parameters: [
         {
+            name: 'Bearer Token',
+            in: 'header',
+            required: true,
+            description: '',
+            schema: {
+                type: 'string',
+            },
+        },
+        {
             in: 'path',
             name: 'id',
             required: true,
@@ -369,8 +390,17 @@ swaggerSpec.paths['/users/{id}'].delete = {
     ],
     parameters: [
         {
-            in: 'path',
+            name: 'Bearer Token',
+            in: 'header',
+            required: true,
+            description: '',
+            schema: {
+                type: 'string',
+            },
+        },
+        {
             name: 'id',
+            in: 'path',
             required: true,
             description: 'User Id',
             schema: {
@@ -409,6 +439,17 @@ swaggerSpec.paths['/articles'] = {
         security: [
             {
                 bearerAuth: [],
+            },
+        ],
+        parameters: [
+            {
+                name: 'Bearer Token',
+                in: 'header',
+                required: true,
+                description: '',
+                schema: {
+                    type: 'string',
+                },
             },
         ],
         requestBody: {
@@ -684,6 +725,15 @@ swaggerSpec.paths['/articles/{id}'].patch = {
     ],
     parameters: [
         {
+            name: 'Bearer Token',
+            in: 'header',
+            required: true,
+            description: '',
+            schema: {
+                type: 'string',
+            },
+        },
+        {
             in: 'path',
             name: 'id',
             required: true,
@@ -766,6 +816,15 @@ swaggerSpec.paths['/articles/{id}'].delete = {
     ],
     parameters: [
         {
+            name: 'Bearer Token',
+            in: 'header',
+            required: true,
+            description: '',
+            schema: {
+                type: 'string',
+            },
+        },
+        {
             in: 'path',
             name: 'id',
             required: true,
@@ -813,6 +872,15 @@ swaggerSpec.paths['admins/upgrade_user_role/:id'] = {
         ],
         parameters: [
             {
+                name: 'Bearer Token',
+                in: 'header',
+                required: true,
+                description: '',
+                schema: {
+                    type: 'string',
+                },
+            },
+            {
                 in: 'path',
                 name: 'id',
                 required: true,
@@ -853,6 +921,17 @@ swaggerSpec.paths['/admins/delete_all_users'] = {
                 bearerAuth: [],
             },
         ],
+        parameters: [
+            {
+                name: 'Bearer Token',
+                in: 'header',
+                required: true,
+                description: '',
+                schema: {
+                    type: 'string',
+                },
+            },
+        ],
         responses: {
             '204': {
                 description: 'All users and articles have been deleted successfully.',
@@ -876,6 +955,17 @@ swaggerSpec.paths['/admins/delete_all_articles'] = {
         security: [
             {
                 bearerAuth: [],
+            },
+        ],
+        parameters: [
+            {
+                name: 'Bearer Token',
+                in: 'header',
+                required: true,
+                description: '',
+                schema: {
+                    type: 'string',
+                },
             },
         ],
         responses: {
