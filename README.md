@@ -70,20 +70,10 @@ make lf
 ```
 #### Launch server
 If you're not confident that you're on the required NodeJs version (20.10.0) and NVM is locally installed on your computer =>  
-Prod  
-```shell
-make psv
-```
-Dev  
 ```shell
 make dsv
 ```
-Otherwise you could launch server with NPM =>
-Prod  
-```shell
-npm run start
-```
-Dev  
+Otherwise you could launch server with NPM =>  
 ```shell
 npm run dev
 ```

@@ -13,10 +13,6 @@ NODE_VERSION := $(shell type .nvmrc 2> nul)
 
 
 ## ============ EXPRESS SERVER ============
-psv: ## Launch Express prod server
-	nvm use $(NODE_VERSION) && npm run start
-.PHONY: sv
-
 dsv: ## Launch Express dev server
 	nvm use $(NODE_VERSION) && npm run dev
 .PHONY: sv
