@@ -3,4 +3,5 @@ package-lock.json
 /_logs/articles/_articlesLogs.txt
 /_logs/auth/_authLogs.txt
 /_logs/users/_usersLogs.txt
+/_logs/admins/_adminsLogs.txt
 /_certs
