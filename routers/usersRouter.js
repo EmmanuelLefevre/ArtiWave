@@ -6,6 +6,7 @@ const usersController = require('../controllers/usersController');
 
 const { registerLimiter } = require('../middleware/rateLimiter');
 const jwtCheck = require('../middleware/jwtCheck');
+const accountCheck = require('../middleware/accountCheck');
 
 const ErrorHandler = require('../_errors/errorHandler');
 const ValidationErrorHandler = require('../_validation/validationErrorHandler');
@@ -89,6 +90,8 @@ router.get('/',
 
 /*=== GET SINGLE USER ===*/
 router.get('/:id',
+    accountCheck,
+    jwtCheck,
     validateURIParam('id'),
     async (req, res) => {
 
