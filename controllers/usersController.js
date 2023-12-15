@@ -5,9 +5,14 @@ const User = require('../_models/IUser');
 const Article = require('../_models/IArticle');
 const ErrorHandler = require('../_errors/errorHandler');
 
-const { userResponseValidation,
-        usersResponseValidation,
-        userUpdatedResponseValidation } = require('../_validation/responses/userResponseValidation');
+const { userResponseValidationRoleAdmin,
+        userResponseValidationRoleCertified,
+        userResponseValidationRoleUser,
+        usersResponseValidationRoleAdmin,
+        usersResponseValidationRoleCertified,
+        userUpdatedResponseValidationRoleAdmin,
+        userUpdatedResponseValidationRoleCertified,
+        userUpdatedResponseValidationRoleUser } = require('../_validation/responses/userResponseValidation');
 
 
 /*============ USERS ============*/
@@ -51,7 +56,7 @@ exports.register = async (req, res) => {
 
         // Validate response format
         try {
-            await userResponseValidation.validate(response, { abortEarly: false });
+            await userResponseValidationRoleUser.validate(response, { abortEarly: false });
         }
         catch (validationError) {
             return ErrorHandler.sendValidationResponseError(res, validationError);
@@ -75,11 +80,6 @@ exports.register = async (req, res) => {
 
 /*=== GET ALL USERS ===*/
 exports.getAllUsers = async (req, res) => {
-    // Check if user has required role (admin or certified)
-    if (!(req.isAdmin || req.isCertified)) {
-        return res.status(401).json({ message: 'You are not allowed to search all users!' });
-    }
-
     try {
         let users = await User.find({}, 'id email nickname registeredAt updatedAt');
 
@@ -90,22 +90,38 @@ exports.getAllUsers = async (req, res) => {
         // Count users
         const usersCount = users.length;
 
-        // Set response
-        const response = {
-            data: users,
-            dataCount: usersCount
-        };
+        let responseValidationSchema;
+        let responseObject;
+
+        // Set response and determine the response validation schema based on user role
+        switch (req.userRole) {
+            case 'admin':
+                responseValidationSchema = usersResponseValidationRoleAdmin;
+                responseObject = {
+                    data: users.map(user => createResponseUserObject(user, req.userRole))
+                };
+                break;
+            case 'certified':
+                responseValidationSchema = usersResponseValidationRoleCertified;
+                responseObject = {
+                    data: users.map(user => createResponseUserObject(user, req.userRole))
+                };
+                break;
+        }
+
+        // Add dataCount to the responseObject
+        responseObject.dataCount = usersCount;
 
         // Validate response format
         try {
-            await usersResponseValidation.validate(response, { abortEarly: false });
+            await responseValidationSchema.validate(responseObject, { abortEarly: false });
         }
         catch (validationError) {
             return ErrorHandler.sendValidationResponseError(res, validationError);
         }
 
         // Return all users
-        return res.status(200).json(response);
+        return res.status(200).json(responseObject);
     }
     catch (err) {
         return ErrorHandler.sendDatabaseError(res, err);
@@ -115,30 +131,44 @@ exports.getAllUsers = async (req, res) => {
 
 /*=== GET SINGLE USER ===*/
 exports.getUser = async (req, res) => {
-    // Check user own an account
-    if (!req.headers.authorization) {
-        return res.status(401).json({ message: 'This feature is reserved for members who own an account!' });
-    }
-
     let userId = req.params.id;
 
     try {
-        let user = await User.findById(userId, { _id: 1, email: 1, nickname: 1, registeredAt: 1, updatedAt: 1 });
+        let user = await User.findById(userId);
 
         if (!user) {
             return ErrorHandler.handleUserNotFound(res);
         }
 
+        let responseValidationSchema;
+        let responseObject;
+
+        // Set response and determine the response validation schema based on user role
+        switch (req.userRole) {
+            case 'admin':
+                responseValidationSchema = userResponseValidationRoleAdmin;
+                responseObject = createResponseUserObject(user, req.userRole);
+                break;
+            case 'certified':
+                responseValidationSchema = userResponseValidationRoleCertified;
+                responseObject = createResponseUserObject(user, req.userRole);
+                break;
+            case 'user':
+                responseValidationSchema = userResponseValidationRoleUser;
+                responseObject = createResponseUserObject(user, req.userRole);
+                break;
+        }
+
         // Validate response format
         try {
-            await userResponseValidation.validate(user, { abortEarly: false });
+            await responseValidationSchema.validate(responseObject, { abortEarly: false });
         }
         catch (validationError) {
             return ErrorHandler.sendValidationResponseError(res, validationError);
         }
 
         // Return single user
-        return res.status(200).json(user);
+        return res.status(200).json(responseObject);
     }
     catch (err) {
         return ErrorHandler.sendDatabaseError(res, err);
@@ -264,3 +294,36 @@ exports.deleteUser =  async (req, res) => {
         return ErrorHandler.sendDatabaseError(res, err);
     }
 }
+
+
+
+
+
+/*============ FUNCTIONS ============*/
+
+/*=== CREATE RESPONSE USER OBJECT BASED ON ROLE ===*/
+const createResponseUserObject = (user, userRole) => {
+    switch (userRole) {
+        case 'admin':
+            return {
+                _id: user._id,
+                email: user.email,
+                nickname: user.nickname,
+                registeredAt: user.registeredAt,
+                updatedAt: user.updatedAt
+            };
+        case 'certified':
+            return {
+                email: user.email,
+                nickname: user.nickname,
+                registeredAt: user.registeredAt,
+                updatedAt: user.updatedAt
+            };
+        case 'user':
+            return {
+                nickname: user.nickname,
+                registeredAt: user.registeredAt,
+                updatedAt: user.updatedAt
+            };
+    }
+};

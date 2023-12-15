@@ -7,6 +7,7 @@ const usersController = require('../controllers/usersController');
 const { registerLimiter } = require('../middleware/rateLimiter');
 const jwtCheck = require('../middleware/jwtCheck');
 const accountCheck = require('../middleware/accountCheck');
+const premiumCheck = require('../middleware/premiumCheck');
 
 const ErrorHandler = require('../_errors/errorHandler');
 const ValidationErrorHandler = require('../_validation/validationErrorHandler');
@@ -77,6 +78,7 @@ router.post('/register', [
 /*=== GET ALL USERS ===*/
 router.get('/',
     jwtCheck,
+    premiumCheck,
     async (req, res) => {
 
     try {
