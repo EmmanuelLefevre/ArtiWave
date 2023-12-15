@@ -264,3 +264,22 @@ exports.deleteUser =  async (req, res) => {
         return ErrorHandler.sendDatabaseError(res, err);
     }
 }
+
+
+/*=== DELETE ALL USERS ===*/
+exports.deleteAllUsers = async (req, res) => {
+    // Check if user has admin role
+    if (!req.isAdmin) {
+        return res.status(403).json({ message: "Permission denied!" });
+    }
+
+    try {
+        // Delete all users except admin
+        await User.deleteMany({ roles: { $ne: 'admin' } });
+
+        res.status(200).json({ message: "All users have been deleted successfully!" });
+    }
+    catch {
+        return ErrorHandler.sendDatabaseError(res, err);
+    }
+}

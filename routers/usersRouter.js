@@ -150,6 +150,20 @@ router.patch('/:id', [
 });
 
 
+/*=== DELETE ALL USERS ===*/
+router.delete('/admin',
+    jwtCheck,
+    async (req, res) => {
+
+    try {
+        await usersController.deleteAllUsers(req, res);
+    }
+    catch (err) {
+        return ErrorHandler.sendInternalServerError(res, err);
+    }
+});
+
+
 /*=== DELETE USER ===*/
 router.delete('/:id',
     jwtCheck,
