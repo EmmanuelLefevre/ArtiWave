@@ -10,7 +10,7 @@ const ErrorHandler = require('../_errors/errorHandler');
 const ValidationErrorHandler = require('../_validation/validationErrorHandler');
 const validateURIParam = require('../_validation/URI/validateURIParam');
 
-// const { adminsLogs } = require('../_logs/users/adminsLogger');
+const { adminsLogs } = require('../_logs/admins/adminsLogger');
 
 
 /*============ EXPRESS ROUTER ============*/
@@ -18,7 +18,7 @@ let router = express.Router();
 
 
 /*============ MIDDLEWARE REQUEST LOGS ============*/
-// router.use(adminsLogs);
+router.use(adminsLogs);
 
 
 /*============ ROUTES FOR ADMINS============*/
