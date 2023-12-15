@@ -801,7 +801,7 @@ swaggerSpec.paths['/articles/{id}'].delete = {
 /*============ AUTH ============*/
 
 /*=== UPGRADE USER ROLE ===*/
-swaggerSpec.paths['admins/upgrade_user/:id'] = {
+swaggerSpec.paths['admins/upgrade_user_role/:id'] = {
     patch: {
         summary: 'Upgrade user to certified.',
         description: 'Upgrade the user\'s role to certified.',
