@@ -399,8 +399,8 @@ swaggerSpec.paths['/users/{id}'].delete = {
 /*=== DELETE ALL USERS ===*/
 swaggerSpec.paths['/users/admin'] = {
     delete: {
-        summary: 'Delete all users except admin',
-        description: 'Delete all users except the admin.',
+        summary: 'Delete all users except admin and all articles except those owned by admin',
+        description: 'Delete all users except the admin and all articles except those owned by admin.',
         tags: ['Users'],
         security: [
             {
@@ -409,13 +409,13 @@ swaggerSpec.paths['/users/admin'] = {
         ],
         responses: {
             '204': {
-                description: 'All users have been deleted successfully.',
+                description: 'All users and articles have been deleted successfully.',
             },
             '403': {
                 description: 'Permission denied.',
             },
             '500': {
-                description: 'Server error while deleting all users.',
+                description: 'Server error while deleting all users and articles.',
             },
         },
     },
