@@ -255,7 +255,7 @@ exports.deleteUser =  async (req, res) => {
         // If user matches delete user
         await User.deleteOne({ _id: userId });
 
-        // Cascade delete
+        // Cascade delete articles owned by user
         await Article.deleteMany({ author: userId });
 
         return res.sendStatus(204);
