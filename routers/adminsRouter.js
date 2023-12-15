@@ -24,7 +24,7 @@ router.use(adminsLogs);
 /*============ ROUTES FOR ADMINS============*/
 
 /*=== DELETE ALL USERS ===*/
-router.delete('/admins/delete_all_users',
+router.delete('/delete_all_users',
     jwtCheck,
     async (req, res) => {
 
@@ -38,7 +38,7 @@ router.delete('/admins/delete_all_users',
 
 
 /*=== DELETE ALL ARTICLES ===*/
-router.delete('/admins/delete_all_articles',
+router.delete('/delete_all_articles',
     jwtCheck,
     async (req, res) => {
 
@@ -52,7 +52,7 @@ router.delete('/admins/delete_all_articles',
 
 
 /*=== UPGRADE USER ROLE ===*/
-router.patch('/admins/upgrade_user-role/:id',
+router.patch('/upgrade_user-role/:id',
     jwtCheck,
     validateURIParam('id'),
     async (req, res) => {
