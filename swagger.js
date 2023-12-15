@@ -156,6 +156,11 @@ swaggerSpec.paths['/users'] = {
         summary: 'Get all users',
         description: 'Retrieve a list of all users.',
         tags: ['Users'],
+        security: [
+            {
+                bearerAuth: [],
+            },
+        ],
         responses: {
             '200': {
                 description: 'List of users retrieved successfully.',
@@ -277,6 +282,11 @@ swaggerSpec.paths['/users/{id}'].patch = {
     summary: 'Update user by Id',
     description: 'Update user details by their Id.',
     tags: ['Users'],
+    security: [
+        {
+            bearerAuth: [],
+        },
+    ],
     parameters: [
         {
             in: 'path',
@@ -351,6 +361,11 @@ swaggerSpec.paths['/users/{id}'].delete = {
     summary: 'Delete user by Id',
     description: 'Delete a user by their Id.',
     tags: ['Users'],
+    security: [
+        {
+            bearerAuth: [],
+        },
+    ],
     parameters: [
         {
             in: 'path',
@@ -381,6 +396,31 @@ swaggerSpec.paths['/users/{id}'].delete = {
     },
 };
 
+/*=== DELETE ALL USERS ===*/
+swaggerSpec.paths['/users/admin'] = {
+    delete: {
+        summary: 'Delete all users except admin',
+        description: 'Delete all users except the admin.',
+        tags: ['Users'],
+        security: [
+            {
+                bearerAuth: [],
+            },
+        ],
+        responses: {
+            '204': {
+                description: 'All users have been deleted successfully.',
+            },
+            '403': {
+                description: 'Permission denied.',
+            },
+            '500': {
+                description: 'Server error while deleting all users.',
+            },
+        },
+    },
+};
+
 
 /*============ ARTICLES ============*/
 
@@ -390,6 +430,11 @@ swaggerSpec.paths['/articles'] = {
         summary: 'Create an article',
         description: 'Create an article with a title, content, and author.',
         tags: ['Articles'],
+        security: [
+            {
+                bearerAuth: [],
+            },
+        ],
         requestBody: {
             description: 'Article details to create',
             required: true,
@@ -656,6 +701,11 @@ swaggerSpec.paths['/articles/{id}'].patch = {
     summary: 'Update article by Id',
     description: 'Update article details by their ID.',
     tags: ['Articles'],
+    security: [
+        {
+            bearerAuth: [],
+        },
+    ],
     parameters: [
         {
             in: 'path',
@@ -733,6 +783,11 @@ swaggerSpec.paths['/articles/{id}'].delete = {
     summary: 'Delete article by Id',
     description: 'Delete a article by their Id.',
     tags: ['Articles'],
+    security: [
+        {
+            bearerAuth: [],
+        },
+    ],
     parameters: [
         {
             in: 'path',
@@ -762,6 +817,31 @@ swaggerSpec.paths['/articles/{id}'].delete = {
         },
         '500': {
             description: 'Server error while deleting a single article.',
+        },
+    },
+};
+
+/*=== DELETE ALL ARTICLES ===*/
+swaggerSpec.paths['/articles/admin'] = {
+    delete: {
+        summary: 'Delete all articles except those from admin',
+        description: 'Delete all articles except those from admin.',
+        tags: ['Articles'],
+        security: [
+            {
+                bearerAuth: [],
+            },
+        ],
+        responses: {
+            '204': {
+                description: 'All articles have been deleted successfully.',
+            },
+            '403': {
+                description: 'Permission denied.',
+            },
+            '500': {
+                description: 'Server error while deleting all articles.',
+            },
         },
     },
 };
