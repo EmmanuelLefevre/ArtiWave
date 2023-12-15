@@ -107,6 +107,27 @@ router.get('/:id',
 });
 
 
+/*=== UPGRADE USER ROLE ===*/
+router.patch('/admin/upgrade_user/:id',
+    jwtCheck,
+    validateURIParam('id'),
+    async (req, res) => {
+
+    try {
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            return ValidationErrorHandler.handle(res, errors);
+        }
+
+        await usersController.upgradeUserRole(req, res);
+    }
+    catch (err) {
+        return ErrorHandler.sendInternalServerError(res, err);
+    }
+});
+
+
 /*=== UPDATE USER ===*/
 router.patch('/:id', [
     jwtCheck,
