@@ -104,6 +104,8 @@ exports.getAllUsers = async (req, res) => {
                     data: users.map(user => createResponseUserObject(user, req.userRole))
                 };
                 break;
+            default:
+                return res.status(400).json({ message: 'Unknown user role!' });
         }
 
         // Add dataCount to the responseObject
@@ -154,6 +156,8 @@ exports.getUser = async (req, res) => {
                 responseValidationSchema = userResponseValidationBase;
                 responseObject = createResponseUserObject(user, req.userRole);
                 break;
+            default:
+                return res.status(400).json({ message: 'Unknown user role!' });
         }
 
         // Check if userId in JWT matches userId in URL
@@ -258,6 +262,8 @@ exports.updateUser = async (req, res) => {
                     data: [createResponseUserObject(user, req.userRole)]
                 };
                 break;
+            default:
+                return res.status(400).json({ message: 'Unknown user role!' });
         }
 
         // Role user and certified
@@ -355,5 +361,7 @@ const createResponseUserObject = (user, userRole) => {
             return commonFields;
         case 'user':
             return commonFields;
+        default:
+            throw new Error('Invalid user role!');
     }
 };
