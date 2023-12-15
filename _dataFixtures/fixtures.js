@@ -46,7 +46,7 @@ const createFixtures = async (res) => {
                 email: 'charlotte@yahoo.fr',
                 nickname: 'Charlotte',
                 password: hash,
-                roles: 'moderator',
+                roles: 'certified',
                 registeredAt: faker.date.past(),
             },
             {
