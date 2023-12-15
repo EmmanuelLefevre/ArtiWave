@@ -213,6 +213,9 @@ swaggerSpec.paths['/users'] = {
                     },
                 },
             },
+            '400': {
+                description: 'Unknown user role.',
+            },
             '403': {
                 description: 'Premium functionality.',
             },
@@ -272,6 +275,9 @@ swaggerSpec.paths['/users/{id}'] = {
                         },
                     },
                 },
+            },
+            '400': {
+                description: 'Unknown user role.',
             },
             '401': {
                 description: 'This feature is reserved for users who own an account.',
@@ -358,6 +364,9 @@ swaggerSpec.paths['/users/{id}'].patch = {
         },
         '400': {
             description: 'Incorrect query due to missing param.',
+        },
+        '400': {
+            description: 'Unknown user role.',
         },
         '403': {
             description: 'You are not allowed to update a user other than yourself.',
