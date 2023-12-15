@@ -243,25 +243,6 @@ exports.updateArticle = async (req, res) => {
 }
 
 
-/*=== DELETE ALL ARTICLES ===*/
-exports.deleteAllArticles = async (req, res) => {
-    // Check if user has admin role
-    if (!req.isAdmin) {
-        return res.status(403).json({ message: "Permission denied!" });
-    }
-
-    try {
-        // Delete all articles except those from admin
-        await Article.deleteMany({ author: { $ne: req.userId } });
-
-        return res.sendStatus(204);
-    }
-    catch (err) {
-        return ErrorHandler.sendDatabaseError(res, err);
-    }
-}
-
-
 /*=== DELETE ARTICLE ===*/
 exports.deleteArticle =  async (req, res) => {
     let articleId = req.params.id;

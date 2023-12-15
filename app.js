@@ -44,7 +44,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
-/*============ RATE-LIMITER ============*/
+/*============ REQUESTS RATE-LIMITER ============*/
 app.use(requestsLimiter);
 
 
@@ -52,6 +52,7 @@ app.use(requestsLimiter);
 const auth_router = require('./routers/authRouter');
 const users_router = require('./routers/usersRouter');
 const articles_router = require('./routers/articlesRouter');
+const admins_router = require('./routers/adminsRouter');
 
 
 /*============ DATABASE SINGLETON CONNEXION ============*/
@@ -87,6 +88,9 @@ app.use('/users', users_router);
 
 /*=== ARTICLES ===*/
 app.use('/articles', articles_router);
+
+/*=== ADMINS ===*/
+app.use('/admins', admins_router);
 
 /*=== 404 ===*/
 app.get('*', (_req, res) => res.status(404).send('What the hell are you doing!!?'));
