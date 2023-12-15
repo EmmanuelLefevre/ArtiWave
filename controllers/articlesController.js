@@ -131,11 +131,6 @@ exports.getArticle = async (req, res) => {
 
 /*=== GET ARTICLES BY USER ===*/
 exports.getArticlesByUser = async (req, res) => {
-    // Check user own an account
-    if (!req.headers.authorization) {
-        return res.status(401).json({ message: 'This feature is reserved for members who own an account!' });
-    }
-
     let userId = req.params.userId;
 
     try {

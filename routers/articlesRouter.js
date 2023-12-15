@@ -6,6 +6,7 @@ const articlesController = require('../controllers/articlesController');
 
 const { createArticleLimiter } = require('../middleware/rateLimiter');
 const jwtCheck = require('../middleware/jwtCheck');
+const accountCheck = require('../middleware/accountCheck');
 
 const ErrorHandler = require('../_errors/errorHandler');
 const ValidationErrorHandler = require('../_validation/validationErrorHandler');
@@ -98,6 +99,7 @@ router.get('/:id',
 
 /*=== GET ARTICLES BY USER ===*/
 router.get('/user/:userId',
+    accountCheck,
     validateURIParam('userId'),
     async (req, res) => {
 
