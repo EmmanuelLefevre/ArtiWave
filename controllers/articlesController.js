@@ -10,11 +10,6 @@ const { articleResponseValidation, articlesResponseValidation } = require('../_v
 
 /*=== CREATE ARTICLE ===*/
 exports.createArticle = async (req, res) => {
-    // Check if user has required role (admin or certified)
-    if (!(req.isAdmin || req.isCertified)) {
-        return res.status(401).json({ message: 'You\'re not allowed to create articles!' });
-    }
-
     // Extract title && content && author && date properties from request
     const { title, content, author } = req.body;
 

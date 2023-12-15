@@ -7,6 +7,7 @@ const articlesController = require('../controllers/articlesController');
 const { createArticleLimiter } = require('../middleware/rateLimiter');
 const jwtCheck = require('../middleware/jwtCheck');
 const accountCheck = require('../middleware/accountCheck');
+const premiumCheck = require('../middleware/premiumCheck');
 
 const ErrorHandler = require('../_errors/errorHandler');
 const ValidationErrorHandler = require('../_validation/validationErrorHandler');
@@ -28,6 +29,7 @@ router.use(articlesLogs);
 
 /*=== CREATE ARTICLE ===*/
 router.post('/', [
+    premiumCheck,
     jwtCheck,
     articleValidationRules(),
     createArticleLimiter,
