@@ -132,8 +132,8 @@ router.patch('/:id', [
     (req, res, next) => {
 
         try {
-            // Check presence of forbidden paramaters author || date
-            const params = ['author', 'date'];
+            // Check presence of forbidden paramaters author || createdAt || updatedAt
+            const params = ['author', 'createdAt', 'updatedAt'];
             const forbiddenParams = Object.keys(req.body).filter(param => params.includes(param));
 
             if (forbiddenParams.length > 0) {
