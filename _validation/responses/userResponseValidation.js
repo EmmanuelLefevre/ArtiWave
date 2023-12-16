@@ -11,6 +11,13 @@ const userTokenResponseValidation = object({
 });
 
 
+/*=== REGISTER ===*/
+const userRegisterResponseValidation = object({
+    email: string().required(),
+    nickname: string().required(),
+    registeredAt: string().required()
+});
+
 
 /*=== GET USER ===*/
 
@@ -66,6 +73,7 @@ const userUpdatedResponseValidationBase = object({
 
 /*============ EXPORT MODULE ============*/
 module.exports = {
+    userRegisterResponseValidation,
     userTokenResponseValidation,
     userResponseValidationRoleAdmin,
     userResponseValidationBase,

@@ -10,7 +10,8 @@ const { userResponseValidationRoleAdmin,
         usersResponseValidationRoleAdmin,
         usersResponseValidationRoleCertified,
         userUpdatedResponseValidationRoleAdmin,
-        userUpdatedResponseValidationBase } = require('../_validation/responses/userResponseValidation');
+        userUpdatedResponseValidationBase,
+        userRegisterResponseValidation } = require('../_validation/responses/userResponseValidation');
 
 
 /*============ USERS ============*/
@@ -47,13 +48,12 @@ exports.register = async (req, res) => {
         const response = {
             email: user.email,
             nickname: user.nickname,
-            registeredAt: user.registeredAt,
-            updatedAt: user.updatedAt
+            registeredAt: user.registeredAt
         }
 
         // Validate response format
         try {
-            await userResponseValidationBase.validate(response, { abortEarly: false });
+            await userRegisterResponseValidation.validate(response, { abortEarly: false });
         }
         catch (validationError) {
             return ErrorHandler.sendValidationResponseError(res, validationError);
