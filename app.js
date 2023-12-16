@@ -37,7 +37,7 @@ app.use(cors({
 }));
 
 /*=== SWAGGER ===*/
-app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/swagger-doc', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 /*=== OTHERS ===*/
 app.use(express.json());

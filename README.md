@@ -87,7 +87,7 @@ npm run dev
 ```
 #### Swagger doc
 ```
-localhost:9000/doc
+localhost:9000/swagger-doc
 ```
 
 
