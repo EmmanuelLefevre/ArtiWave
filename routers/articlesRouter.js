@@ -36,11 +36,11 @@ router.post('/', [
     (req, res, next) => {
 
         try {
-            // Check presence of parameters title && content
+            // Check presence of data title && content
             const { title, content } = req.body;
 
             if (!title || !content ) {
-                return res.status(400).json({ message: 'Missing or empty parameter!' });
+                return res.status(400).json({ message: 'Invalid data!' });
             }
 
             // Pass to validation middleware
@@ -147,7 +147,7 @@ router.patch('/:id', [
                 const isValidUpdate = Object.keys(req.body).some(prop => allowedProperties.includes(prop));
 
                 if (!isValidUpdate) {
-                    return res.status(400).json({ message: 'Invalid update data!' });
+                    return res.status(400).json({ message: 'Invalid data!' });
                 }
             }
 

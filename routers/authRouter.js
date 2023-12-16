@@ -29,11 +29,11 @@ router.post('/', [
     (req, res, next) => {
 
         try {
-            // Check presence of parameters email && password
+            // Check presence of data email && password
             const { email, password } = req.body;
 
             if (!email || !password ) {
-                return res.status(400).json({ message: 'Missing or empty parameter!' });
+                return res.status(400).json({ message: 'Invalid data!' });
             }
 
             // Pass to validation middleware
