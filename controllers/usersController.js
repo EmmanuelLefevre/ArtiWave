@@ -87,10 +87,10 @@ exports.getAllUsers = async (req, res) => {
         // Count users
         const usersCount = users.length;
 
+        // Set response and determine the response validation schema based on user role
         let responseValidationSchema;
         let responseObject;
 
-        // Set response and determine the response validation schema based on user role
         switch (req.userRole) {
             case 'admin':
                 responseValidationSchema = usersResponseValidationRoleAdmin;
@@ -139,10 +139,10 @@ exports.getUser = async (req, res) => {
             return ErrorHandler.handleUserNotFound(res);
         }
 
+        // Set response and determine the response validation schema based on user role
         let responseValidationSchema;
         let responseObject;
 
-        // Set response and determine the response validation schema based on user role
         switch (req.userRole) {
             case 'admin':
                 responseValidationSchema = userResponseValidationRoleAdmin;
@@ -239,10 +239,10 @@ exports.updateUser = async (req, res) => {
             return acc;
         }, {});
 
+        // Set response and determine the response validation schema based on user role
         let responseValidationSchema;
         let responseObject;
 
-        // Set response and determine the response validation schema based on user role
         switch (req.userRole) {
             case 'admin':
                 responseValidationSchema = userUpdatedResponseValidationRoleAdmin;
