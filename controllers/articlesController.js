@@ -94,7 +94,7 @@ exports.getAllArticles = async (req, res) => {
 
         switch (req.userRole) {
             case 'admin':
-                responseValidationSchema = articleUpdatedResponseValidationRoleAdmin;
+                responseValidationSchema = articlesResponseValidationRoleAdmin;
                 responseObject = {
                     data: articles
                 };
