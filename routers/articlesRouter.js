@@ -29,17 +29,17 @@ router.use(articlesLogs);
 
 /*=== CREATE ARTICLE ===*/
 router.post('/', [
-    premiumCheck,
     jwtCheck,
+    premiumCheck,
     articleValidationRules(),
     createArticleLimiter,
     (req, res, next) => {
 
         try {
-            // Check presence of parameters title && content && author
-            const { title, content, author } = req.body;
+            // Check presence of parameters title && content
+            const { title, content } = req.body;
 
-            if (!title || !content || !author) {
+            if (!title || !content ) {
                 return res.status(400).json({ message: 'Missing or empty parameter!' });
             }
 
