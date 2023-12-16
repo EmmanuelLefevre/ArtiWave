@@ -33,7 +33,7 @@ router.post('/', [
             const { email, password } = req.body;
 
             if (!email || !password ) {
-                return res.status(400).json({ message: 'Invalid data!' });
+                return res.status(400).json({ message: 'Invalid request!' });
             }
 
             // Pass to validation middleware

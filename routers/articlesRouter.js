@@ -40,7 +40,7 @@ router.post('/', [
             const { title, content } = req.body;
 
             if (!title || !content ) {
-                return res.status(400).json({ message: 'Invalid data!' });
+                return res.status(400).json({ message: 'Invalid request!' });
             }
 
             // Pass to validation middleware
@@ -147,7 +147,7 @@ router.patch('/:id', [
                 const isValidUpdate = Object.keys(req.body).some(prop => allowedProperties.includes(prop));
 
                 if (!isValidUpdate) {
-                    return res.status(400).json({ message: 'Invalid data!' });
+                    return res.status(400).json({ message: 'Invalid request!' });
                 }
             }
 
