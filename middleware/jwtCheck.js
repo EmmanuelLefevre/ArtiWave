@@ -23,7 +23,7 @@ const jwtCheck = (req, res, next) => {
         const token = req.headers.authorization && extractBearer(req.headers.authorization);
 
         if (!token) {
-            return res.status(401).json({ message: 'Nice try!!!'});
+            return res.status(401).json({ message: 'No JWT found!'});
         }
 
         // Check JWT
