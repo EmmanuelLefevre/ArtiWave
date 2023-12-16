@@ -27,11 +27,7 @@ const articleValidationRules = () => {
             .customSanitizer(value => {
                 const trimmedContent = trimInput(value);
                 return capitalizeFirstLetter(trimmedContent);
-            }),
-        body('author')
-            .optional({ nullable: true }).bail()
-            .matches(/^[a-f0-9]+$/).withMessage('Invalid parameter!')
-
+            })
     ];
 };
 
