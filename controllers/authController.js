@@ -21,7 +21,7 @@ exports.login = async (req, res) => {
         let user = await User.findOne({ email: email }).exec();
 
         if (user === null) {
-            return res.status(401).json({ message: 'This account does not exists!'})
+            return res.status(404).json({ message: 'This account does not exists!'})
         }
 
         // Password check
