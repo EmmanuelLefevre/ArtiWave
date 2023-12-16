@@ -3,19 +3,24 @@ const Article = require('../_models/IArticle');
 const User = require('../_models/IUser');
 const ErrorHandler = require('../_errors/errorHandler');
 
-const { articleResponseValidation, articlesResponseValidation } = require('../_validation/responses/articleResponseValidation');
+const { articleResponseValidationRoleAdmin,
+        articleResponseValidationBase,
+        articlesResponseValidationRoleAdmin,
+        articlesResponseValidationBase,
+        articleUpdatedResponseValidationRoleAdmin,
+        articleUpdatedResponseValidationBase } = require('../_validation/responses/articleResponseValidation');
 
 
 /*============ ARTICLES ============*/
 
 /*=== CREATE ARTICLE ===*/
 exports.createArticle = async (req, res) => {
-    // Extract title && content && author && date properties from request
-    const { title, content, author } = req.body;
+    // Extract title && content properties from request
+    const { title, content } = req.body;
 
     try {
         // Check if user exists
-        const existingUser = await User.findById(author);
+        const existingUser = await User.findById(req.userId);
         if (!existingUser) {
             return ErrorHandler.handleUserNotFound(res, err);
         }
@@ -24,26 +29,39 @@ exports.createArticle = async (req, res) => {
         const newArticle = new Article({
             title: title,
             content: content,
-            author: author,
+            author: req.userId,
             createdAt: new Date()
         });
 
         // Save article in database
         await newArticle.save();
 
-        // Fetch created article with author.id and author.nickname
-        const createdArticle = await getArticleWithNickname(newArticle);
+        // Add author's id and nickname for article if admin, if not just add author's nickname
+        createdArticle = await createResponseArticleObject(newArticle, req.userRole);
+
+        // Set response and determine the response validation schema based on user role
+        let responseValidationSchema;
+        let responseObject;
+
+        switch (req.userRole) {
+            case 'admin':
+                responseValidationSchema = articleResponseValidationRoleAdmin;
+                responseObject = createdArticle;
+            default:
+                responseValidationSchema = articleResponseValidationBase;
+                responseObject = createdArticle;
+        }
 
         // Validate response format
         try {
-            await articleResponseValidation.validate(createdArticle, { abortEarly: false });
+            await responseValidationSchema.validate(responseObject, { abortEarly: false });
         }
         catch (validationError) {
             return ErrorHandler.sendValidationResponseError(res, validationError);
         }
 
         // Return created article
-        return res.status(201).json(createdArticle);
+        return res.status(201).json(responseObject);
     }
     catch (err) {
         if (err.code === 11000 && err.keyPattern.title) {
@@ -55,37 +73,52 @@ exports.createArticle = async (req, res) => {
 }
 
 /*=== GET ALL ARTICLES ===*/
-exports.getAllArticles = async (_req, res) => {
+exports.getAllArticles = async (req, res) => {
 
     try {
-        let articles = await Article.find({}, 'title content author createdAt updatedAt');
+        let articles = await Article.find({}, 'id title content author createdAt updatedAt');
 
         if (articles === 0) {
             return ErrorHandler.handleArticleNotFound(res);
         }
 
-        // Add author's nickname and id for each articles
-        articles = await Promise.all(articles.map(getArticleWithNickname));
+        // Add author's id and nickname for each articles if admin, if not just add author's nickname
+        articles = await Promise.all(articles.map(article => createResponseArticleObject(article, req.userRole)));
 
         // Count articles
-        const articleCount = articles.length;
+        const articlesCount = articles.length;
 
-        // Set response
-        const response = {
-            data: articles,
-            dataCount: articleCount
-        };
+        // Set response and determine the response validation schema based on user role
+        let responseValidationSchema;
+        let responseObject;
+
+        switch (req.userRole) {
+            case 'admin':
+                responseValidationSchema = articleUpdatedResponseValidationRoleAdmin;
+                responseObject = {
+                    data: articles
+                };
+                break;
+            default:
+                responseValidationSchema = articlesResponseValidationBase;
+                responseObject = {
+                    data: articles
+                };
+        }
+
+        // Add dataCount to the responseObject
+        responseObject.dataCount = articlesCount;
 
         // Validate response format
         try {
-            await articlesResponseValidation.validate(response, { abortEarly: false });
+            await responseValidationSchema.validate(responseObject, { abortEarly: false });
         }
         catch (validationError) {
             return ErrorHandler.sendValidationResponseError(res, validationError);
         }
 
         // Return all articles
-        return res.status(200).json(response);
+        return res.status(200).json(responseObject);
     }
     catch (err) {
         return ErrorHandler.sendDatabaseError(res, err);
@@ -104,19 +137,33 @@ exports.getArticle = async (req, res) => {
             return ErrorHandler.handleArticleNotFound(res);
         }
 
-        // Add author's nickname and id for article
-        article = await getArticleWithNickname(article);
+        // Add author's id and nickname for article if admin, if not just add author's nickname
+        article = await createResponseArticleObject(article, req.userRole);
+
+        // Set response and determine the response validation schema based on user role
+        let responseValidationSchema;
+        let responseObject;
+
+        switch (req.userRole) {
+            case 'admin':
+                responseValidationSchema = articleResponseValidationRoleAdmin;
+                responseObject = article;
+                break;
+            default:
+                responseValidationSchema = articleResponseValidationBase;
+                responseObject = article;
+        }
 
         // Validate response format
         try {
-            await articleResponseValidation.validate(article, { abortEarly: false });
+            await responseValidationSchema.validate(responseObject, { abortEarly: false });
         }
         catch (validationError) {
             return ErrorHandler.sendValidationResponseError(res, validationError);
         }
 
         // Return single article
-        return res.status(200).json(article);
+        return res.status(200).json(responseObject);
     }
     catch (err) {
         return ErrorHandler.sendDatabaseError(res, err);
@@ -144,31 +191,40 @@ exports.getArticlesByUser = async (req, res) => {
 
         let articles = await Article.find({ author: userId }, { _id: 1, title: 1, content: 1, author: 1, createdAt: 1, updatedAt: 1 });
 
-        articles = articles.map(article => {
-            // Ajoutez votre champ supplémentaire ici
-            article.newField = "Valeur de champ supplémentaire";
-            return article;
-        });
-
         // Add author's nickname and id for each articles
-        articles = await Promise.all(articles.map(getArticleWithNickname));
+        articles = await Promise.all(articles.map(article => createResponseArticleObject(article, req.userRole)));
 
-        // Set response
-        const response = {
-            data: articles,
-            dataCount: articleCount
-        };
+        // Set response and determine the response validation schema based on user role
+        let responseValidationSchema;
+        let responseObject;
+
+        switch (req.userRole) {
+            case 'admin':
+                responseValidationSchema = articlesResponseValidationRoleAdmin;
+                responseObject = {
+                    data: articles
+                };
+                break;
+            default:
+                responseValidationSchema = articlesResponseValidationBase;
+                responseObject = {
+                    data: articles
+                };
+        }
+
+        // Add dataCount to the responseObject
+        responseObject.dataCount = articleCount;
 
         // Validate response format
         try {
-            await articlesResponseValidation.validate(response, { abortEarly: false });
+            await responseValidationSchema.validate(responseObject, { abortEarly: false });
         }
         catch (validationError) {
             return ErrorHandler.sendValidationResponseError(res, validationError);
         }
 
         // Return all articles owned by a single user
-        return res.status(200).json(response);
+        return res.status(200).json(responseObject);
     }
     catch (err) {
         return ErrorHandler.sendDatabaseError(res, err);
@@ -187,6 +243,9 @@ exports.updateArticle = async (req, res) => {
             return ErrorHandler.handleArticleNotFound(res);
         }
 
+        // Save original article data
+        const originalArticleData = article.toObject();
+
         // Set updatedAt to the current date
         req.body.updatedAt = new Date();
 
@@ -195,7 +254,7 @@ exports.updateArticle = async (req, res) => {
             // Check if user is admin
             if (req.isAdmin) {
                 // Allow admin to update article of any user
-                await Article.updateOne(req.body);
+                await Article.updateOne({ _id: articleId }, req.body);
             }
             else if (req.isUser) {
                 return res.status(403).json({ message: 'Only certified members are allowed to update an article!' });
@@ -206,22 +265,54 @@ exports.updateArticle = async (req, res) => {
         }
         else {
             // If author matches save article
-            await Article.updateOne(req.body);
+            await Article.updateOne({ _id: articleId }, req.body);
         }
 
-        // Add author's nickname and id for article
-        article = await getArticleWithNickname(article);
+        // Fetch the updated article by its ID
+        const updatedArticle = await Article.findById(articleId);
+
+        // Identify modified properties from req.body
+        const modifiedProperties = Object.keys(req.body).reduce((acc, key) => {
+            if (originalArticleData[key] !== updatedArticle[key]) {
+                acc[key] = updatedArticle[key];
+            }
+            return acc;
+        }, {});
+
+        // Add author's id and nickname for article if admin, if not just add author's nickname
+        article = await createResponseArticleObject(article, req.userRole);
+
+        // Set response and determine the response validation schema based on user role
+        let responseValidationSchema;
+        let responseObject;
+
+        switch (req.userRole) {
+            case 'admin':
+                responseValidationSchema = articleUpdatedResponseValidationRoleAdmin;
+                responseObject = {
+                    data: article
+                };
+                break;
+            default:
+                responseValidationSchema = articleUpdatedResponseValidationBase;
+                responseObject = {
+                    data: article
+                };
+        }
+
+        // Add modified property to the responseObject
+        responseObject.modifiedProperties = modifiedProperties;
 
         // Validate response format
         try {
-            await articleResponseValidation.validate(article, { abortEarly: false });
+            await responseValidationSchema.validate(responseObject, { abortEarly: false });
         }
         catch (validationError) {
             return ErrorHandler.sendValidationResponseError(res, validationError);
         }
 
         // Return updated article
-        return res.status(200).json(article);
+        return res.status(200).json(responseObject);
     }
     catch (err) {
         if (err.code === 11000 && err.keyPattern.title) {
@@ -288,11 +379,38 @@ async function getUserNickname(userId) {
     }
 }
 
-/*=== SET ARTICLE WITH AUTHOR'S NICKNAME AND ID ===*/
-async function getArticleWithNickname(article) {
-    let nickname = await getUserNickname(article.author);
-    return {
-        ...article.toObject(),
-        author: { _id: article.author, nickname: nickname }
-    };
-}
+
+/*=== CREATE RESPONSE ARTICLE OBJECT BASED ON ROLE ===*/
+const createResponseArticleObject = async (article, userRole, res) => {
+    try {
+        const nickname = await getUserNickname(article.author);
+
+        const commonFields = {
+            title: article.title,
+            content: article.content,
+            createdAt: article.createdAt,
+            updatedAt: article.updatedAt,
+            author: { nickname: nickname }
+        };
+
+        switch (userRole) {
+            case 'admin':
+                return {
+                    _id: article._id,
+                    ...commonFields,
+                    author: {
+                        _id: article.author,
+                        nickname: nickname
+                    }
+                };
+            case 'certified':
+            case 'user':
+                return commonFields;
+            default:
+                throw new Error('Invalid user role!');
+        }
+    }
+    catch (err) {
+        return ErrorHandler.sendCreationResponseObjectError(res, err);
+    }
+};
