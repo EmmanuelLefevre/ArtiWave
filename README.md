@@ -85,8 +85,10 @@ Otherwise with NPM
 ```shell
 npm run dev
 ```
-
-
+#### Swagger doc
+```
+localhost:9000/doc
+```
 
 
 ### 2. Docker
