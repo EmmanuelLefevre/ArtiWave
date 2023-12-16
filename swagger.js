@@ -475,9 +475,6 @@ swaggerSpec.paths['/articles'] = {
                             content: {
                                 type: 'string',
                             },
-                            author: {
-                                type: 'string',
-                            },
                         },
                     },
                 },
