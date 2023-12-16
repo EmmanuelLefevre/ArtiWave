@@ -68,6 +68,7 @@ router.post('/', [
 
 /*=== GET ALL ARTICLES ===*/
 router.get('/',
+    jwtCheck,
     async (req, res) => {
 
     try {
@@ -81,6 +82,7 @@ router.get('/',
 
 /*=== GET SINGLE ARTICLE ===*/
 router.get('/:id',
+    jwtCheck,
     validateURIParam('id'),
     async (req, res) => {
 
@@ -101,6 +103,7 @@ router.get('/:id',
 
 /*=== GET ARTICLES BY USER ===*/
 router.get('/user/:userId',
+    jwtCheck,
     accountCheck,
     validateURIParam('userId'),
     async (req, res) => {
