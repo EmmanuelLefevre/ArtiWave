@@ -6,33 +6,6 @@ const ErrorHandler = require('../_errors/errorHandler');
 
 /*============ ADMINS ============*/
 
-/*=== UPGRADE USER ROLE ===*/
-exports.upgradeUserRole = async (req, res) => {
-    // Check if user has admin role
-    if (!req.isAdmin) {
-        return res.status(403).json({ message: "Permission denied!" });
-    }
-
-    let userId = req.params.id;
-
-    try {
-        let user = await User.findById(userId);
-
-        if (!user) {
-            return ErrorHandler.handleUserNotFound(res);
-        }
-
-        // Set roles on certified
-        await User.updateOne({ _id: userId }, { $set: { roles: 'certified' } });
-
-        return res.status(200).json({ message: "User upgraded to certified!" });
-    }
-    catch (err) {
-        return ErrorHandler.sendDatabaseError(res, err);
-    }
-}
-
-
 /*=== DELETE ALL USERS ===*/
 exports.deleteAllUsers = async (req, res) => {
     // Check if user has admin role
@@ -67,6 +40,32 @@ exports.deleteAllArticles = async (req, res) => {
         await Article.deleteMany({ author: { $ne: req.userId } });
 
         return res.sendStatus(204);
+    }
+    catch (err) {
+        return ErrorHandler.sendDatabaseError(res, err);
+    }
+}
+
+/*=== UPGRADE USER ROLE ===*/
+exports.upgradeUserRole = async (req, res) => {
+    // Check if user has admin role
+    if (!req.isAdmin) {
+        return res.status(403).json({ message: "Permission denied!" });
+    }
+
+    let userId = req.params.id;
+
+    try {
+        let user = await User.findById(userId);
+
+        if (!user) {
+            return ErrorHandler.handleUserNotFound(res);
+        }
+
+        // Set roles on certified
+        await User.updateOne({ _id: userId }, { $set: { roles: 'certified' } });
+
+        return res.status(200).json({ message: "User upgraded to certified!" });
     }
     catch (err) {
         return ErrorHandler.sendDatabaseError(res, err);
