@@ -50,13 +50,13 @@ const articlesResponseValidationBase = object({
 
 /*----- ADMIN ARTICLE UPDATED RESPONSE VALIDATION -----*/
 const articleUpdatedResponseValidationRoleAdmin = object({
-    data: array().of(articleResponseValidationRoleAdmin).required(),
+    data: (articleResponseValidationRoleAdmin).required(),
     modifiedProperties: object().required()
 });
 
 /*----- BASE ARTICLE UPDATED RESPONSE VALIDATION -----*/
 const articleUpdatedResponseValidationBase = object({
-    data: array().of(articleResponseValidationBase).required(),
+    data: (articleResponseValidationBase).required(),
     modifiedProperties: object().required()
 });
 
