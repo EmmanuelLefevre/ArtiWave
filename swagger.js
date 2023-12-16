@@ -15,7 +15,7 @@ const options = {
     apis: ['./routers/authRouter.js',
             './routers/usersRouter.js',
             './routers/articlesRouter.js',
-            './routers/adminsRouter.js']
+            './routers/adminsRouter.js'],
 };
 
 const swaggerSpec = swaggerJSDoc(options);
@@ -35,9 +35,11 @@ swaggerSpec.paths['/login'] = {
                         properties: {
                             email: {
                                 type: 'string',
+                                example: 'emmanuel@protonmail.com'
                             },
                             password: {
                                 type: 'string',
+                                example: 'Xxggxx!1'
                             },
                         },
                     },
@@ -54,12 +56,11 @@ swaggerSpec.paths['/login'] = {
                             properties: {
                                 access_token: {
                                     type: 'string',
-                                },
-                                message: {
-                                    type: 'string',
+                                    required: true
                                 },
                                 nickname: {
                                     type: 'string',
+                                    required: true
                                 },
                             },
                         },
@@ -67,16 +68,33 @@ swaggerSpec.paths['/login'] = {
                 },
             },
             '400': {
-                description: 'Incorrect query due to missing param.',
+                description: 'Invalid request.',
             },
             '401': {
-                description: 'Incorrect email or password.',
+                description: 'Wrong password.',
+            },
+            '404': {
+                description: 'This account does not exists.',
+            },
+            '422': {
+                description: 'Invalid validation rule.',
             },
             '429': {
-                description: 'Too many connection attempts, please try again later.',
+                description: 'The number of connection attempts is limited to 5 per hour.',
             },
             '500': {
-                description: 'Server error while connecting account.',
+                description: 'Server errors.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            oneOf: [
+                                { $ref: '#/components/schemas/InternalServerError' },
+                                { $ref: '#/components/schemas/DatabaseError' },
+                                { $ref: '#/components/schemas/ValidationResponseError' },
+                            ],
+                        },
+                    },
+                },
             },
         },
     },
@@ -101,12 +119,15 @@ swaggerSpec.paths['/users/register'] = {
                         properties: {
                             email: {
                                 type: 'string',
+                                example: 'bob@orange.fr'
                             },
                             password: {
                                 type: 'string',
+                                example: 'Xxggxx!1',
                             },
                             nickname: {
                                 type: 'string',
+                                example: 'Bob',
                             },
                         },
                     },
@@ -123,9 +144,11 @@ swaggerSpec.paths['/users/register'] = {
                             properties: {
                                 message: {
                                     type: 'string',
+                                    required: true
                                 },
                                 nickname: {
                                     type: 'string',
+                                    required: true
                                 },
                             },
                         },
@@ -133,19 +156,30 @@ swaggerSpec.paths['/users/register'] = {
                 },
             },
             '400': {
-                description: 'Incorrect query due to missing param.',
+                description: 'Invalid request.',
             },
             '409': {
                 description: 'Email or nickname already exists.',
             },
             '422': {
-                description: 'Incorrect query due to invalid URI or data.',
+                description: 'Invalid validation rule.',
             },
             '429': {
-                description: 'Too many registration attempts, please try again later.',
+                description: 'You can only create one account per day.',
             },
             '500': {
-                description: 'Server error while creating account.',
+                description: 'Server errors.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            oneOf: [
+                                { $ref: '#/components/schemas/InternalServerError' },
+                                { $ref: '#/components/schemas/DatabaseError' },
+                                { $ref: '#/components/schemas/ValidationResponseError' },
+                            ],
+                        },
+                    },
+                },
             },
         },
     },
@@ -160,17 +194,6 @@ swaggerSpec.paths['/users'] = {
         security: [
             {
                 bearerAuth: [],
-            },
-        ],
-        parameters: [
-            {
-                name: 'Bearer Token',
-                in: 'header',
-                required: true,
-                description: '',
-                schema: {
-                    type: 'string',
-                },
             },
         ],
         responses: {
@@ -188,18 +211,23 @@ swaggerSpec.paths['/users'] = {
                                         properties: {
                                             _id: {
                                                 type: 'string',
+                                                optional: true
                                             },
                                             email: {
                                                 type: 'string',
+                                                required: true
                                             },
                                             nickname: {
                                                 type: 'string',
+                                                required: true
                                             },
                                             registeredAt: {
                                                 type: 'string',
+                                                required: true
                                             },
                                             updatedAt: {
                                                 type: 'string',
+                                                required: true
                                             },
                                         },
                                     },
@@ -216,11 +244,39 @@ swaggerSpec.paths['/users'] = {
             '400': {
                 description: 'Unknown user role.',
             },
+            '401': {
+                description: 'Authorization errors.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            oneOf: [
+                                { $ref: '#/components/schemas/NoToken' },
+                                { $ref: '#/components/schemas/FalseToken' },
+                            ],
+                        },
+                    },
+                },
+            },
             '403': {
                 description: 'Premium functionality.',
             },
+            '404': {
+                description: 'No user was found.',
+            },
             '500': {
-                description: 'Server error while retrieving all users.',
+                description: 'Server errors.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            oneOf: [
+                                { $ref: '#/components/schemas/InternalServerError' },
+                                { $ref: '#/components/schemas/DatabaseError' },
+                                { $ref: '#/components/schemas/ValidationResponseError' },
+                                { $ref: '#/components/schemas/CreationResponseObjectError' },
+                            ],
+                        },
+                    },
+                },
             },
         },
     },
@@ -232,6 +288,11 @@ swaggerSpec.paths['/users/{id}'] = {
         summary: 'Get user by Id',
         description: 'Retrieve a user by their Id.',
         tags: ['Users'],
+        security: [
+            {
+                bearerAuth: [],
+            },
+        ],
         parameters: [
             {
                 in: 'path',
@@ -256,18 +317,23 @@ swaggerSpec.paths['/users/{id}'] = {
                                     properties: {
                                         _id: {
                                             type: 'string',
+                                            optional: true
                                         },
                                         email: {
                                             type: 'string',
+                                            required: true
                                         },
                                         nickname: {
                                             type: 'string',
+                                            required: true
                                         },
                                         registeredAt: {
                                             type: 'string',
+                                            required: true
                                         },
                                         updatedAt: {
                                             type: 'string',
+                                            required: true
                                         },
                                     },
                                 },
@@ -280,16 +346,39 @@ swaggerSpec.paths['/users/{id}'] = {
                 description: 'Unknown user role.',
             },
             '401': {
-                description: 'This feature is reserved for users who own an account.',
+                description: 'Authorization errors.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            oneOf: [
+                                { $ref: '#/components/schemas/NoToken' },
+                                { $ref: '#/components/schemas/FalseToken' },
+                                { $ref: '#/components/schemas/AccountCheck' },
+                            ],
+                        },
+                    },
+                },
             },
             '404': {
-                description: 'User not found.',
+                description: 'No user was found.',
             },
             '422': {
-                description: 'Incorrect query due to invalid URI or data.',
+                description: 'Invalid URI format.',
             },
             '500': {
-                description: 'Server error while retrieving a single user.',
+                description: 'Server errors.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            oneOf: [
+                                { $ref: '#/components/schemas/InternalServerError' },
+                                { $ref: '#/components/schemas/DatabaseError' },
+                                { $ref: '#/components/schemas/ValidationResponseError' },
+                                { $ref: '#/components/schemas/CreationResponseObjectError' },
+                            ],
+                        },
+                    },
+                },
             },
         },
     },
@@ -306,15 +395,6 @@ swaggerSpec.paths['/users/{id}'].patch = {
         },
     ],
     parameters: [
-        {
-            name: 'Bearer Token',
-            in: 'header',
-            required: true,
-            description: '',
-            schema: {
-                type: 'string',
-            },
-        },
         {
             in: 'path',
             name: 'id',
@@ -334,12 +414,15 @@ swaggerSpec.paths['/users/{id}'].patch = {
                     properties: {
                         email: {
                             type: 'string',
+                            optionnal: true
                         },
                         nickname: {
                             type: 'string',
+                            optionnal: true
                         },
                         password: {
                             type: 'string',
+                            optionnal: true
                         },
                     },
                 },
@@ -354,8 +437,50 @@ swaggerSpec.paths['/users/{id}'].patch = {
                     schema: {
                         type: 'object',
                         properties: {
-                            message: {
-                                type: 'string',
+                            data: {
+                                type: 'array',
+                                items: {
+                                    type: 'object',
+                                    properties: {
+                                        _id: {
+                                            type: 'string',
+                                            optional: true
+                                        },
+                                        email: {
+                                            type: 'string',
+                                            optional: true
+                                        },
+                                        nickname: {
+                                            type: 'string',
+                                            required: true
+                                        },
+                                        registeredAt: {
+                                            type: 'string',
+                                            required: true
+                                        },
+                                        updatedAt: {
+                                            type: 'string',
+                                            required: true
+                                        },
+                                    },
+                                },
+                            },
+                            modifiedProperties: {
+                                type: 'object',
+                                properties: {
+                                    updatedAt: {
+                                        type: 'string',
+                                        required: true
+                                    },
+                                    email: {
+                                        type: 'string',
+                                        optional: true
+                                    },
+                                    nickname: {
+                                        type: 'string',
+                                        optional: true
+                                    },
+                                },
                             },
                         },
                     },
@@ -363,25 +488,61 @@ swaggerSpec.paths['/users/{id}'].patch = {
             },
         },
         '400': {
-            description: 'Incorrect query due to missing param.',
+            description: 'Invalid request.',
         },
         '400': {
             description: 'Unknown user role.',
+        },
+        '401': {
+            description: 'Authorization errors.',
+            content: {
+                'application/json': {
+                    schema: {
+                        oneOf: [
+                            { $ref: '#/components/schemas/NoToken' },
+                            { $ref: '#/components/schemas/FalseToken' },
+                            { $ref: '#/components/schemas/AccountCheck' },
+                        ],
+                    },
+                },
+            },
         },
         '403': {
             description: 'You are not allowed to update a user other than yourself.',
         },
         '404': {
-            description: 'User not found.',
+            description: 'No user was found.',
         },
         '409': {
             description: 'Nickname already exists.',
         },
         '422': {
-            description: 'Incorrect query due to invalid URI or data.',
+            description: 'Unprocessable entities.',
+            content: {
+                'application/json': {
+                    schema: {
+                        oneOf: [
+                            { $ref: '#/components/schemas/InvalidURI' },
+                            { $ref: '#/components/schemas/InvalidValidationRule' },
+                        ],
+                    },
+                },
+            },
         },
         '500': {
-            description: 'Server error while updating a single user.',
+            description: 'Server errors.',
+            content: {
+                'application/json': {
+                    schema: {
+                        oneOf: [
+                            { $ref: '#/components/schemas/InternalServerError' },
+                            { $ref: '#/components/schemas/DatabaseError' },
+                            { $ref: '#/components/schemas/ValidationResponseError' },
+                            { $ref: '#/components/schemas/CreationResponseObjectError' },
+                        ],
+                    },
+                },
+            },
         },
     },
 };
@@ -399,15 +560,6 @@ swaggerSpec.paths['/users/{id}'].delete = {
     ],
     parameters: [
         {
-            name: 'Bearer Token',
-            in: 'header',
-            required: true,
-            description: '',
-            schema: {
-                type: 'string',
-            },
-        },
-        {
             name: 'id',
             in: 'path',
             required: true,
@@ -421,17 +573,41 @@ swaggerSpec.paths['/users/{id}'].delete = {
         '204': {
             description: 'Single user deleted successfully.',
         },
+        '401': {
+            description: 'Authorization errors.',
+            content: {
+                'application/json': {
+                    schema: {
+                        oneOf: [
+                            { $ref: '#/components/schemas/NoToken' },
+                            { $ref: '#/components/schemas/FalseToken' },
+                        ],
+                    },
+                },
+            },
+        },
         '403': {
             description: 'You are not allowed to delete a user other than yourself.',
         },
         '404': {
-            description: 'User not found.',
+            description: 'No user was found.',
         },
         '422': {
-            description: 'Incorrect query due to invalid URI or data.',
+            description: 'Invalid URI format.',
         },
         '500': {
-            description: 'Server error while deleting a single user.',
+            description: 'Server errors.',
+            content: {
+                'application/json': {
+                    schema: {
+                        oneOf: [
+                            { $ref: '#/components/schemas/InternalServerError' },
+                            { $ref: '#/components/schemas/DatabaseError' },
+                            { $ref: '#/components/schemas/ValidationResponseError' },
+                        ],
+                    },
+                },
+            },
         },
     },
 };
@@ -450,17 +626,6 @@ swaggerSpec.paths['/articles'] = {
                 bearerAuth: [],
             },
         ],
-        parameters: [
-            {
-                name: 'Bearer Token',
-                in: 'header',
-                required: true,
-                description: '',
-                schema: {
-                    type: 'string',
-                },
-            },
-        ],
         requestBody: {
             description: 'Article details to create',
             required: true,
@@ -471,9 +636,11 @@ swaggerSpec.paths['/articles'] = {
                         properties: {
                             title: {
                                 type: 'string',
+                                optional: true,
                             },
                             content: {
                                 type: 'string',
+                                optional: true,
                             },
                         },
                     },
@@ -488,11 +655,38 @@ swaggerSpec.paths['/articles'] = {
                         schema: {
                             type: 'object',
                             properties: {
-                                message: {
+                                _id: {
                                     type: 'string',
+                                    optional: true,
+                                },
+                                title: {
+                                    type: 'string',
+                                    required: true,
+                                },
+                                content: {
+                                    type: 'string',
+                                    required: true,
+                                },
+                                createdAt: {
+                                    type: 'string',
+                                    required: true,
+                                },
+                                updatedAt: {
+                                    type: 'string',
+                                    required: true,
                                 },
                                 author: {
-                                    type: 'string',
+                                    type: 'object',
+                                    properties: {
+                                        _id: {
+                                            type: 'string',
+                                            optional: true,
+                                        },
+                                        nickname: {
+                                            type: 'string',
+                                            required: true,
+                                        },
+                                    },
                                 },
                             },
                         },
@@ -500,22 +694,50 @@ swaggerSpec.paths['/articles'] = {
                 },
             },
             '400': {
-                description: 'Incorrect query due to missing param.',
+                description: 'Invalid request.',
+            },
+            '401': {
+                description: 'Authorization errors.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            oneOf: [
+                                { $ref: '#/components/schemas/NoToken' },
+                                { $ref: '#/components/schemas/FalseToken' },
+                            ],
+                        },
+                    },
+                },
             },
             '403': {
                 description: 'Premium functionality.',
             },
+            '404': {
+                description: 'No user was found.',
+            },
             '409': {
-                description: 'Article already exists.',
+                description: 'Article with same title already posted.',
             },
             '422': {
-                description: 'Incorrect query due to invalid URI or data.',
+                description: 'Invalid validation rule.',
             },
             '429': {
-                description: 'Too many creation attempts, please try again later.',
+                description: 'You can only create 5 articles per day.',
             },
             '500': {
-                description: 'Server error while creating articles',
+                description: 'Server errors.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            oneOf: [
+                                { $ref: '#/components/schemas/InternalServerError' },
+                                { $ref: '#/components/schemas/DatabaseError' },
+                                { $ref: '#/components/schemas/ValidationResponseError' },
+                                { $ref: '#/components/schemas/CreationResponseObjectError' },
+                            ],
+                        },
+                    },
+                },
             },
         },
     },
@@ -526,6 +748,11 @@ swaggerSpec.paths['/articles'].get = {
     summary: 'Get all articles',
     description: 'Retrieve a list of all articles.',
     tags: ['Articles'],
+    security: [
+        {
+            bearerAuth: [],
+        },
+    ],
     responses: {
         '200': {
             description: 'List of articles retrieved successfully.',
@@ -541,29 +768,36 @@ swaggerSpec.paths['/articles'].get = {
                                     properties: {
                                         _id: {
                                             type: 'string',
+                                            optional: true,
                                         },
                                         title: {
                                             type: 'string',
+                                            required: true,
                                         },
                                         content: {
                                             type: 'string',
+                                            required: true,
+                                        },
+                                        createdAt: {
+                                            type: 'string',
+                                            required: true,
+                                        },
+                                        updatedAt: {
+                                            type: 'string',
+                                            required: true,
                                         },
                                         author: {
                                             type: 'object',
                                             properties: {
                                                 _id: {
                                                     type: 'string',
+                                                    optional: true,
                                                 },
                                                 nickname: {
                                                     type: 'string',
+                                                    required: true,
                                                 },
                                             },
-                                        },
-                                        createdAt: {
-                                            type: 'string',
-                                        },
-                                        updatedAt: {
-                                            type: 'string',
                                         },
                                     },
                                 },
@@ -577,8 +811,36 @@ swaggerSpec.paths['/articles'].get = {
                 },
             },
         },
+        '401': {
+            description: 'Authorization errors.',
+            content: {
+                'application/json': {
+                    schema: {
+                        oneOf: [
+                            { $ref: '#/components/schemas/NoToken' },
+                            { $ref: '#/components/schemas/FalseToken' },
+                        ],
+                    },
+                },
+            },
+        },
+        '404': {
+            description: 'No article was found.',
+        },
         '500': {
-            description: 'Server error while retrieving all articles.',
+            description: 'Server errors.',
+            content: {
+                'application/json': {
+                    schema: {
+                        oneOf: [
+                            { $ref: '#/components/schemas/InternalServerError' },
+                            { $ref: '#/components/schemas/DatabaseError' },
+                            { $ref: '#/components/schemas/ValidationResponseError' },
+                            { $ref: '#/components/schemas/CreationResponseObjectError' },
+                        ],
+                    },
+                },
+            },
         },
     },
 };
@@ -589,6 +851,11 @@ swaggerSpec.paths['/articles/{id}'] = {
         summary: 'Get article by Id',
         description: 'Retrieve an article by its Id.',
         tags: ['Articles'],
+        security: [
+            {
+                bearerAuth: [],
+            },
+        ],
         parameters: [
             {
                 in: 'path',
@@ -607,16 +874,53 @@ swaggerSpec.paths['/articles/{id}'] = {
                     'application/json': {
                         example: {
                             data: {
-                                _id: 'string',
-                                title: 'string',
-                                content: 'string',
-                                author: {
-                                    _id: 'string',
-                                    nickname: 'string',
+                                _id: {
+                                    type: 'string',
+                                    optional: true,
                                 },
-                                createdAt: 'string',
-                                updatedAt: 'string',
+                                title: {
+                                    type: 'string',
+                                    required: true,
+                                },
+                                content: {
+                                    type: 'string',
+                                    required: true,
+                                },
+                                createdAt: {
+                                    type: 'string',
+                                    required: true,
+                                },
+                                updatedAt: {
+                                    type: 'string',
+                                    required: true,
+                                },
+                                author: {
+                                    type: 'object',
+                                    properties: {
+                                        _id: {
+                                            type: 'string',
+                                            optional: true,
+                                        },
+                                        nickname: {
+                                            type: 'string',
+                                            required: true,
+                                        },
+                                    },
+                                },
                             },
+                        },
+                    },
+                },
+            },
+            '401': {
+                description: 'Authorization errors.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            oneOf: [
+                                { $ref: '#/components/schemas/NoToken' },
+                                { $ref: '#/components/schemas/FalseToken' },
+                            ],
                         },
                     },
                 },
@@ -625,10 +929,22 @@ swaggerSpec.paths['/articles/{id}'] = {
                 description: 'Article not found.',
             },
             '422': {
-                description: 'Incorrect query due to invalid URI or data.',
+                description: 'Invalid URI format.',
             },
             '500': {
-                description: 'Internal Server Error.',
+                description: 'Server errors.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            oneOf: [
+                                { $ref: '#/components/schemas/InternalServerError' },
+                                { $ref: '#/components/schemas/DatabaseError' },
+                                { $ref: '#/components/schemas/ValidationResponseError' },
+                                { $ref: '#/components/schemas/CreationResponseObjectError' },
+                            ],
+                        },
+                    },
+                },
             },
         },
     },
@@ -640,6 +956,11 @@ swaggerSpec.paths['/articles/user/{userId}'] = {
         summary: 'Get articles by user',
         description: 'Retrieve articles for a specific user.',
         tags: ['Articles'],
+        security: [
+            {
+                bearerAuth: [],
+            },
+        ],
         parameters: [
             {
                 in: 'path',
@@ -667,29 +988,36 @@ swaggerSpec.paths['/articles/user/{userId}'] = {
                                         properties: {
                                             _id: {
                                                 type: 'string',
+                                                optional: true,
                                             },
                                             title: {
                                                 type: 'string',
+                                                required: true,
                                             },
                                             content: {
                                                 type: 'string',
+                                                required: true,
+                                            },
+                                            createdAt: {
+                                                type: 'string',
+                                                required: true,
+                                            },
+                                            updatedAt: {
+                                                type: 'string',
+                                                required: true,
                                             },
                                             author: {
                                                 type: 'object',
                                                 properties: {
                                                     _id: {
                                                         type: 'string',
+                                                        optional: true,
                                                     },
                                                     nickname: {
                                                         type: 'string',
+                                                        required: true,
                                                     },
                                                 },
-                                            },
-                                            createdAt: {
-                                                type: 'string',
-                                            },
-                                            updatedAt: {
-                                                type: 'string',
                                             },
                                         },
                                     },
@@ -707,13 +1035,49 @@ swaggerSpec.paths['/articles/user/{userId}'] = {
                 description: 'Bad Request.',
             },
             '401': {
-                description: 'This feature is reserved for users who own an account.',
+                description: 'Authorization errors.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            oneOf: [
+                                { $ref: '#/components/schemas/NoToken' },
+                                { $ref: '#/components/schemas/FalseToken' },
+                                { $ref: '#/components/schemas/AccountCheck' },
+                            ],
+                        },
+                    },
+                },
+            },
+            '404': {
+                description: 'Not found errors.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            oneOf: [
+                                { $ref: '#/components/schemas/NoUserFound' },
+                                { $ref: '#/components/schemas/NoArticleFound' },
+                            ],
+                        },
+                    },
+                },
             },
             '422': {
-                description: 'Incorrect query due to invalid URI or data.',
+                description: 'Invalid URI format.',
             },
             '500': {
-                description: 'Server error while retrieving articles for a specific user.',
+                description: 'Server errors.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            oneOf: [
+                                { $ref: '#/components/schemas/InternalServerError' },
+                                { $ref: '#/components/schemas/DatabaseError' },
+                                { $ref: '#/components/schemas/ValidationResponseError' },
+                                { $ref: '#/components/schemas/CreationResponseObjectError' },
+                            ],
+                        },
+                    },
+                },
             },
         },
     },
@@ -731,15 +1095,6 @@ swaggerSpec.paths['/articles/{id}'].patch = {
     ],
     parameters: [
         {
-            name: 'Bearer Token',
-            in: 'header',
-            required: true,
-            description: '',
-            schema: {
-                type: 'string',
-            },
-        },
-        {
             in: 'path',
             name: 'id',
             required: true,
@@ -756,15 +1111,14 @@ swaggerSpec.paths['/articles/{id}'].patch = {
                 schema: {
                     type: 'object',
                     properties: {
-                        email: {
+                        title: {
                             type: 'string',
+                            optional: true,
                         },
-                        nickname: {
+                        content: {
                             type: 'string',
-                        },
-                        password: {
-                            type: 'string',
-                        },
+                            optional: true,
+                        }
                     },
                 },
             },
@@ -776,10 +1130,64 @@ swaggerSpec.paths['/articles/{id}'].patch = {
             content: {
                 'application/json': {
                     schema: {
-                        type: 'object',
                         properties: {
-                            message: {
-                                type: 'string',
+                            data: {
+                                type: 'array',
+                                items: {
+                                    type: 'object',
+                                    properties: {
+                                        _id: {
+                                            type: 'string',
+                                            optional: true
+                                        },
+                                        title: {
+                                            type: 'string',
+                                            optional: true
+                                        },
+                                        content: {
+                                            type: 'string',
+                                            required: true
+                                        },
+                                        createdAt: {
+                                            type: 'string',
+                                            required: true
+                                        },
+                                        updatedAt: {
+                                            type: 'string',
+                                            required: true
+                                        },
+                                        author: {
+                                            type: 'object',
+                                            properties: {
+                                                _id: {
+                                                    type: 'string',
+                                                    optional: true,
+                                                },
+                                                nickname: {
+                                                    type: 'string',
+                                                    required: true,
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                            modifiedProperties: {
+                                type: 'object',
+                                properties: {
+                                    updatedAt: {
+                                        type: 'string',
+                                        required: true
+                                    },
+                                    title: {
+                                        type: 'string',
+                                        optional: true
+                                    },
+                                    content: {
+                                        type: 'string',
+                                        optional: true
+                                    },
+                                },
                             },
                         },
                     },
@@ -787,25 +1195,77 @@ swaggerSpec.paths['/articles/{id}'].patch = {
             },
         },
         '400': {
-            description: 'Incorrect query due to forbidden or missing param.',
+            description: 'Bad requests.',
+            content: {
+                'application/json': {
+                    schema: {
+                        oneOf: [
+                            { $ref: '#/components/schemas/ForbiddenParams' },
+                            { $ref: '#/components/schemas/InvalidRequest' },
+                        ],
+                    },
+                },
+            },
+        },
+        '401': {
+            description: 'Authorization errors.',
+            content: {
+                'application/json': {
+                    schema: {
+                        oneOf: [
+                            { $ref: '#/components/schemas/NoToken' },
+                            { $ref: '#/components/schemas/FalseToken' },
+                        ],
+                    },
+                },
+            },
         },
         '403': {
-            description: 'Only certified members are allowed to update an article.',
-        },
-        '403': {
-            description: 'You are not allowed to update an article that does not belong to you.',
+            description: 'Forbidden errors.',
+            content: {
+                'application/json': {
+                    schema: {
+                        oneOf: [
+                            { $ref: '#/components/schemas/NotAllowedToUpdateArticle' },
+                            { $ref: '#/components/schemas/OnlyCertifiedMembersUpdateArticle' },
+                        ],
+                    },
+                },
+            },
         },
         '404': {
-            description: 'User not found.',
+            description: 'No article was found.',
         },
         '409': {
-            description: 'Article with same title already posted',
+            description: 'Article with same title already posted.',
         },
         '422': {
-            description: 'Incorrect query due to invalid URI or data.',
+            description: 'Unprocessable entities.',
+            content: {
+                'application/json': {
+                    schema: {
+                        oneOf: [
+                            { $ref: '#/components/schemas/InvalidURI' },
+                            { $ref: '#/components/schemas/InvalidValidationRule' },
+                        ],
+                    },
+                },
+            },
         },
         '500': {
-            description: 'Server error while updating a single user.',
+            description: 'Server errors.',
+            content: {
+                'application/json': {
+                    schema: {
+                        oneOf: [
+                            { $ref: '#/components/schemas/InternalServerError' },
+                            { $ref: '#/components/schemas/DatabaseError' },
+                            { $ref: '#/components/schemas/ValidationResponseError' },
+                            { $ref: '#/components/schemas/CreationResponseObjectError' },
+                        ],
+                    },
+                },
+            },
         },
     },
 };
@@ -822,15 +1282,6 @@ swaggerSpec.paths['/articles/{id}'].delete = {
     ],
     parameters: [
         {
-            name: 'Bearer Token',
-            in: 'header',
-            required: true,
-            description: '',
-            schema: {
-                type: 'string',
-            },
-        },
-        {
             in: 'path',
             name: 'id',
             required: true,
@@ -844,77 +1295,57 @@ swaggerSpec.paths['/articles/{id}'].delete = {
         '204': {
             description: 'Single article deleted successfully.',
         },
-        '403': {
-            description: 'Only certified members are allowed to delete an article.',
+        '401': {
+            description: 'Authorization errors.',
+            content: {
+                'application/json': {
+                    schema: {
+                        oneOf: [
+                            { $ref: '#/components/schemas/NoToken' },
+                            { $ref: '#/components/schemas/FalseToken' },
+                        ],
+                    },
+                },
+            },
         },
         '403': {
-            description: 'You are not allowed to delete an article that does not belong to you.',
+            description: 'Forbidden errors.',
+            content: {
+                'application/json': {
+                    schema: {
+                        oneOf: [
+                            { $ref: '#/components/schemas/NotAllowedToDeleteArticle' },
+                            { $ref: '#/components/schemas/OnlyCertifiedMembersDeleteArticle' },
+                        ],
+                    },
+                },
+            },
         },
         '404': {
-            description: 'Article not found.',
+            description: 'No article was found.',
         },
         '422': {
-            description: 'Incorrect query due to invalid URI or data.',
+            description: 'Invalid URI format.',
         },
         '500': {
-            description: 'Server error while deleting a single article.',
+            description: 'Server errors.',
+            content: {
+                'application/json': {
+                    schema: {
+                        oneOf: [
+                            { $ref: '#/components/schemas/InternalServerError' },
+                            { $ref: '#/components/schemas/DatabaseError' },
+                            { $ref: '#/components/schemas/ValidationResponseError' },
+                        ],
+                    },
+                },
+            },
         },
     },
 };
 
 
-/*============ AUTH ============*/
-
-/*=== UPGRADE USER ROLE ===*/
-swaggerSpec.paths['admins/upgrade_user_role/:id'] = {
-    patch: {
-        summary: 'Upgrade user to certified.',
-        description: 'Upgrade the user\'s role to certified.',
-        tags: ['Admins'],
-        security: [
-            {
-                bearerAuth: [],
-            },
-        ],
-        parameters: [
-            {
-                name: 'Bearer Token',
-                in: 'header',
-                required: true,
-                description: '',
-                schema: {
-                    type: 'string',
-                },
-            },
-            {
-                in: 'path',
-                name: 'id',
-                required: true,
-                description: 'ID of the user to upgrade.',
-                schema: {
-                    type: 'string',
-                },
-            },
-        ],
-        responses: {
-            '200': {
-                description: 'User upgraded successfully.',
-            },
-            '403': {
-                description: 'Permission denied.',
-            },
-            '404': {
-                description: 'User not found.',
-            },
-            '422': {
-                description: 'Incorrect query due to invalid URI or data.',
-            },
-            '500': {
-                description: 'Server error while deleting a single user.',
-            },
-        }
-    }
-};
+/*============ ADMIN ============*/
 
 /*=== DELETE ALL USERS ===*/
 swaggerSpec.paths['/admins/delete_all_users'] = {
@@ -927,26 +1358,38 @@ swaggerSpec.paths['/admins/delete_all_users'] = {
                 bearerAuth: [],
             },
         ],
-        parameters: [
-            {
-                name: 'Bearer Token',
-                in: 'header',
-                required: true,
-                description: '',
-                schema: {
-                    type: 'string',
-                },
-            },
-        ],
         responses: {
             '204': {
                 description: 'All users and articles have been deleted successfully.',
+            },
+            '401': {
+                description: 'Authorization errors.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            oneOf: [
+                                { $ref: '#/components/schemas/NoToken' },
+                                { $ref: '#/components/schemas/FalseToken' },
+                            ],
+                        },
+                    },
+                },
             },
             '403': {
                 description: 'Permission denied.',
             },
             '500': {
-                description: 'Server error while deleting all users and articles.',
+                description: 'Server errors.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            oneOf: [
+                                { $ref: '#/components/schemas/InternalServerError' },
+                                { $ref: '#/components/schemas/DatabaseError' },
+                            ],
+                        },
+                    },
+                },
             },
         },
     },
@@ -963,26 +1406,386 @@ swaggerSpec.paths['/admins/delete_all_articles'] = {
                 bearerAuth: [],
             },
         ],
+        responses: {
+            '204': {
+                description: 'All articles have been deleted successfully.',
+            },
+            '401': {
+                description: 'Authorization errors.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            oneOf: [
+                                { $ref: '#/components/schemas/NoToken' },
+                                { $ref: '#/components/schemas/FalseToken' },
+                            ],
+                        },
+                    },
+                },
+            },
+            '403': {
+                description: 'Permission denied.',
+            },
+            '404': {
+                description: 'No user was found.',
+            },
+            '422': {
+                description: 'Invalid URI format.',
+            },
+            '500': {
+                description: 'Server errors.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            oneOf: [
+                                { $ref: '#/components/schemas/InternalServerError' },
+                                { $ref: '#/components/schemas/DatabaseError' },
+                            ],
+                        },
+                    },
+                },
+            },
+        },
+    },
+};
+
+/*=== UPGRADE USER ROLE ===*/
+swaggerSpec.paths['admins/upgrade_user_role/:id'] = {
+    patch: {
+        summary: 'Upgrade user to certified.',
+        description: 'Upgrade the user\'s role to certified.',
+        tags: ['Admins'],
+        security: [
+            {
+                bearerAuth: [],
+            },
+        ],
         parameters: [
             {
-                name: 'Bearer Token',
-                in: 'header',
+                in: 'path',
+                name: 'id',
                 required: true,
-                description: '',
+                description: 'User Id',
                 schema: {
                     type: 'string',
                 },
             },
         ],
         responses: {
-            '204': {
-                description: 'All articles have been deleted successfully.',
+            '200': {
+                description: 'User upgraded successfully.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            type: 'object',
+                            properties: {
+                                nickname: {
+                                    type: 'string',
+                                    required: true
+                                },
+                                roles: {
+                                    type: 'string',
+                                    required: true
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+            '401': {
+                description: 'Authorization errors.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            oneOf: [
+                                { $ref: '#/components/schemas/NoToken' },
+                                { $ref: '#/components/schemas/FalseToken' },
+                            ],
+                        },
+                    },
+                },
             },
             '403': {
                 description: 'Permission denied.',
             },
+            '404': {
+                description: 'User not found.',
+            },
+            '422': {
+                description: 'Incorrect query due to invalid URI or data.',
+            },
             '500': {
-                description: 'Server error while deleting all articles.',
+                description: 'Server errors.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            oneOf: [
+                                { $ref: '#/components/schemas/InternalServerError' },
+                                { $ref: '#/components/schemas/DatabaseError' },
+                                { $ref: '#/components/schemas/ValidationResponseError' },
+                            ],
+                        },
+                    },
+                },
+            },
+        }
+    }
+};
+
+
+/*============  COMPONENT ERRORS ============*/
+swaggerSpec.components = {
+    securitySchemes: {
+        bearerAuth: {
+            type: "http",
+            name: "Authorization",
+            scheme: "bearer",
+            bearerFormat: 'JWT',
+            in: "header",
+            description: "JWT"
+        },
+    },
+    schemas: {
+        //400
+        InvalidRequest: {
+            type: 'object',
+            properties: {
+                error: {
+                    type: 'string',
+                    example: 'Invalid request.',
+                },
+            },
+        },
+        UnknownUserRole: {
+            type: 'object',
+            properties: {
+                error: {
+                    type: 'string',
+                    example: 'Unknown user role.',
+                },
+            },
+        },
+        ForbiddenParams: {
+            type: 'object',
+            properties: {
+                error: {
+                    type: 'string',
+                    example: 'These parameters can\'t be modified.',
+                },
+            },
+        },
+        // 401
+        FalseToken: {
+            type: 'object',
+            properties: {
+                error: {
+                    type: 'string',
+                    example: 'False token.',
+                },
+            },
+        },
+        NoToken: {
+            type: 'object',
+            properties: {
+                error: {
+                    type: 'string',
+                    example: 'No JWT found.',
+                },
+            },
+        },
+        WrongPassword: {
+            type: 'object',
+            properties: {
+                error: {
+                    type: 'string',
+                    example: 'Wrong password.',
+                },
+            },
+        },
+        AccountCheck: {
+            type: 'object',
+            properties: {
+                error: {
+                    type: 'string',
+                    example: 'This feature is reserved for users who own an account.',
+                },
+            },
+        },
+        //403
+        PremiumFunctionality: {
+            type: 'object',
+            properties: {
+                error: {
+                    type: 'string',
+                    example: 'Premium functionality.',
+                },
+            },
+        },
+        PermissionDenied: {
+            type: 'object',
+            properties: {
+                error: {
+                    type: 'string',
+                    example: 'Permission denied.',
+                },
+            },
+        },
+        OnlyCertifiedMembersUpdateArticle: {
+            type: 'object',
+            properties: {
+                error: {
+                    type: 'string',
+                    example: 'Only certified members are allowed to update an article.',
+                },
+            },
+        },
+        NotAllowedToUpdateArticle: {
+            type: 'object',
+            properties: {
+                error: {
+                    type: 'string',
+                    example: 'You are not allowed to update an article that does not belong to you.',
+                },
+            },
+        },
+        OnlyCertifiedMembersDeleteArticle: {
+            type: 'object',
+            properties: {
+                error: {
+                    type: 'string',
+                    example: 'Only certified members are allowed to delete an article.',
+                },
+            },
+        },
+        NotAllowedToDeleteArticle: {
+            type: 'object',
+            properties: {
+                error: {
+                    type: 'string',
+                    example: 'You are not allowed to delete an article that does not belong to you.',
+                },
+            },
+        },
+        // 404
+        NoAccountExists: {
+            type: 'object',
+            properties: {
+                error: {
+                    type: 'string',
+                    example: 'This account does not exists.',
+                },
+            },
+        },
+        NoUserFound: {
+            type: 'object',
+            properties: {
+                error: {
+                    type: 'string',
+                    example: 'No user was found.',
+                },
+            },
+        },
+        NoArticleFound: {
+            type: 'object',
+            properties: {
+                error: {
+                    type: 'string',
+                    example: 'No article was found.',
+                },
+            },
+        },
+        // 409
+        EmailNicknameAlreadyExists: {
+            type: 'object',
+            properties: {
+                error: {
+                    type: 'string',
+                    example: 'Email or nickname already exists.',
+                },
+            },
+        },
+        // 422
+        InvalidValidationRule: {
+            type: 'object',
+            properties: {
+                error: {
+                    type: 'string',
+                    example: 'Invalid validation rule',
+                },
+            },
+        },
+        InvalidURI: {
+            type: 'object',
+            properties: {
+                error: {
+                    type: 'string',
+                    example: 'Invalid URI format',
+                },
+            },
+        },
+        // 429
+        RegisterLimiter: {
+            type: 'object',
+            properties: {
+                error: {
+                    type: 'string',
+                    example: 'You can only create one account per day.',
+                },
+            },
+        },
+        LoginLimiter: {
+            type: 'object',
+            properties: {
+                error: {
+                    type: 'string',
+                    example: 'The number of connection attempts is limited to 5 per hour.',
+                },
+            },
+        },
+        CreateArticleLimiter: {
+            type: 'object',
+            properties: {
+                error: {
+                    type: 'string',
+                    example: 'You can only create 5 articles per day.',
+                },
+            },
+        },
+        // 500
+        InternalServerError: {
+            type: 'object',
+            properties: {
+                error: {
+                    type: 'string',
+                    examples: 'Internal Server Error.'
+                },
+            },
+        },
+        DatabaseError: {
+            type: 'object',
+            properties: {
+                error: {
+                    type: 'string',
+                    example: 'Database Error.',
+                },
+            },
+        },
+        ValidationResponseError: {
+            type: 'object',
+            properties: {
+                error: {
+                    type: 'string',
+                    example: 'Validation Response Error.',
+                },
+            },
+        },
+        CreationResponseObjectError: {
+            type: 'object',
+            properties: {
+                error: {
+                    type: 'string',
+                    example: 'Creation Response Object Error.',
+                },
             },
         },
     },
