@@ -6,6 +6,7 @@ const sassMiddleware = require('node-sass-middleware');
 
 const { requestsLimiter } = require('./middleware/rateLimiter');
 const adminCheck = require('./middleware/adminCheck');
+const allowedMethodCheck = require('./middleware/allowedMethodCheck');
 const connectDB = require('./db.config');
 
 const swaggerSpec = require('./swagger');
@@ -82,16 +83,16 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', (_req, res) => res.send(`Application is online!`))
 
 /*=== AUTH ===*/
-app.use('/login', auth_router);
+app.use('/login', allowedMethodCheck(['POST']), auth_router);
 
 /*=== USERS ===*/
-app.use('/users', users_router);
+app.use('/users', allowedMethodCheck(['POST','GET','PATCH','DELETE']), users_router);
 
 /*=== ARTICLES ===*/
-app.use('/articles', articles_router);
+app.use('/articles', allowedMethodCheck(['POST','GET','PATCH','DELETE']), articles_router);
 
 /*=== ADMINS ===*/
-app.use('/admins', adminCheck, admins_router);
+app.use('/admins', adminCheck, allowedMethodCheck(['PATCH','DELETE']), admins_router);
 
 /*=== 404 ===*/
 app.get('*', (_req, res) => res.status(404).send('What the hell are you doing!!?'));
