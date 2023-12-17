@@ -347,7 +347,7 @@ const createResponseUserObject = (user, userRole) => {
             case 'user':
                 return commonFields;
             default:
-                return ErrorHandler.sendUnknownRoleError(res, err);
+                return ErrorHandler.handleUserUnknownRole(res, err);
         }
     }
     catch (err) {
