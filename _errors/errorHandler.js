@@ -1,5 +1,24 @@
 /*============ ERROR HANDLER MODULE ============*/
 class ErrorHandler {
+    // 400 errors
+    static sendUnknownRoleError(res) {
+        return res.status(400).json({ message: 'Unknown user role!' });
+    }
+
+    // 404 errors
+    static handleUserNotFound(res) {
+        return res.status(404).json({ message: 'No user was found!' });
+    }
+
+    static handleArticleNotFound(res) {
+        return res.status(404).json({ message: 'No article was found!' });
+    }
+
+    static handleNicknameNotFound(res) {
+        return res.status(404).json({ message: 'Error retrieving user\'s nickname!' });
+    }
+
+    // 500 errors
     static sendInternalServerError(res, error) {
         if (error) {
             return res.status(500).json({ message: 'Internal Server Error!', error: error.message });
@@ -22,14 +41,6 @@ class ErrorHandler {
         if (error) {
             return res.status(500).json({ message: 'Creation Response Object Error!', error: error.message });
         }
-    }
-
-    static handleUserNotFound(res) {
-        return res.status(404).json({ message: 'No user was found!' });
-    }
-
-    static handleArticleNotFound(res) {
-        return res.status(404).json({ message: 'No article was found!' });
     }
 }
 

@@ -375,7 +375,7 @@ async function getUserNickname(userId) {
         return user ? user.nickname : null;
     }
     catch (err) {
-        throw new Error('Error retrieving user\'s nickname!');
+        return ErrorHandler.handleNicknameNotFound(res, err);
     }
 }
 
@@ -407,7 +407,7 @@ const createResponseArticleObject = async (article, userRole, res) => {
             case 'user':
                 return commonFields;
             default:
-                throw new Error('Invalid user role!');
+                return ErrorHandler.sendUnknownRoleError(res, err);
         }
     }
     catch (err) {

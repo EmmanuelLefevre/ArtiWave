@@ -121,6 +121,15 @@ router.patch('/:id', [
     (req, res, next) => {
 
         try {
+            // Check presence of forbidden paramaters roles || registeredAt || updatedAt
+            const params = ['roles', 'registeredAt', 'updatedAt'];
+            const forbiddenParams = Object.keys(req.body).filter(param => params.includes(param));
+
+            if (forbiddenParams.length > 0) {
+                const errorMessage = `These parameters can't be modified: ${forbiddenParams.join(' and ')}`;
+                return res.status(400).json({ message: errorMessage });
+            }
+
             // Check presence of at least parameter email || nickname || password
             if (req.method === 'PATCH') {
                 const allowedProperties = ['email', 'nickname', 'password'];

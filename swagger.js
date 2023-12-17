@@ -282,7 +282,7 @@ swaggerSpec.paths['/users'] = {
     },
 };
 
-/*=== GET USER ===*/
+/*=== GET SINGLE USER ===*/
 swaggerSpec.paths['/users/{id}'] = {
     get: {
         summary: 'Get user by Id',
@@ -488,10 +488,18 @@ swaggerSpec.paths['/users/{id}'].patch = {
             },
         },
         '400': {
-            description: 'Invalid request.',
-        },
-        '400': {
-            description: 'Unknown user role.',
+            description: 'Bad requests.',
+            content: {
+                'application/json': {
+                    schema: {
+                        oneOf: [
+                            { $ref: '#/components/schemas/ForbiddenParams' },
+                            { $ref: '#/components/schemas/InvalidRequest' },
+                            { $ref: '#/components/schemas/UnknownUserRole' },
+                        ],
+                    },
+                },
+            },
         },
         '401': {
             description: 'Authorization errors.',
@@ -694,7 +702,17 @@ swaggerSpec.paths['/articles'] = {
                 },
             },
             '400': {
-                description: 'Invalid request.',
+                description: 'Bad requests.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            oneOf: [
+                                { $ref: '#/components/schemas/InvalidRequest' },
+                                { $ref: '#/components/schemas/UnknownUserRole' },
+                            ],
+                        },
+                    },
+                },
             },
             '401': {
                 description: 'Authorization errors.',
@@ -713,7 +731,17 @@ swaggerSpec.paths['/articles'] = {
                 description: 'Premium functionality.',
             },
             '404': {
-                description: 'No user was found.',
+                description: 'Not found errors.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            oneOf: [
+                                { $ref: '#/components/schemas/NoUserFound' },
+                                { $ref: '#/components/schemas/NoNicknameFound' },
+                            ],
+                        },
+                    },
+                },
             },
             '409': {
                 description: 'Article with same title already posted.',
@@ -811,6 +839,9 @@ swaggerSpec.paths['/articles'].get = {
                 },
             },
         },
+        '400': {
+            description: 'Unknown user role.',
+        },
         '401': {
             description: 'Authorization errors.',
             content: {
@@ -825,7 +856,17 @@ swaggerSpec.paths['/articles'].get = {
             },
         },
         '404': {
-            description: 'No article was found.',
+            description: 'Not found errors.',
+            content: {
+                'application/json': {
+                    schema: {
+                        oneOf: [
+                            { $ref: '#/components/schemas/NoUserFound' },
+                            { $ref: '#/components/schemas/NoNicknameFound' },
+                        ],
+                    },
+                },
+            },
         },
         '500': {
             description: 'Server errors.',
@@ -912,6 +953,9 @@ swaggerSpec.paths['/articles/{id}'] = {
                     },
                 },
             },
+            '400': {
+                description: 'Unknown user role.',
+            },
             '401': {
                 description: 'Authorization errors.',
                 content: {
@@ -926,7 +970,17 @@ swaggerSpec.paths['/articles/{id}'] = {
                 },
             },
             '404': {
-                description: 'Article not found.',
+                description: 'Not found errors.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            oneOf: [
+                                { $ref: '#/components/schemas/NoUserFound' },
+                                { $ref: '#/components/schemas/NoNicknameFound' },
+                            ],
+                        },
+                    },
+                },
             },
             '422': {
                 description: 'Invalid URI format.',
@@ -1032,7 +1086,17 @@ swaggerSpec.paths['/articles/user/{userId}'] = {
                 },
             },
             '400': {
-                description: 'Bad Request.',
+                description: 'Bad requests.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            oneOf: [
+                                { $ref: '#/components/schemas/InvalidRequest' },
+                                { $ref: '#/components/schemas/UnknownUserRole' },
+                            ],
+                        },
+                    },
+                },
             },
             '401': {
                 description: 'Authorization errors.',
@@ -1056,6 +1120,7 @@ swaggerSpec.paths['/articles/user/{userId}'] = {
                             oneOf: [
                                 { $ref: '#/components/schemas/NoUserFound' },
                                 { $ref: '#/components/schemas/NoArticleFound' },
+                                { $ref: '#/components/schemas/NoNicknameFound' },
                             ],
                         },
                     },
@@ -1202,6 +1267,7 @@ swaggerSpec.paths['/articles/{id}'].patch = {
                         oneOf: [
                             { $ref: '#/components/schemas/ForbiddenParams' },
                             { $ref: '#/components/schemas/InvalidRequest' },
+                            { $ref: '#/components/schemas/UnknownUserRole' },
                         ],
                     },
                 },
@@ -1234,7 +1300,17 @@ swaggerSpec.paths['/articles/{id}'].patch = {
             },
         },
         '404': {
-            description: 'No article was found.',
+            description: 'Not found errors.',
+            content: {
+                'application/json': {
+                    schema: {
+                        oneOf: [
+                            { $ref: '#/components/schemas/NoArticleFound' },
+                            { $ref: '#/components/schemas/NoNicknameFound' },
+                        ],
+                    },
+                },
+            },
         },
         '409': {
             description: 'Article with same title already posted.',
@@ -1694,6 +1770,15 @@ swaggerSpec.components = {
                 },
             },
         },
+        NoNicknameFound: {
+            type: 'object',
+            properties: {
+                error: {
+                    type: 'string',
+                    example: 'Error retrieving user\'s nickname.',
+                },
+            },
+        }
         // 409
         EmailNicknameAlreadyExists: {
             type: 'object',
