@@ -11,7 +11,7 @@ const userTokenResponseValidation = object({
 });
 
 
-/*=== REGISTER ===*/
+/*=== REGISTER RESPONSE VALIDATION ===*/
 const userRegisterResponseValidation = object({
     email: string().required(),
     nickname: string().required(),
