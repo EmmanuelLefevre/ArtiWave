@@ -47,6 +47,26 @@ router.delete('/delete_all_articles',
 });
 
 
+/*=== DELETE ALL ARTICLES BY USER ===*/
+router.delete('/delete_all_articles/:id',
+    validateURIParam('id'),
+    async (req, res) => {
+
+    try {
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            return ValidationErrorHandler.handle(res, errors);
+        }
+
+        await adminsController.deleteAllArticlesByUser(req, res);
+    }
+    catch (err) {
+        return ErrorHandler.sendInternalServerError(res, err);
+    }
+});
+
+
 /*=== INVERT USER ROLE ===*/
 router.patch('/invert_user_role/:id',
     validateURIParam('id'),
