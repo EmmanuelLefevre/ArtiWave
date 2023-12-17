@@ -1,12 +1,12 @@
 /*============ ERROR HANDLER MODULE ============*/
 class ErrorHandler {
     // 400 errors
-    static sendUnknownRoleError(res) {
+    static handleUserUnknownRole(res) {
         return res.status(400).json({ message: 'Unknown user role!' });
     }
 
     // 403 errors
-    static permissionDenied(res) {
+    static handleUserPermissionDenied(res) {
         return res.status(403).json({ message: 'Permission denied!' });
     }
 
@@ -21,6 +21,13 @@ class ErrorHandler {
 
     static handleUserInfoNotFound(res) {
         return res.status(404).json({ message: 'Error retrieving user\'s info!' });
+    }
+
+    // 429 errors
+    static sendLoginLimiterError(res, error) {
+        if (error) {
+            return res.status(429).json({ message: 'The number of connection attempts is limited to 5 per hour!' });
+        }
     }
 
     // 500 errors
@@ -45,12 +52,6 @@ class ErrorHandler {
     static sendCreationResponseObjectError(res, error) {
         if (error) {
             return res.status(500).json({ message: 'Creation Response Object Error!', error: error.message });
-        }
-    }
-
-    static sendLoginLimiterError(res, error) {
-        if (error) {
-            return res.status(429).json({ message: 'The number of connection attempts is limited to 5 per hour!' });
         }
     }
 }
