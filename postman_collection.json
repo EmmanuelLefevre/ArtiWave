@@ -138,6 +138,12 @@
 				{
 					"name": "AllArticles",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1N2QwMWFkNWExYTkwNzM3MmQ0OTYwMCIsInJvbGVzIjoiYWRtaW4iLCJuaWNrbmFtZSI6IkVtbWFudWVsIiwicmVnaXN0ZXJlZEF0IjoiMjAyMy0wNi0wMlQwMDoxNzozNi43MjZaIiwiaWF0IjoxNzAyNzczNjc1LCJleHAiOjE3MDI5NDY0NzV9.ehRbVg9iYYVNVWOcWN74Bwe-HYodePmq0ArsyLiA1fy2x_mlLgB9B3yw5uVUM0OHt2oUDJatddNi3tiwPktTdevFVxBPnsm6Olhv2peDbbOJlsFc-O8hHPdyIVWUY_Ax5cV5UZ5lIOBfqhTGPAagZcmDPHoYDqFHZXMU8xGN4EgZ-p7vsZdbqfDf0eWtGkN91cVk3FTUBKm-BRAyZDDCrsopIZK0hGP-n9GBVxJgoUS9yKo2JBUcgIdaCLAFqafzmoJK1vyCJu1ci4yoqy9PlLfF_KAGq7xaYKKwnwTRp2K43C9g6vJSuCD24u5tya1rKNkPFxjig2JAiU7JLuQnZ6Ex9miu904eS81s271crT48sfh1GOBejcO-vTzJsy0wVwl5-DYh5wyegUQYjyKnY9ANnxHZ-dkNFu-MSymr7G2KVMOYEq_0tC54e4u9r7by0saj-oIGXjNOOjm4-ngPGpz7AqHyIUvfpo4ebZKo9R2jeiBN7-NgXfGmjFIs3ZJG7cJ5bD8Xr4dDOcbLMMImlhPMG-IfEwZCTxGoQJnNftQNi80pDGbRnv9NxV0e1d-yV1LUoilO_3Qd5535m4QMScVsf3jvZqQyYMuDuRqKA68qz_82SM8gDspbmjoscp2cSaKmpAmb93Oewoum0rXagNVq7alHITyzN_W9AAW_bK0"
+							}
+						},
 						"method": "GET",
 						"header": [],
 						"url": "http://localhost:9000/articles"
@@ -159,14 +165,14 @@
 						"auth": {
 							"type": "bearer",
 							"bearer": {
-								"token": ""
+								"token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1N2QwMWFkNWExYTkwNzM3MmQ0OTYwMCIsInJvbGVzIjoiYWRtaW4iLCJuaWNrbmFtZSI6IkVtbWFudWVsIiwicmVnaXN0ZXJlZEF0IjoiMjAyMy0wNi0wMlQwMDoxNzozNi43MjZaIiwiaWF0IjoxNzAyNzYzODE5LCJleHAiOjE3MDI5MzY2MTl9.GobyK5BGFeLmJHsUdAPJ_9mejNuc1gTtVeCoSCOcMc7K_yY83v1mjDvFX1d4xfbnzIZHKGe3K1erjJdMwepqtEPzHO-gH1P0vjRE-nnE9YHJHwkc6IF-xVvlR_0DYO3LdrVH5fRg6vqosmkU-bn_Ly82xbqLKjXAhKEhRX_nggbKnddSsdq4WAmR56kdY4mTHxRbcyQp2en3d_1uFzINI9TiMdqW-v3sG22hBY3RF8YbMrJJo-KXa5Yz7ZmMkXFjHIYFFCG-V7rzOwWhRCHxsCMrvaYiIu-oAHj9cjlCoCA-4Zn5VDCGMetD0mwmmvzqBZqfkb2l1np9BZEpxKfJsrl8K-Ta0dxXT4mRdPeoI-ChpZ0L_eVbEvPrTLRdHIHlKgOjfFBIW-sJo2gFQaZWWRTZMDeCB17XXCrR5MKqKtqY24rrmkrluXydjoQkstbfa9HABXdJktJMPgxiSs-x3xKT3lfZ8kHs9zff_ptSuAwaDxbihCfOfgoEvAMXHlChiP7GSWtXaKHVcVLTRWWuzldVBhzqMwIRqdbXgX0Bru3KwxPvcMt4sqYoqfbEQAgquxcW7-efp9It08rBUi15l5gR95zu_ROprpgLrv8uwT7FEz8oIj3_u5FmXdz1XySoKJpCBngYmm6lJBfyCWaUvEZEpx0ist72TEoGdLg1hvs"
 							}
 						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"title\": \"Hello world\",\r\n  \"content\":\" lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. \",\r\n  \"author\": \"6572f39b4bf59dcf946d676f\"\r\n}",
+							"raw": "{\r\n  \"title\": \"Hello world\",\r\n  \"content\":\" lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. \"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -184,14 +190,14 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"content\": \"Waouh mon premier article modifié, waouh c'est super génial je kiffe ce nouveau framework Express avec toutes ces library qu'il met à notre disposition!!!\",\r\n    \"author\": \"Thierry\",\r\n    \"date\": \"\"\r\n}",
+							"raw": "{\r\n    \"title\": \"Article modifié avec succès!!!\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": "http://localhost:9000/articles/6572f39b4bf59dcf946d676f"
+						"url": "http://localhost:9000/articles/657cc7f4e10089b492f3f95e"
 					},
 					"response": []
 				},
@@ -210,7 +216,7 @@
 			"name": "Admins",
 			"item": [
 				{
-					"name": "UpgradeUserRole",
+					"name": "InvertUserRole",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -220,7 +226,7 @@
 						},
 						"method": "PATCH",
 						"header": [],
-						"url": "http://localhost:9000/admins/upgrade_user_role/657c589144c6a20127fbe058"
+						"url": "http://localhost:9000/admins/invert_user_role/657c589144c6a20127fbe058"
 					},
 					"response": []
 				},
