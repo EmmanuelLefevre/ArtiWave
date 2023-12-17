@@ -9,14 +9,27 @@ const { invertRoleResponseValidation } = require('../_validation/responses/inver
 /*============ ADMINS ============*/
 
 /*=== DELETE ALL USERS ===*/
-exports.deleteAllUsers = async (req, res) => {
+exports.deleteAllUsers = async (_req, res) => {
 
     try {
+        // Get non-admin users to delete
+        const usersToDelete = await User.find({
+            roles: { $ne: 'admin' }
+        });
+
+        // No users to delete
+        if (usersToDelete.length === 0) {
+            return ErrorHandler.handleUserNotFound(res);
+        }
+
+        // Extract users IDs from usersToDelete
+        const usersIdsToDelete = usersToDelete.map(user => user._id);
+
         // Delete all users except admin
-        await User.deleteMany({ roles: { $ne: 'admin' } });
+        await User.deleteMany({ _id: { $in: usersIdsToDelete } });
 
         // Cascade delete articles except those owned by admin
-        await Article.deleteMany({ author: { $ne: req.userId } });
+        await Article.deleteMany({ author: { $in: usersIdsToDelete } });
 
         return res.sendStatus(204);
     }
@@ -30,8 +43,21 @@ exports.deleteAllUsers = async (req, res) => {
 exports.deleteAllArticles = async (req, res) => {
 
     try {
+        // Get non-admin articles to delete
+        const articlesToDelete = await Article.find({
+            author: { $ne: req.userId}
+        });
+
+        // No articles to delete
+        if (articlesToDelete.length === 0) {
+            return ErrorHandler.handleArticleNotFound(res);
+        }
+
+        // Extract articles IDs from articlesToDelete
+        const articlesIdsToDelete = articlesToDelete.map(article => article._id);
+
         // Delete all articles except those from admin
-        await Article.deleteMany({ author: { $ne: req.userId } });
+        await Article.deleteMany({ _id: { $in: articlesIdsToDelete } });
 
         return res.sendStatus(204);
     }
@@ -40,13 +66,35 @@ exports.deleteAllArticles = async (req, res) => {
     }
 }
 
-/*=== INVERT USER ROLE ===*/
-exports.invertUserRole = async (req, res) => {
-    let userId = req.params.id;
+
+/*=== DELETE ALL ARTICLES BY USER ===*/
+exports.deleteAllArticlesByUser = async (req, res) => {
+    const userId = req.params.id;
 
     try {
-        let user = await User.findById(userId);
+        // Check user exists
+        const user = await User.findById(userId);
+        if (!user) {
+            return ErrorHandler.handleUserNotFound(res);
+        }
 
+        await Article.deleteMany({ author: userId });
+
+        return res.sendStatus(204);
+    }
+    catch (err) {
+        return ErrorHandler.sendDatabaseError(res, err);
+    }
+}
+
+
+/*=== INVERT USER ROLE ===*/
+exports.invertUserRole = async (req, res) => {
+    const userId = req.params.id;
+
+    try {
+        // Check user exists
+        const user = await User.findById(userId);
         if (!user) {
             return ErrorHandler.handleUserNotFound(res);
         }
