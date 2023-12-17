@@ -128,7 +128,7 @@ exports.getAllArticles = async (req, res) => {
 
 /*=== GET SINGLE ARTICLE ===*/
 exports.getArticle = async (req, res) => {
-    let articleId = req.params.id;
+    const articleId = req.params.id;
 
     try {
         let article = await Article.findById(articleId, { _id: 1, title: 1, content: 1, author: 1, createdAt: 1, updatedAt: 1 });
@@ -173,7 +173,7 @@ exports.getArticle = async (req, res) => {
 
 /*=== GET ARTICLES BY USER ===*/
 exports.getArticlesByUser = async (req, res) => {
-    let userId = req.params.userId;
+    const userId = req.params.userId;
 
     try {
         // Check if user exists
@@ -234,7 +234,7 @@ exports.getArticlesByUser = async (req, res) => {
 
 /*=== UPDATE ARTICLE ===*/
 exports.updateArticle = async (req, res) => {
-    let articleId = req.params.id;
+    const articleId = req.params.id;
 
     try {
         let article = await Article.findById(articleId);
@@ -326,7 +326,7 @@ exports.updateArticle = async (req, res) => {
 
 /*=== DELETE ARTICLE ===*/
 exports.deleteArticle =  async (req, res) => {
-    let articleId = req.params.id;
+    const articleId = req.params.id;
 
     try {
         let article = await Article.findById(articleId);
