@@ -146,8 +146,7 @@ exports.getUser = async (req, res) => {
                 responseValidationSchema = userResponseValidationRoleAdmin;
                 responseObject = createResponseUserObject(user, req.userRole);
                 break;
-            case 'certified':
-            case 'user':
+            default:
                 responseValidationSchema = userResponseValidationBase;
                 responseObject = createResponseUserObject(user, req.userRole);
                 break;
@@ -243,8 +242,7 @@ exports.updateUser = async (req, res) => {
                     data: [createResponseUserObject(user, req.userRole)]
                 };
                 break;
-            case 'certified':
-            case 'user':
+            default:
                 responseValidationSchema = userUpdatedResponseValidationBase;
                 responseObject = {
                     data: [createResponseUserObject(user, req.userRole)]
@@ -346,7 +344,6 @@ const createResponseUserObject = (user, userRole) => {
                     updatedAt: user.updatedAt
                 };
             case 'certified':
-                return commonFields;
             case 'user':
                 return commonFields;
             default:
