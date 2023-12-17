@@ -14,6 +14,7 @@ const articleResponseValidationRoleAdmin = object({
     author: object({
         _id: string().matches(/^[0-9a-fA-F]{24}$/).required(),
         nickname: string().required(),
+        roles: string().required()
     }).required(),
     createdAt: string().required(),
     updatedAt: string().required()

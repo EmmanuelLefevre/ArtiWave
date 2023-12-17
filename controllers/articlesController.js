@@ -368,14 +368,14 @@ exports.deleteArticle =  async (req, res) => {
 
 /*============ FUNCTIONS ============*/
 
-/*=== GET NICKNAME ===*/
-async function getUserNickname(userId) {
+/*=== GET INFO ===*/
+async function getUserInfo(userId) {
     try {
-        let user = await User.findById(userId, 'nickname');
-        return user ? user.nickname : null;
+        let user = await User.findById(userId, 'nickname roles');
+        return user ? { nickname: user.nickname, roles: user.roles } : null;
     }
     catch (err) {
-        return ErrorHandler.handleNicknameNotFound(res, err);
+        return ErrorHandler.handleUserInfoNotFound(res, err);
     }
 }
 
@@ -383,14 +383,14 @@ async function getUserNickname(userId) {
 /*=== CREATE RESPONSE ARTICLE OBJECT BASED ON ROLE ===*/
 const createResponseArticleObject = async (article, userRole, res) => {
     try {
-        const nickname = await getUserNickname(article.author);
+        const authorInfo = await getUserInfo(article.author);
 
         const commonFields = {
             title: article.title,
             content: article.content,
             createdAt: article.createdAt,
             updatedAt: article.updatedAt,
-            author: { nickname: nickname }
+            author: { nickname: authorInfo.nickname }
         };
 
         switch (userRole) {
@@ -400,7 +400,8 @@ const createResponseArticleObject = async (article, userRole, res) => {
                     ...commonFields,
                     author: {
                         _id: article.author,
-                        nickname: nickname
+                        nickname: authorInfo.nickname,
+                        roles: authorInfo.roles
                     }
                 };
             case 'certified':

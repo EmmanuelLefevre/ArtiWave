@@ -14,8 +14,8 @@ class ErrorHandler {
         return res.status(404).json({ message: 'No article was found!' });
     }
 
-    static handleNicknameNotFound(res) {
-        return res.status(404).json({ message: 'Error retrieving user\'s nickname!' });
+    static handleUserInfoNotFound(res) {
+        return res.status(404).json({ message: 'Error retrieving user\'s info!' });
     }
 
     // 500 errors
