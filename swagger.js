@@ -71,10 +71,13 @@ swaggerSpec.paths['/login'] = {
                 description: 'Invalid request.',
             },
             '401': {
-                description: 'Wrong password.',
+                description: 'Bad credentials.',
             },
             '404': {
                 description: 'This account does not exists.',
+            },
+            '405': {
+                description: 'Method not allowed.',
             },
             '422': {
                 description: 'Invalid validation rule.',
@@ -157,6 +160,9 @@ swaggerSpec.paths['/users/register'] = {
             },
             '400': {
                 description: 'Invalid request.',
+            },
+            '405': {
+                description: 'Method not allowed.',
             },
             '409': {
                 description: 'Email or nickname already exists.',
@@ -263,6 +269,9 @@ swaggerSpec.paths['/users'] = {
             '404': {
                 description: 'No user was found.',
             },
+            '405': {
+                description: 'Method not allowed.',
+            },
             '500': {
                 description: 'Server errors.',
                 content: {
@@ -361,6 +370,9 @@ swaggerSpec.paths['/users/{id}'] = {
             },
             '404': {
                 description: 'No user was found.',
+            },
+            '405': {
+                description: 'Method not allowed.',
             },
             '422': {
                 description: 'Invalid URI format.',
@@ -521,6 +533,9 @@ swaggerSpec.paths['/users/{id}'].patch = {
         '404': {
             description: 'No user was found.',
         },
+        '405': {
+            description: 'Method not allowed.',
+        },
         '409': {
             description: 'Nickname already exists.',
         },
@@ -599,6 +614,9 @@ swaggerSpec.paths['/users/{id}'].delete = {
         },
         '404': {
             description: 'No user was found.',
+        },
+        '405': {
+            description: 'Method not allowed.',
         },
         '422': {
             description: 'Invalid URI format.',
@@ -743,6 +761,9 @@ swaggerSpec.paths['/articles'] = {
                     },
                 },
             },
+            '405': {
+                description: 'Method not allowed.',
+            },
             '409': {
                 description: 'Article with same title already posted.',
             },
@@ -868,6 +889,9 @@ swaggerSpec.paths['/articles'].get = {
                 },
             },
         },
+        '405': {
+            description: 'Method not allowed.',
+        },
         '500': {
             description: 'Server errors.',
             content: {
@@ -981,6 +1005,9 @@ swaggerSpec.paths['/articles/{id}'] = {
                         },
                     },
                 },
+            },
+            '405': {
+                description: 'Method not allowed.',
             },
             '422': {
                 description: 'Invalid URI format.',
@@ -1125,6 +1152,9 @@ swaggerSpec.paths['/articles/user/{userId}'] = {
                         },
                     },
                 },
+            },
+            '405': {
+                description: 'Method not allowed.',
             },
             '422': {
                 description: 'Invalid URI format.',
@@ -1312,6 +1342,9 @@ swaggerSpec.paths['/articles/{id}'].patch = {
                 },
             },
         },
+        '405': {
+            description: 'Method not allowed.',
+        },
         '409': {
             description: 'Article with same title already posted.',
         },
@@ -1400,6 +1433,9 @@ swaggerSpec.paths['/articles/{id}'].delete = {
         '404': {
             description: 'No article was found.',
         },
+        '405': {
+            description: 'Method not allowed.',
+        },
         '422': {
             description: 'Invalid URI format.',
         },
@@ -1454,6 +1490,9 @@ swaggerSpec.paths['/admins/delete_all_users'] = {
             '404': {
                 description: 'No user was found.',
             },
+            '405': {
+                description: 'Method not allowed.',
+            },
             '500': {
                 description: 'Server errors.',
                 content: {
@@ -1501,6 +1540,9 @@ swaggerSpec.paths['/admins/delete_all_articles'] = {
             },
             '404': {
                 description: 'No article was found.',
+            },
+            '405': {
+                description: 'Method not allowed.',
             },
             '500': {
                 description: 'Server errors.',
@@ -1570,6 +1612,9 @@ swaggerSpec.paths['/admins/delete_all_articles/{id}'] = {
                         },
                     },
                 },
+            },
+            '405': {
+                description: 'Method not allowed.',
             },
             '422': {
                 description: 'Invalid URI format.',
@@ -1649,6 +1694,9 @@ swaggerSpec.paths['admins/invert_user_role/:id'] = {
             },
             '404': {
                 description: 'User not found.',
+            },
+            '405': {
+                description: 'Method not allowed.',
             },
             '422': {
                 description: 'Incorrect query due to invalid URI or data.',
