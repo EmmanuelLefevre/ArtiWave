@@ -1522,6 +1522,9 @@ swaggerSpec.paths['/admins/delete_all_articles'] = {
     },
 };
 
+/*=== DELETE ALL ARTICLES BY USER ===*/
+
+
 /*=== INVERT USER ROLE ===*/
 swaggerSpec.paths['admins/invert_user_role/:id'] = {
     patch: {
