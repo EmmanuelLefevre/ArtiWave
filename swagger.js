@@ -1599,6 +1599,7 @@ swaggerSpec.paths['admins/upgrade_user_role/:id'] = {
                                 { $ref: '#/components/schemas/InternalServerError' },
                                 { $ref: '#/components/schemas/DatabaseError' },
                                 { $ref: '#/components/schemas/ValidationResponseError' },
+                                { $ref: '#/components/schemas/CreationResponseObjectError' },
                             ],
                         },
                     },
