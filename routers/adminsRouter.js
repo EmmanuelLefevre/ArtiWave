@@ -52,7 +52,7 @@ router.delete('/delete_all_articles',
 
 
 /*=== UPGRADE USER ROLE ===*/
-router.patch('/upgrade_user-role/:id',
+router.patch('/upgrade_user_role/:id',
     jwtCheck,
     validateURIParam('id'),
     async (req, res) => {
