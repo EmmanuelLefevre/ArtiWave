@@ -22,15 +22,6 @@ const registerLimiter = rateLimiter({
     legacyHeaders: false
 })
 
-/*=== LOGIN LIMITER ===*/
-const loginLimiter = rateLimiter({
-    max: 5,
-    windowMs: 60 * 60 * 1000, // 1 hour
-    message:"The number of connection attempts is limited to 5 per hour!",
-    standartHeaders: false,
-    legacyHeaders: false
-})
-
 /*=== CREATE ARTICLE LIMITER ===*/
 const createArticleLimiter = rateLimiter({
     max: 5,
@@ -45,6 +36,5 @@ const createArticleLimiter = rateLimiter({
 module.exports = {
     requestsLimiter,
     registerLimiter,
-    loginLimiter,
     createArticleLimiter
 };

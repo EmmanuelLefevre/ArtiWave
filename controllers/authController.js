@@ -12,15 +12,36 @@ const { userTokenResponseValidation } = require('../_validation/responses/userRe
 /*============ AUTHENTIFICATION ============*/
 
 /*=== LOGIN ===*/
+// Counter for login failed
+let failedLoginAttempts = 0;
+// Store timestamp of last failed login attempt
+let lastFailedLoginDate = null;
+
 exports.login = async (req, res) => {
     // Extract email && password properties from request
     const { email, password } = req.body;
 
     try {
+        if (lastFailedLoginDate && failedLoginAttempts >= 5) {
+            const currentTime = new Date();
+            const timeDiff = currentTime - lastFailedLoginDate;
+
+            // Block attempts for one hour
+            if (timeDiff < 60 * 60 * 1000) {
+                return ErrorHandler.sendLoginLimiterError(res, true);
+            } else {
+                // Reset counter after one hour
+                failedLoginAttempts = 0;
+            }
+        }
+
         // Check if user exists
         let user = await User.findOne({ email: email }).exec();
 
         if (user === null) {
+            failedLoginAttempts++;
+            lastFailedLoginDate = new Date();
+
             return res.status(404).json({ message: 'This account does not exists!'})
         }
 
@@ -34,8 +55,14 @@ exports.login = async (req, res) => {
         });
 
         if (!passwordMatch) {
+            failedLoginAttempts++;
+            lastFailedLoginDate = new Date();
+
             return res.status(401).json({ message: 'Wrong password!'});
         }
+
+        // Reset counter when success login
+        failedLoginAttempts = 0;
 
         // JWT generation
         const privateKeyPath = process.env.PRIVATE_KEY_PATH;

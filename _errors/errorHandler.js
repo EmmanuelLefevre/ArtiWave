@@ -47,6 +47,12 @@ class ErrorHandler {
             return res.status(500).json({ message: 'Creation Response Object Error!', error: error.message });
         }
     }
+
+    static sendLoginLimiterError(res, error) {
+        if (error) {
+            return res.status(429).json({ message: 'The number of connection attempts is limited to 5 per hour!' });
+        }
+    }
 }
 
 
