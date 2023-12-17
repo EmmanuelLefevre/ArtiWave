@@ -78,6 +78,12 @@ exports.deleteAllArticlesByUser = async (req, res) => {
             return ErrorHandler.handleUserNotFound(res);
         }
 
+        // No articles to delete
+        const articlesToDelete = await Article.find({ author: userId });
+        if (articlesToDelete.length === 0) {
+            return ErrorHandler.handleArticleNotFound(res);
+        }
+
         await Article.deleteMany({ author: userId });
 
         return res.sendStatus(204);
