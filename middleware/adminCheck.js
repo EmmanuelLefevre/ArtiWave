@@ -42,7 +42,7 @@ const adminCheck = (req, res, next) => {
                 next();
             }
             else {
-                return ErrorHandler.permissionDenied(res, err);
+                return ErrorHandler.handleUserPermissionDenied(res, err);
             }
         });
     }
