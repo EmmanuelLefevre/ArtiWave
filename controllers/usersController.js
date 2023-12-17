@@ -128,7 +128,7 @@ exports.getAllUsers = async (req, res) => {
 
 /*=== GET SINGLE USER ===*/
 exports.getUser = async (req, res) => {
-    let userId = req.params.id;
+    const userId = req.params.id;
 
     try {
         let user = await User.findById(userId);
@@ -179,7 +179,7 @@ exports.getUser = async (req, res) => {
 
 /*=== UPDATE USER ===*/
 exports.updateUser = async (req, res) => {
-    let userId = req.params.id;
+    const userId = req.params.id;
 
     try {
         let user = await User.findById(userId);
@@ -282,7 +282,7 @@ exports.updateUser = async (req, res) => {
 
 /*=== DELETE USER ===*/
 exports.deleteUser =  async (req, res) => {
-    let userId = req.params.id;
+    const userId = req.params.id;
 
     try {
         let user = await User.findById(userId);
