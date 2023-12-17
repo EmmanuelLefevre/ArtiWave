@@ -1549,7 +1549,7 @@ swaggerSpec.paths['admins/invert_user_role/:id'] = {
         ],
         responses: {
             '200': {
-                description: 'User inverted successfully.',
+                description: 'User role inverted successfully.',
                 content: {
                     'application/json': {
                         schema: {
