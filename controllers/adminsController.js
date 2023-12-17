@@ -3,6 +3,8 @@ const User = require('../_models/IUser');
 const Article = require('../_models/IArticle');
 const ErrorHandler = require('../_errors/errorHandler');
 
+const { upgradeRoleResponseValidation } = require('../_validation/responses/upgradeRoleResponseValidation');
+
 
 /*============ ADMINS ============*/
 
@@ -65,7 +67,34 @@ exports.upgradeUserRole = async (req, res) => {
         // Set roles on certified
         await User.updateOne({ _id: userId }, { $set: { roles: 'certified' } });
 
-        return res.status(200).json({ message: "User upgraded to certified!" });
+        // Fetch the updated user by its ID
+        const updatedUser = await User.findById(userId);
+
+        // Set response and determine the response validation schema
+        const responseObject = {
+            data: [
+                {
+                    _id: user._id,
+                    nickname: user.nickname,
+                    roles: updatedUser.roles
+                }
+            ]
+        };
+
+        // Add message property to the responseObject
+        const message = "User upgraded to certified!";
+        responseObject.message = message;
+
+        // Validate response format
+        try {
+            await upgradeRoleResponseValidation.validate(responseObject, { abortEarly: false });
+        }
+        catch (validationError) {
+            return ErrorHandler.sendValidationResponseError(res, validationError);
+        }
+
+        // Return updated user
+        return res.status(200).json(responseObject);
     }
     catch (err) {
         return ErrorHandler.sendDatabaseError(res, err);
