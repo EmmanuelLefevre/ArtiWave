@@ -22,7 +22,7 @@ exports.createArticle = async (req, res) => {
         // Check if user exists
         const existingUser = await User.findById(req.userId);
         if (!existingUser) {
-            return ErrorHandler.handleUserNotFound(res, err);
+            return ErrorHandler.handleUserNotFound(res);
         }
 
         // Create Article model instance
@@ -180,7 +180,7 @@ exports.getArticlesByUser = async (req, res) => {
         const existingUser = await User.findById(userId);
 
         if (!existingUser) {
-            return ErrorHandler.handleUserNotFound(res, err);
+            return ErrorHandler.handleUserNotFound(res);
         }
 
         // Count articles for user
