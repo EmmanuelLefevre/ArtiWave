@@ -58,7 +58,7 @@ exports.login = async (req, res) => {
             failedLoginAttempts++;
             lastFailedLoginDate = new Date();
 
-            return res.status(401).json({ message: 'Wrong password!'});
+            return res.status(401).json({ message: 'Bad credentials!'});
         }
 
         // Reset counter when success login
