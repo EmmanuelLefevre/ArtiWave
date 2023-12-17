@@ -78,7 +78,7 @@ exports.register = async (req, res) => {
 /*=== GET ALL USERS ===*/
 exports.getAllUsers = async (req, res) => {
     try {
-        let users = await User.find({}, 'id email nickname registeredAt updatedAt');
+        let users = await User.find({}, 'id email nickname roles registeredAt updatedAt');
 
         if (users === 0) {
             return ErrorHandler.handleUserNotFound(res);
@@ -349,6 +349,7 @@ const createResponseUserObject = (user, userRole) => {
                     _id: user._id,
                     email: user.email,
                     nickname: user.nickname,
+                    roles: user.roles,
                     registeredAt: user.registeredAt,
                     updatedAt: user.updatedAt
                 };

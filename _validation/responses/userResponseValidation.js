@@ -26,6 +26,7 @@ const userResponseValidationRoleAdmin = object({
     _id: string().matches(/^[0-9a-fA-F]{24}$/).required(),
     email: string().required(),
     nickname: string().required(),
+    roles: string().required(),
     registeredAt: string().required(),
     updatedAt: string().required()
 });
