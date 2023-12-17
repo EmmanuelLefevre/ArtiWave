@@ -64,11 +64,17 @@ exports.invertUserRole = async (req, res) => {
             return ErrorHandler.handleUserNotFound(res);
         }
 
+        // Check current user's role
+        let newRole = (user.roles === 'user') ? 'certified' : 'user';
+
         // Set roles on certified
-        await User.updateOne({ _id: userId }, { $set: { roles: 'certified' } });
+        await User.updateOne({ _id: userId }, { $set: { roles: newRole  } });
 
         // Fetch the updated user by its ID
         const updatedUser = await User.findById(userId);
+
+        // Set message on new role
+        const message = (newRole === 'certified') ? "User upgraded to certified role!" : "User downgraded to user role!";
 
         // Set response and determine the response validation schema
         const responseObject = {
@@ -78,12 +84,9 @@ exports.invertUserRole = async (req, res) => {
                     nickname: user.nickname,
                     roles: updatedUser.roles
                 }
-            ]
+            ],
+            message: message
         };
-
-        // Add message property to the responseObject
-        const message = "User upgraded to certified!";
-        responseObject.message = message;
 
         // Validate response format
         try {
