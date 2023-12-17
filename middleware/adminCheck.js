@@ -35,6 +35,9 @@ const adminCheck = (req, res, next) => {
                 return res.status(401).json({message: 'False token!'});
             }
 
+            // Set userId from JWT in request object
+            req.userId = decodedToken.id;
+
             // Check if admin role exists in JWT
             req.isAdmin = decodedToken.roles && decodedToken.roles === 'admin';
 
