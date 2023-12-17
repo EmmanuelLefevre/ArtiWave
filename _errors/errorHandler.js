@@ -5,6 +5,11 @@ class ErrorHandler {
         return res.status(400).json({ message: 'Unknown user role!' });
     }
 
+    // 403 errors
+    static permissionDenied(res) {
+        return res.status(403).json({ message: 'Permission denied!' });
+    }
+
     // 404 errors
     static handleUserNotFound(res) {
         return res.status(404).json({ message: 'No user was found!' });

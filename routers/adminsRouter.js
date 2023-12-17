@@ -4,8 +4,6 @@ const { validationResult } = require('express-validator');
 
 const adminsController = require('../controllers/adminsController');
 
-const jwtCheck = require('../middleware/jwtCheck');
-
 const ErrorHandler = require('../_errors/errorHandler');
 const ValidationErrorHandler = require('../_validation/validationErrorHandler');
 const validateURIParam = require('../_validation/URI/validateURIParam');
@@ -25,7 +23,6 @@ router.use(adminsLogs);
 
 /*=== DELETE ALL USERS ===*/
 router.delete('/delete_all_users',
-    jwtCheck,
     async (req, res) => {
 
     try {
@@ -39,7 +36,6 @@ router.delete('/delete_all_users',
 
 /*=== DELETE ALL ARTICLES ===*/
 router.delete('/delete_all_articles',
-    jwtCheck,
     async (req, res) => {
 
     try {
@@ -53,7 +49,6 @@ router.delete('/delete_all_articles',
 
 /*=== INVERT USER ROLE ===*/
 router.patch('/invert_user_role/:id',
-    jwtCheck,
     validateURIParam('id'),
     async (req, res) => {
 

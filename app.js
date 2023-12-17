@@ -4,14 +4,15 @@ const cors = require('cors');
 const helmet = require('helmet');
 const sassMiddleware = require('node-sass-middleware');
 
+const { requestsLimiter } = require('./middleware/rateLimiter');
+const adminCheck = require('./middleware/adminCheck');
+const connectDB = require('./db.config');
+
 const swaggerSpec = require('./swagger');
 const swaggerUi = require('swagger-ui-express');
 
 const path = require('path');
 const open = require('better-opn');
-
-const { requestsLimiter } = require('./middleware/rateLimiter');
-const connectDB = require('./db.config');
 
 const favicon = require('serve-favicon');
 
@@ -90,7 +91,7 @@ app.use('/users', users_router);
 app.use('/articles', articles_router);
 
 /*=== ADMINS ===*/
-app.use('/admins', admins_router);
+app.use('/admins', adminCheck, admins_router);
 
 /*=== 404 ===*/
 app.get('*', (_req, res) => res.status(404).send('What the hell are you doing!!?'));

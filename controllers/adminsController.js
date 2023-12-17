@@ -10,10 +10,6 @@ const { invertRoleResponseValidation } = require('../_validation/responses/inver
 
 /*=== DELETE ALL USERS ===*/
 exports.deleteAllUsers = async (req, res) => {
-    // Check if user has admin role
-    if (!req.isAdmin) {
-        return res.status(403).json({ message: "Permission denied!" });
-    }
 
     try {
         // Delete all users except admin
@@ -32,10 +28,6 @@ exports.deleteAllUsers = async (req, res) => {
 
 /*=== DELETE ALL ARTICLES ===*/
 exports.deleteAllArticles = async (req, res) => {
-    // Check if user has admin role
-    if (!req.isAdmin) {
-        return res.status(403).json({ message: "Permission denied!" });
-    }
 
     try {
         // Delete all articles except those from admin
@@ -50,11 +42,6 @@ exports.deleteAllArticles = async (req, res) => {
 
 /*=== INVERT USER ROLE ===*/
 exports.invertUserRole = async (req, res) => {
-    // Check if user has admin role
-    if (!req.isAdmin) {
-        return res.status(403).json({ message: "Permission denied!" });
-    }
-
     let userId = req.params.id;
 
     try {

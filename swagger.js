@@ -1451,9 +1451,6 @@ swaggerSpec.paths['/admins/delete_all_users'] = {
                     },
                 },
             },
-            '403': {
-                description: 'Permission denied.',
-            },
             '500': {
                 description: 'Server errors.',
                 content: {
@@ -1498,9 +1495,6 @@ swaggerSpec.paths['/admins/delete_all_articles'] = {
                         },
                     },
                 },
-            },
-            '403': {
-                description: 'Permission denied.',
             },
             '404': {
                 description: 'No user was found.',
@@ -1580,9 +1574,6 @@ swaggerSpec.paths['admins/invert_user_role/:id'] = {
                         },
                     },
                 },
-            },
-            '403': {
-                description: 'Permission denied.',
             },
             '404': {
                 description: 'User not found.',
@@ -1695,15 +1686,6 @@ swaggerSpec.components = {
                 error: {
                     type: 'string',
                     example: 'Premium functionality.',
-                },
-            },
-        },
-        PermissionDenied: {
-            type: 'object',
-            properties: {
-                error: {
-                    type: 'string',
-                    example: 'Permission denied.',
                 },
             },
         },
