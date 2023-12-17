@@ -1778,7 +1778,7 @@ swaggerSpec.components = {
                     example: 'Error retrieving user\'s nickname.',
                 },
             },
-        }
+        },
         // 409
         EmailNicknameAlreadyExists: {
             type: 'object',
