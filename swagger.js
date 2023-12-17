@@ -737,7 +737,7 @@ swaggerSpec.paths['/articles'] = {
                         schema: {
                             oneOf: [
                                 { $ref: '#/components/schemas/NoUserFound' },
-                                { $ref: '#/components/schemas/NoNicknameFound' },
+                                { $ref: '#/components/schemas/NoUserInfoFound' },
                             ],
                         },
                     },
@@ -862,7 +862,7 @@ swaggerSpec.paths['/articles'].get = {
                     schema: {
                         oneOf: [
                             { $ref: '#/components/schemas/NoUserFound' },
-                            { $ref: '#/components/schemas/NoNicknameFound' },
+                            { $ref: '#/components/schemas/NoUserInfoFound' },
                         ],
                     },
                 },
@@ -976,7 +976,7 @@ swaggerSpec.paths['/articles/{id}'] = {
                         schema: {
                             oneOf: [
                                 { $ref: '#/components/schemas/NoUserFound' },
-                                { $ref: '#/components/schemas/NoNicknameFound' },
+                                { $ref: '#/components/schemas/NoUserInfoFound' },
                             ],
                         },
                     },
@@ -1120,7 +1120,7 @@ swaggerSpec.paths['/articles/user/{userId}'] = {
                             oneOf: [
                                 { $ref: '#/components/schemas/NoUserFound' },
                                 { $ref: '#/components/schemas/NoArticleFound' },
-                                { $ref: '#/components/schemas/NoNicknameFound' },
+                                { $ref: '#/components/schemas/NoUserInfoFound' },
                             ],
                         },
                     },
@@ -1306,7 +1306,7 @@ swaggerSpec.paths['/articles/{id}'].patch = {
                     schema: {
                         oneOf: [
                             { $ref: '#/components/schemas/NoArticleFound' },
-                            { $ref: '#/components/schemas/NoNicknameFound' },
+                            { $ref: '#/components/schemas/NoUserInfoFound' },
                         ],
                     },
                 },
@@ -1770,12 +1770,12 @@ swaggerSpec.components = {
                 },
             },
         },
-        NoNicknameFound: {
+        NoUserInfoFound: {
             type: 'object',
             properties: {
                 error: {
                     type: 'string',
-                    example: 'Error retrieving user\'s nickname.',
+                    example: 'Error retrieving user\'s info.',
                 },
             },
         },
