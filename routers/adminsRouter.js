@@ -51,8 +51,8 @@ router.delete('/delete_all_articles',
 });
 
 
-/*=== UPGRADE USER ROLE ===*/
-router.patch('/upgrade_user_role/:id',
+/*=== INVERT USER ROLE ===*/
+router.patch('/invert_user_role/:id',
     jwtCheck,
     validateURIParam('id'),
     async (req, res) => {
@@ -64,7 +64,7 @@ router.patch('/upgrade_user_role/:id',
             return ValidationErrorHandler.handle(res, errors);
         }
 
-        await adminsController.upgradeUserRole(req, res);
+        await adminsController.invertUserRole(req, res);
     }
     catch (err) {
         return ErrorHandler.sendInternalServerError(res, err);

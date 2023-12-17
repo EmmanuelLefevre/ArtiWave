@@ -1525,11 +1525,11 @@ swaggerSpec.paths['/admins/delete_all_articles'] = {
     },
 };
 
-/*=== UPGRADE USER ROLE ===*/
-swaggerSpec.paths['admins/upgrade_user_role/:id'] = {
+/*=== INVERT USER ROLE ===*/
+swaggerSpec.paths['admins/invert_user_role/:id'] = {
     patch: {
-        summary: 'Upgrade user to certified.',
-        description: 'Upgrade the user\'s role to certified.',
+        summary: 'Invert user role.',
+        description: 'Invert the user\'s role "certified" to "user" or "user" to "certified".',
         tags: ['Admins'],
         security: [
             {
@@ -1549,7 +1549,7 @@ swaggerSpec.paths['admins/upgrade_user_role/:id'] = {
         ],
         responses: {
             '200': {
-                description: 'User upgraded successfully.',
+                description: 'User inverted successfully.',
                 content: {
                     'application/json': {
                         schema: {

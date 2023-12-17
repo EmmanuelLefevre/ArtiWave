@@ -3,7 +3,7 @@ const User = require('../_models/IUser');
 const Article = require('../_models/IArticle');
 const ErrorHandler = require('../_errors/errorHandler');
 
-const { upgradeRoleResponseValidation } = require('../_validation/responses/upgradeRoleResponseValidation');
+const { invertRoleResponseValidation } = require('../_validation/responses/invertRoleResponseValidation');
 
 
 /*============ ADMINS ============*/
@@ -48,8 +48,8 @@ exports.deleteAllArticles = async (req, res) => {
     }
 }
 
-/*=== UPGRADE USER ROLE ===*/
-exports.upgradeUserRole = async (req, res) => {
+/*=== INVERT USER ROLE ===*/
+exports.invertUserRole = async (req, res) => {
     // Check if user has admin role
     if (!req.isAdmin) {
         return res.status(403).json({ message: "Permission denied!" });
@@ -87,7 +87,7 @@ exports.upgradeUserRole = async (req, res) => {
 
         // Validate response format
         try {
-            await upgradeRoleResponseValidation.validate(responseObject, { abortEarly: false });
+            await invertRoleResponseValidation.validate(responseObject, { abortEarly: false });
         }
         catch (validationError) {
             return ErrorHandler.sendValidationResponseError(res, validationError);
