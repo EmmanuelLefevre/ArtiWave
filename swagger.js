@@ -1451,6 +1451,9 @@ swaggerSpec.paths['/admins/delete_all_users'] = {
                     },
                 },
             },
+            '404': {
+                description: 'No user was found.',
+            },
             '500': {
                 description: 'Server errors.',
                 content: {
@@ -1497,7 +1500,7 @@ swaggerSpec.paths['/admins/delete_all_articles'] = {
                 },
             },
             '404': {
-                description: 'No user was found.',
+                description: 'No article was found.',
             },
             '422': {
                 description: 'Invalid URI format.',
