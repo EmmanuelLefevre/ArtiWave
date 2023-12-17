@@ -1502,6 +1502,75 @@ swaggerSpec.paths['/admins/delete_all_articles'] = {
             '404': {
                 description: 'No article was found.',
             },
+            '500': {
+                description: 'Server errors.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            oneOf: [
+                                { $ref: '#/components/schemas/InternalServerError' },
+                                { $ref: '#/components/schemas/DatabaseError' },
+                            ],
+                        },
+                    },
+                },
+            },
+        },
+    },
+};
+
+/*=== DELETE ALL ARTICLES BY USER ===*/
+swaggerSpec.paths['/admins/delete_all_articles/{id}'] = {
+    delete: {
+        summary: 'Delete all articles owned by a single user',
+        description: 'Delete all articles owned by a single user.',
+        tags: ['Admins'],
+        security: [
+            {
+                bearerAuth: [],
+            },
+        ],
+        parameters: [
+            {
+                in: 'path',
+                name: 'id',
+                required: true,
+                description: 'User Id',
+                schema: {
+                    type: 'string',
+                },
+            },
+        ],
+        responses: {
+            '204': {
+                description: 'All articles own by user have been deleted successfully.',
+            },
+            '401': {
+                description: 'Authorization errors.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            oneOf: [
+                                { $ref: '#/components/schemas/NoToken' },
+                                { $ref: '#/components/schemas/FalseToken' },
+                            ],
+                        },
+                    },
+                },
+            },
+            '404': {
+                description: 'Not found errors.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            oneOf: [
+                                { $ref: '#/components/schemas/NoUserFound' },
+                                { $ref: '#/components/schemas/NoArticleFound' },
+                            ],
+                        },
+                    },
+                },
+            },
             '422': {
                 description: 'Invalid URI format.',
             },
@@ -1521,9 +1590,6 @@ swaggerSpec.paths['/admins/delete_all_articles'] = {
         },
     },
 };
-
-/*=== DELETE ALL ARTICLES BY USER ===*/
-
 
 /*=== INVERT USER ROLE ===*/
 swaggerSpec.paths['admins/invert_user_role/:id'] = {
