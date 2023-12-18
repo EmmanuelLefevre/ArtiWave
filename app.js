@@ -6,7 +6,10 @@ const sassMiddleware = require('node-sass-middleware');
 
 const { requestsLimiter } = require('./middleware/rateLimiter');
 const adminCheck = require('./middleware/adminCheck');
+const allowedCurrentMethodCheck = require('./middleware/allowedCurrentMethodCheck');
 const connectDB = require('./db.config');
+
+const ErrorHandler = require('./_errors/errorHandler');
 
 const swaggerSpec = require('./swagger');
 const swaggerUi = require('swagger-ui-express');
@@ -31,11 +34,18 @@ app.use((_req, res, next) => {
 });
 
 /*=== CORS ===*/
-app.use(cors({
-	origin: "http://localhost:9000",
-	methods: ['GET', 'POST', 'PATCH', 'DELETE'],
-	allowedHeaders: "Origin, X-Requested-With, x-access-token, role, Content, Accept, Content-Type, Authorization"
-}));
+app.use((req, res, next) => {
+	if (req.method === 'OPTIONS' || req.method === 'HEAD') {
+		return ErrorHandler.sendCurrentMethodNotAllowedError(res);
+	}
+	else {
+		cors({
+			origin: "http://localhost:9000",
+			methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+			allowedHeaders: "Origin, X-Requested-With, x-access-token, role, Content, Accept, Content-Type, Authorization"
+		})(req, res, next);
+	}
+});
 
 /*=== SWAGGER ===*/
 app.use('/swagger-doc', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
