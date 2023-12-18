@@ -23,6 +23,11 @@ class ErrorHandler {
         return res.status(404).json({ message: 'Error retrieving user\'s info!' });
     }
 
+    // 405 errors
+    static sendCurrentMethodNotAllowedError(res) {
+        return res.status(405).json({ message: 'Method Not Allowed!' });
+    }
+
     // 429 errors
     static sendLoginLimiterError(res, error) {
         if (error) {
