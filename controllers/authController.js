@@ -36,7 +36,7 @@ exports.login = async (req, res) => {
         }
 
         // Check if user exists
-        let user = await User.findOne({ email: email }).exec();
+        let user = await User.findOne({ email: email });
 
         if (user === null) {
             failedLoginAttempts++;
