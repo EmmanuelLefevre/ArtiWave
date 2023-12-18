@@ -6,7 +6,6 @@ const sassMiddleware = require('node-sass-middleware');
 
 const { requestsLimiter } = require('./middleware/rateLimiter');
 const adminCheck = require('./middleware/adminCheck');
-const allowedCurrentMethodCheck = require('./middleware/allowedCurrentMethodCheck');
 const connectDB = require('./db.config');
 
 const ErrorHandler = require('./_errors/errorHandler');
