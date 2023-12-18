@@ -73,9 +73,6 @@ swaggerSpec.paths['/login'] = {
             '401': {
                 description: 'Bad credentials.',
             },
-            '404': {
-                description: 'This account does not exists.',
-            },
             '405': {
                 description: 'Method not allowed.',
             },
