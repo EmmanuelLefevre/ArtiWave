@@ -3,6 +3,7 @@ const express = require('express');
 const { validationResult } = require('express-validator');
 
 const articlesController = require('../controllers/articlesController');
+const allowedCurrentMethodCheck = require('../middleware/allowedCurrentMethodCheck');
 
 const { createArticleLimiter } = require('../middleware/rateLimiter');
 const jwtCheck = require('../middleware/jwtCheck');
@@ -28,171 +29,182 @@ router.use(articlesLogs);
 /*============ ROUTES FOR ARTICLES ============*/
 
 /*=== CREATE ARTICLE ===*/
-router.post('/', [
-    jwtCheck,
-    premiumCheck,
-    articleValidationRules(),
-    createArticleLimiter,
-    (req, res, next) => {
+router.route('/')
+    .all(allowedCurrentMethodCheck(['POST']))
+    .post([
+        jwtCheck,
+        premiumCheck,
+        articleValidationRules(),
+        createArticleLimiter,
+        (req, res, next) => {
+            try {
+                // Check presence of data title && content
+                const { title, content } = req.body;
 
-        try {
-            // Check presence of data title && content
-            const { title, content } = req.body;
+                if (!title || !content ) {
+                    return res.status(400).json({ message: 'Invalid request!' });
+                }
 
-            if (!title || !content ) {
-                return res.status(400).json({ message: 'Invalid request!' });
+                // Pass to validation middleware
+                next();
             }
+            catch (err) {
+                return ErrorHandler.sendInternalServerError(res, err);
+            }
+        },
+        async (req, res) => {
+            try {
+                const errors = validationResult(req);
 
-            // Pass to validation middleware
-            next();
-        }
-        catch (err) {
-            return ErrorHandler.sendInternalServerError(res, err);
-        }
-    }
-], async (req, res) => {
-    try {
-        const errors = validationResult(req);
+                if (!errors.isEmpty()) {
+                    return ValidationErrorHandler.handle(res, errors);
+                }
 
-        if (!errors.isEmpty()) {
-            return ValidationErrorHandler.handle(res, errors);
+                await articlesController.createArticle(req, res);
+            }
+            catch (err) {
+                return ErrorHandler.sendInternalServerError(res, err);
+            }
         }
-
-        await articlesController.createArticle(req, res);
-    }
-    catch (err) {
-        return ErrorHandler.sendInternalServerError(res, err);
-    }
-});
+    ]);
 
 
 /*=== GET ALL ARTICLES ===*/
-router.get('/',
-    jwtCheck,
-    async (req, res) => {
-
-    try {
-        await articlesController.getAllArticles(req, res);
-    }
-    catch (err) {
-        return ErrorHandler.sendInternalServerError(res, err);
-    }
-});
+router.route('/')
+    .all(allowedCurrentMethodCheck(['GET']))
+    .get([
+        jwtCheck,
+        async (req, res) => {
+            try {
+                await articlesController.getAllArticles(req, res);
+            }
+            catch (err) {
+                return ErrorHandler.sendInternalServerError(res, err);
+            }
+        }
+    ]);
 
 
 /*=== GET SINGLE ARTICLE ===*/
-router.get('/:id',
-    jwtCheck,
-    validateURIParam('id'),
-    async (req, res) => {
+router.route('/:id')
+    .all(allowedCurrentMethodCheck(['GET']))
+    .get([
+        jwtCheck,
+        validateURIParam('id'),
+        async (req, res) => {
+            try {
+                const errors = validationResult(req);
 
-    try {
-        const errors = validationResult(req);
+                if (!errors.isEmpty()) {
+                    return ValidationErrorHandler.handle(res, errors);
+                }
 
-        if (!errors.isEmpty()) {
-            return ValidationErrorHandler.handle(res, errors);
+                await articlesController.getArticle(req, res);
+            }
+            catch (err) {
+                return ErrorHandler.sendInternalServerError(res, err);
+            }
         }
-
-        await articlesController.getArticle(req, res);
-    }
-    catch (err) {
-        return ErrorHandler.sendInternalServerError(res, err);
-    }
-});
+    ]);
 
 
 /*=== GET ARTICLES BY USER ===*/
-router.get('/user/:userId',
-    jwtCheck,
-    accountCheck,
-    validateURIParam('userId'),
-    async (req, res) => {
+router.route('/user/:userId')
+    .all(allowedCurrentMethodCheck(['GET']))
+    .get([
+        jwtCheck,
+        accountCheck,
+        validateURIParam('userId'),
+        async (req, res) => {
+            try {
+                const errors = validationResult(req);
 
-    try {
-        const errors = validationResult(req);
+                if (!errors.isEmpty()) {
+                    return ValidationErrorHandler.handle(res, errors);
+                }
 
-        if (!errors.isEmpty()) {
-            return ValidationErrorHandler.handle(res, errors);
+                await articlesController.getArticlesByUser(req, res);
+            }
+            catch (err) {
+                return ErrorHandler.sendInternalServerError(res, err);
+            }
         }
-
-        await articlesController.getArticlesByUser(req, res);
-    }
-    catch (err) {
-        return ErrorHandler.sendInternalServerError(res, err);
-    }
-});
+    ]);
 
 
 
 /*=== UPDATE ARTICLE ===*/
-router.patch('/:id', [
-    jwtCheck,
-    validateURIParam('id'),
-    articleValidationRules(),
-    (req, res, next) => {
+router.route('/:id')
+    .all(allowedCurrentMethodCheck(['PATCH']))
+    .patch([
+        jwtCheck,
+        validateURIParam('id'),
+        articleValidationRules(),
+        (req, res, next) => {
+            try {
+                // Check presence of forbidden paramaters author || createdAt || updatedAt
+                const params = ['author', 'createdAt', 'updatedAt'];
+                const forbiddenParams = Object.keys(req.body).filter(param => params.includes(param));
 
-        try {
-            // Check presence of forbidden paramaters author || createdAt || updatedAt
-            const params = ['author', 'createdAt', 'updatedAt'];
-            const forbiddenParams = Object.keys(req.body).filter(param => params.includes(param));
-
-            if (forbiddenParams.length > 0) {
-                const errorMessage = `These parameters can't be modified: ${forbiddenParams.join(' and ')}`;
-                return res.status(400).json({ message: errorMessage });
-            }
-
-            // Check presence of at least parameter title || content
-            if (req.method === 'PATCH') {
-                const allowedProperties = ['title', 'content'];
-                const isValidUpdate = Object.keys(req.body).some(prop => allowedProperties.includes(prop));
-
-                if (!isValidUpdate) {
-                    return res.status(400).json({ message: 'Invalid request!' });
+                if (forbiddenParams.length > 0) {
+                    const errorMessage = `These parameters can't be modified: ${forbiddenParams.join(' and ')}`;
+                    return res.status(400).json({ message: errorMessage });
                 }
+
+                // Check presence of at least parameter title || content
+                if (req.method === 'PATCH') {
+                    const allowedProperties = ['title', 'content'];
+                    const isValidUpdate = Object.keys(req.body).some(prop => allowedProperties.includes(prop));
+
+                    if (!isValidUpdate) {
+                        return res.status(400).json({ message: 'Invalid request!' });
+                    }
+                }
+
+                // Pass to validation middleware
+                next();
             }
+            catch (err) {
+                return ErrorHandler.sendInternalServerError(res, err);
+            }
+        },
+        async (req, res) => {
+            try {
+                const errors = validationResult(req);
 
-            // Pass to validation middleware
-            next();
+                if (!errors.isEmpty()) {
+                    return ValidationErrorHandler.handle(res, errors);
+                }
+
+                await articlesController.updateArticle(req, res);
+            }
+            catch (err) {
+                return ErrorHandler.sendInternalServerError(res, err);
+            }
         }
-        catch (err) {
-            return ErrorHandler.sendInternalServerError(res, err);
-        }
-    }
-], async (req, res) => {
-    try {
-        const errors = validationResult(req);
-
-        if (!errors.isEmpty()) {
-            return ValidationErrorHandler.handle(res, errors);
-        }
-
-        await articlesController.updateArticle(req, res);
-    }
-    catch (err) {
-        return ErrorHandler.sendInternalServerError(res, err);
-    }
-});
-
+    ]);
 
 /*=== DELETE ARTICLE ===*/
-router.delete('/:id',
-    jwtCheck,
-    validateURIParam('id'),
-    async (req, res) => {
+router.route('/:id')
+    .all(allowedCurrentMethodCheck(['DELETE']))
+    .delete([
+        jwtCheck,
+        validateURIParam('id'),
+        async (req, res) => {
+            try {
+                const errors = validationResult(req);
 
-    try {
-        const errors = validationResult(req);
+                if (!errors.isEmpty()) {
+                    return ValidationErrorHandler.handle(res, errors);
+                }
 
-        if (!errors.isEmpty()) {
-            return ValidationErrorHandler.handle(res, errors);
+                await articlesController.deleteArticle(req, res);
+            }
+            catch (err) {
+                return ErrorHandler.sendInternalServerError(res, err);
+            }
         }
-
-        await articlesController.deleteArticle(req, res);
-    }
-    catch (err) {
-        return ErrorHandler.sendInternalServerError(res, err);
-    }
-});
+    ]);
 
 
 /*============ EXPORT MODULE ============*/
