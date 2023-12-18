@@ -42,7 +42,7 @@ exports.login = async (req, res) => {
             failedLoginAttempts++;
             lastFailedLoginDate = new Date();
 
-            return res.status(404).json({ message: 'This account does not exists!'})
+            return res.status(401).json({ message: 'Bad credentials!'})
         }
 
         // Password check
