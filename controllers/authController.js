@@ -42,6 +42,8 @@ exports.login = (req, res) => {
                 .then(response => {
                     // Reset counter when login is successful
                     failedLoginAttempts = 0;
+
+                    // Send response
                     resolve(res.status(200).json(response));
                 })
                 .catch(err => {
