@@ -18,14 +18,16 @@ class UserRepository {
                 .then(user => {
                     if (!user) {
                         reject(new UserNotFoundError());
-                    } else {
+                    }
+					else {
                         resolve(user);
                     }
                 })
                 .catch(err => {
                     if (err instanceof UserNotFoundError) {
                         reject(err);
-                    } else {
+                    }
+					else {
                         reject(new InternalServerError());
                     }
                 });
