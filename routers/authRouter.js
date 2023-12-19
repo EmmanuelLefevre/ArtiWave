@@ -10,8 +10,10 @@ const { validationResult } = require('express-validator');
 const authController = require('../controllers/authController');
 const allowedCurrentMethodCheck = require('../middleware/allowedCurrentMethodCheck');
 
-const ErrorHandler = require('../_errors/errorHandler');
-const ValidationErrorHandler = require('../_validation/validationErrorHandler');
+const InternalServerError = require('../_errors/internalServerError');
+const InvalidRequestError = require('../_errors/invalidRequestError');
+const ValidationError = require('../_errors/validationError');
+
 const userValidationRule = require('../_validation/validators/userValidator');
 
 const { authLogs } = require('../_logs/auth/authLogger');
@@ -38,14 +40,19 @@ router.route('/')
                 const { email, password } = req.body;
 
                 if (!email || !password ) {
-                    return res.status(400).json({ message: 'Invalid request!' });
+                    throw new InvalidRequestError();
                 }
 
                 // Pass to validation middleware
                 next();
             }
             catch (err) {
-                return ErrorHandler.sendInternalServerError(res, err);
+                if (err instanceof InvalidRequestError) {
+                    return res.status(err.statusCode).json({ message: err.message });
+                }
+                else {
+                    throw new Error('Unexpected Error!');
+                }
             }
         },
         async (req, res) => {
@@ -53,13 +60,18 @@ router.route('/')
                 const errors = validationResult(req);
 
                 if (!errors.isEmpty()) {
-                    return ValidationErrorHandler.handle(res, errors);
+                    throw new ValidationError(errors.array(), 422);
                 }
 
                 await authController.login(req, res);
             }
             catch (err) {
-                return ErrorHandler.sendInternalServerError(res, err);
+                if (err instanceof ValidationError)
+
+                    return res.status(err.statusCode).json(err.getErrorResponse());
+                else {
+                    throw new Error('Unexpected Error!');
+                }
             }
         }
     ]);
