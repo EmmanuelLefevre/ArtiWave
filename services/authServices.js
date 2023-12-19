@@ -20,67 +20,64 @@ const UserNotFoundError = require('../_errors/userNotFoundError');
 
 /*============ AUTHENTIFICATION SERVICE ============*/
 class AuthService {
-	static async login(email, password) {
+    static login(email, password) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                // Use the repository to find the user by email
+                const user = await UserRepository.findUserByEmail(email);
 
-		try {
-			// Use the repository to find the user by email
-			const user = await UserRepository.findUserByEmail(email);
+                // Password check
+                const timeCost = parseInt(process.env.ARGON2_TIME_COST);
+                const memoryCost = parseInt(process.env.ARGON2_MEMORY_COST);
 
-			if (err instanceof UserNotFoundError) {
-				throw new BadCredentialsError();
-			}
+                let passwordMatch = await argon2.verify(user.password, password, {
+                    timeCost: timeCost,
+                    memoryCost: memoryCost
+                });
 
-			// Password check
-			const timeCost = parseInt(process.env.ARGON2_TIME_COST);
-			const memoryCost = parseInt(process.env.ARGON2_MEMORY_COST);
+                if (!passwordMatch) {
+                    reject(new BadCredentialsError());
+                }
 
-			let passwordMatch = await argon2.verify(user.password, password, {
-				timeCost: timeCost,
-				memoryCost: memoryCost
-			});
+                // JWT generation
+                const privateKeyPath = process.env.PRIVATE_KEY_PATH;
+                const privateKey = fs.readFileSync(privateKeyPath);
+                const token = jwt.sign({
+                    id: user.id,
+                    roles: user.roles,
+                    nickname: user.nickname,
+                    registeredAt: user.registeredAt
+                }, privateKey, { expiresIn: process.env.JWT_TTL, algorithm: 'RS256' });
 
-			if (!passwordMatch) {
-				throw new BadCredentialsError();
-			}
+                // Set response
+                const response = {
+                    access_token: token,
+                    nickname: user.nickname
+                };
 
-			// JWT generation
-			const privateKeyPath = process.env.PRIVATE_KEY_PATH;
-			const privateKey = fs.readFileSync(privateKeyPath);
-			const token = jwt.sign({
-				id: user.id,
-				roles: user.roles,
-				nickname: user.nickname,
-				registeredAt: user.registeredAt
-			}, privateKey, { expiresIn: process.env.JWT_TTL, algorithm: 'RS256' });
+                // Validate response format
+                try {
+                    await UserTokenResponseValidation.validate(response, { abortEarly: false });
+                } catch (ValidationError) {
+                    reject(new ResponseValidationError());
+                    return;
+                }
 
-			// Set response
-			const response = {
-				access_token: token,
-				nickname: user.nickname
-			};
-
-			// Validate response format
-			try {
-				await UserTokenResponseValidation.validate(response, { abortEarly: false });
-			}
-			catch (ValidationError) {
-				throw new ResponseValidationError('Validation Response Error!', 500);
-			}
-
-			return response;
-		}
-		catch (err) {
-			if (err instanceof BadCredentialsError ||
-				err instanceof UserNotFoundError ||
-				err instanceof ResponseValidationError ||
-				err instanceof InternalServerError) {
-                throw err;
+                resolve(response);
+            } catch (err) {
+				if (err instanceof UserNotFoundError) {
+                    reject(new BadCredentialsError());
+				}
+                else if (err instanceof BadCredentialsError ||
+                    err instanceof ResponseValidationError ||
+                    err instanceof InternalServerError) {
+                    reject(err);
+                } else {
+                    reject(new InternalServerError());
+                }
             }
-			else {
-                throw InternalServerError();
-            }
-		}
-	}
+        });
+    }
 }
 
 

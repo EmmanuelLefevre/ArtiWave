@@ -12,23 +12,25 @@ const UserNotFoundError = require('../_errors/userNotFoundError');
 
 /*============ FIND USER BY EMAIL ============*/
 class UserRepository {
-	static async findUserByEmail(email) {
-		try {
-			const user = await User.findOne({ email: email });
-				if (!user) {
-					throw UserNotFoundError();
-				}
-			return user;
-		}
-		catch (err) {
-			if (err instanceof UserNotFoundError) {
-                throw err;
-            }
-			else {
-                throw InternalServerError();
-            }
-		}
-	}
+    static findUserByEmail(email) {
+        return new Promise((resolve, reject) => {
+            User.findOne({ email: email })
+                .then(user => {
+                    if (!user) {
+                        reject(new UserNotFoundError());
+                    } else {
+                        resolve(user);
+                    }
+                })
+                .catch(err => {
+                    if (err instanceof UserNotFoundError) {
+                        reject(err);
+                    } else {
+                        reject(new InternalServerError());
+                    }
+                });
+        });
+    }
 }
 
 
