@@ -26,7 +26,7 @@ class AuthService {
 			// Use the repository to find the user by email
 			const user = await UserRepository.findUserByEmail(email);
 
-			if (!user) {
+			if (err instanceof UserNotFoundError) {
 				throw new BadCredentialsError();
 			}
 

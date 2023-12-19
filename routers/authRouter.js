@@ -51,7 +51,7 @@ router.route('/')
                     return res.status(err.statusCode).json({ message: err.message });
                 }
                 else {
-                    throw new Error('Unexpected Error!');
+                    throw InternalServerError();
                 }
             }
         },
@@ -73,7 +73,7 @@ router.route('/')
                     return res.status(err.statusCode).json({ message: err.message });
                 }
                 else {
-                    throw new Error('Unexpected Error!');
+                    return new InternalServerError();
                 }
             }
         }
@@ -82,3 +82,68 @@ router.route('/')
 
 /*============ EXPORT MODULE ============*/
 module.exports = router;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// router.route('/')
+// .all(allowedCurrentMethodCheck(['POST']))
+// .post(
+//     userValidationRule,
+//     async (req, res) => {
+//         try {
+//             // Check presence of data email && password
+//             const { email, password } = req.body;
+
+//             if (!email || !password) {
+//                 throw new InvalidRequestError();
+//             }
+
+//             const errors = validationResult(req);
+
+//             if (!errors.isEmpty()) {
+//                 throw new ValidationError(errors.array(), 422);
+//             }
+
+//             await authController.login(req, res);
+//         }
+//         catch (err) {
+//             if (err instanceof InvalidRequestError ||
+//                 err instanceof InternalServerError) {
+//                 return res.status(err.statusCode).json({ message: err.message });
+//             }
+//             else if (err instanceof ValidationError) {
+//                 return res.status(err.statusCode).json(err.getErrorResponse());
+//             }
+//             else {
+//                 return new InternalServerError();
+//             }
+//         }
+//     }
+// );

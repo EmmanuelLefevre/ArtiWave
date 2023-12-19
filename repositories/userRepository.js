@@ -16,7 +16,7 @@ class UserRepository {
 		try {
 			const user = await User.findOne({ email: email });
 				if (!user) {
-					return null;
+					throw UserNotFoundError();
 				}
 			return user;
 		}
