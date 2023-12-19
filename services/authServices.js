@@ -13,7 +13,6 @@ const UserRepository = require('../repositories/userRepository');
 const { UserTokenResponseValidation } = require('../_validation/responses/userResponseValidation');
 
 const BadCredentialsError = require('../_errors/badCredentialsError');
-const ErrorHandler = require('../_errors/errorHandler');
 const ResponseValidationError = require('../_errors/responseValidationError');
 const UserNotFoundError = require('../_errors/userNotFoundError');
 
@@ -56,24 +55,23 @@ class AuthService {
 			// Set response
 			const response = {
 				access_token: token,
-				nickname: user.nickname,
-				role: user.roles
+				nickname: user.nickname
 			};
 
 			// Validate response format
 			try {
 				await UserTokenResponseValidation.validate(response, { abortEarly: false });
 			}
-			catch (validationError) {
-				console.error('Unexpected Error:', validationError);
-				return ErrorHandler.sendValidationResponseError(res, validationError);
+			catch (ValidationError) {
+				throw new ResponseValidationError('Validation Response Error!', 500);
 			}
 
 			return response;
 		}
 		catch (err) {
 			if (err instanceof BadCredentialsError ||
-				err instanceof UserNotFoundError) {
+				err instanceof UserNotFoundError ||
+				err instanceof ResponseValidationError) {
                 throw err;
             }
 			else {
