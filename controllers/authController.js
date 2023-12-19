@@ -31,7 +31,8 @@ exports.login = (req, res) => {
                 // Block attempts for one hour
                 if (timeDiff < 60 * 60 * 1000) {
                     throw new LoginLimiterError();
-                } else {
+                }
+                else {
                     // Reset counter after one hour
                     failedLoginAttempts = 0;
                 }
@@ -48,7 +49,6 @@ exports.login = (req, res) => {
                     lastFailedLoginDate = new Date();
 
                     if (err instanceof BadCredentialsError ||
-                        err instanceof LoginLimiterError ||
                         err instanceof ResponseValidationError ||
                         err instanceof InternalServerError) {
                         reject(res.status(err.statusCode).json({ message: err.message }));
@@ -56,8 +56,14 @@ exports.login = (req, res) => {
                         reject(InternalServerError());
                     }
                 });
-        } catch (err) {
-            reject(InternalServerError());
+        }
+        catch (err) {
+            if (err instanceof LoginLimiterError) {
+                reject(res.status(err.statusCode).json({ message: err.message }));
+            }
+            else {
+                reject(InternalServerError());
+            }
         }
     });
 };
