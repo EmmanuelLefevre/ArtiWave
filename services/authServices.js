@@ -58,7 +58,8 @@ class AuthService {
                 // Validate response format
                 try {
                     await UserTokenResponseValidation.validate(response, { abortEarly: false });
-                } catch (ValidationError) {
+                }
+				catch (ValidationError) {
                     reject(new ResponseValidationError());
                     return;
                 }
@@ -72,7 +73,8 @@ class AuthService {
                     err instanceof ResponseValidationError ||
                     err instanceof InternalServerError) {
                     reject(err);
-                } else {
+                }
+				else {
                     reject(new InternalServerError());
                 }
             }
