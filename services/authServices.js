@@ -65,7 +65,8 @@ class AuthService {
                 }
 
                 resolve(response);
-            } catch (err) {
+            }
+			catch (err) {
 				if (err instanceof UserNotFoundError) {
                     reject(new BadCredentialsError());
 				}
