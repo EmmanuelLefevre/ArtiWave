@@ -4,7 +4,6 @@
 
 
 /*============ IMPORT USED MODULES ============*/
-const ErrorHandler = require('../_errors/errorHandler');
 const AuthService = require('../services/authServices');
 
 const BadCredentialsError = require('../_errors/badCredentialsError');
@@ -49,14 +48,12 @@ exports.login = async (req, res) => {
     catch (err) {
         if (err instanceof BadCredentialsError ||
             err instanceof UserNotFoundError ||
-            err instanceof LoginLimiterError) {
+            err instanceof LoginLimiterError ||
+            err instanceof ResponseValidationError) {
 
             failedLoginAttempts++;
             lastFailedLoginDate = new Date();
 
-            return res.status(err.statusCode).json({ message: err.message });
-        }
-        else if (err && err.name === 'ResponseValidationError') {
             return res.status(err.statusCode).json({ message: err.message });
         }
         else {
