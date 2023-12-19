@@ -7,6 +7,7 @@
 const AuthService = require('../services/authServices');
 
 const BadCredentialsError = require('../_errors/badCredentialsError');
+const InternalServerError = require('../_errors/internalServerError');
 const LoginLimiterError = require('../_errors/loginLimiterError');
 const ResponseValidationError = require('../_errors/responseValidationError');
 const UserNotFoundError = require('../_errors/userNotFoundError');
@@ -49,7 +50,8 @@ exports.login = async (req, res) => {
         if (err instanceof BadCredentialsError ||
             err instanceof UserNotFoundError ||
             err instanceof LoginLimiterError ||
-            err instanceof ResponseValidationError) {
+            err instanceof ResponseValidationError ||
+            err instanceof InternalServerError) {
 
             failedLoginAttempts++;
             lastFailedLoginDate = new Date();
@@ -57,7 +59,7 @@ exports.login = async (req, res) => {
             return res.status(err.statusCode).json({ message: err.message });
         }
         else {
-            throw new Error('Unexpected Error!');
+            throw InternalServerError();
         }
     }
 };

@@ -6,6 +6,7 @@
 /*============ IMPORT USED MODULES ============*/
 const User = require('../_models/IUser');
 
+const InternalServerError = require('../_errors/internalServerError');
 const UserNotFoundError = require('../_errors/userNotFoundError');
 
 
@@ -24,7 +25,7 @@ class UserRepository {
                 throw err;
             }
 			else {
-                throw new Error('Unexpected Error!');
+                throw InternalServerError();
             }
 		}
 	}

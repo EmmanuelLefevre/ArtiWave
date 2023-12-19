@@ -66,9 +66,12 @@ router.route('/')
                 await authController.login(req, res);
             }
             catch (err) {
-                if (err instanceof ValidationError)
-
+                if (err instanceof ValidationError) {
                     return res.status(err.statusCode).json(err.getErrorResponse());
+                }
+                else if (err instanceof InternalServerError) {
+                    return res.status(err.statusCode).json({ message: err.message });
+                }
                 else {
                     throw new Error('Unexpected Error!');
                 }

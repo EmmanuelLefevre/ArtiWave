@@ -13,6 +13,7 @@ const UserRepository = require('../repositories/userRepository');
 const { UserTokenResponseValidation } = require('../_validation/responses/userResponseValidation');
 
 const BadCredentialsError = require('../_errors/badCredentialsError');
+const InternalServerError = require('../_errors/internalServerError');
 const ResponseValidationError = require('../_errors/responseValidationError');
 const UserNotFoundError = require('../_errors/userNotFoundError');
 
@@ -71,11 +72,12 @@ class AuthService {
 		catch (err) {
 			if (err instanceof BadCredentialsError ||
 				err instanceof UserNotFoundError ||
-				err instanceof ResponseValidationError) {
+				err instanceof ResponseValidationError ||
+				err instanceof InternalServerError) {
                 throw err;
             }
 			else {
-                throw new Error('Unexpected Error!');
+                throw InternalServerError();
             }
 		}
 	}
