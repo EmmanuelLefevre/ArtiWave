@@ -5,6 +5,11 @@ class ErrorHandler {
         return res.status(400).json({ message: 'Unknown user role!' });
     }
 
+    // 401 errors
+    static sendBadCredentials(res) {
+        return res.status(401).json({ message: 'Bad credentials!' });
+    }
+
     // 403 errors
     static handleUserPermissionDenied(res) {
         return res.status(403).json({ message: 'Permission denied!' });
@@ -26,13 +31,6 @@ class ErrorHandler {
     // 405 errors
     static sendCurrentMethodNotAllowedError(res) {
         return res.status(405).json({ message: 'Method Not Allowed!' });
-    }
-
-    // 429 errors
-    static sendLoginLimiterError(res, error) {
-        if (error) {
-            return res.status(429).json({ message: 'The number of connection attempts is limited to 5 per hour!' });
-        }
     }
 
     // 500 errors
@@ -57,6 +55,18 @@ class ErrorHandler {
     static sendCreationResponseObjectError(res, error) {
         if (error) {
             return res.status(500).json({ message: 'Creation Response Object Error!', error: error.message });
+        }
+    }
+
+    static sendServiceError(res, error) {
+        if (error) {
+            return res.status(500).json({ message: 'Service Error!', error: error.message });
+        }
+    }
+
+    static sendControllerError(res, error) {
+        if (error) {
+            return res.status(500).json({ message: 'Controller Error!', error: error.message });
         }
     }
 }
