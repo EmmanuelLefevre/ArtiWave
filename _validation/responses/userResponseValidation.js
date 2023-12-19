@@ -1,3 +1,8 @@
+/*===================================================*/
+/*============ userResponseValidation.js ============*/
+/*===================================================*/
+
+
 /*============ IMPORT USED MODULES ============*/
 const { object, string, array, number } = require('yup');
 
@@ -5,10 +10,18 @@ const { object, string, array, number } = require('yup');
 /*============ VALIDATION SCHEMA ============*/
 
 /*=== TOKEN RESPONSE VALIDATION ===*/
-const userTokenResponseValidation = object({
+const UserTokenResponseValidation = object({
     access_token: string().required(),
-    nickname: string().required()
-});
+    nickname: string().required(),
+}).test(
+    'contains-only-allowed-keys',
+    (value) => {
+        const allowedKeys = ['access_token', 'nickname'];
+        const actualKeys = Object.keys(value);
+        const extraKeys = actualKeys.filter(key => !allowedKeys.includes(key));
+        return extraKeys.length === 0;
+    }
+);
 
 
 /*=== REGISTER RESPONSE VALIDATION ===*/
@@ -75,7 +88,7 @@ const userUpdatedResponseValidationBase = object({
 /*============ EXPORT MODULE ============*/
 module.exports = {
     userRegisterResponseValidation,
-    userTokenResponseValidation,
+    UserTokenResponseValidation,
     userResponseValidationRoleAdmin,
     userResponseValidationBase,
     usersResponseValidationRoleAdmin,
