@@ -1,3 +1,8 @@
+/*================================*/
+/*============ app.js ============*/
+/*================================*/
+
+
 /*============ IMPORT USED MODULES ============*/
 const express = require('express');
 const cors = require('cors');
@@ -14,7 +19,6 @@ const swaggerSpec = require('./swagger');
 const swaggerUi = require('swagger-ui-express');
 
 const path = require('path');
-const open = require('better-opn');
 
 const favicon = require('serve-favicon');
 
@@ -106,9 +110,5 @@ app.use('/admins', adminCheck, admins_router);
 app.get('*', (_req, res) => res.status(404).send('What the hell are you doing!!?'));
 
 
-/*============ LAUNCH SERVER WITH DB TEST ============*/
-const port = process.env.SERVER_PORT;
-app.listen(port, () => {
-	console.log(`This server is running on port ${port}. Have fun!`);
-	// open(`http://localhost:${port}`);
-});
+/*============ EXPORT MODULE ============*/
+module.exports = app;
