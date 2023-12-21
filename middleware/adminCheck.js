@@ -58,7 +58,8 @@ const AdminCheck = (req, res, next) => {
     catch (err) {
         if (err instanceof PermissionDeniedError) {
             return next(err);
-        } else {
+        }
+        else {
             throw new InternalServerError();
         }
     }
