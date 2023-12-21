@@ -11,8 +11,8 @@ const sassMiddleware = require('node-sass-middleware');
 
 const connectDB = require('./db.config');
 
-const { requestsLimiter } = require('./middleware/rateLimiter');
-const adminCheck = require('./middleware/adminCheck');
+const { RequestsLimiter } = require('./middleware/rateLimiter');
+const AdminCheck = require('./middleware/adminCheck');
 const GlobalErrorHandler = require('./middleware/globalErrorHandler');
 const NotAllowedMethodError = require('./_errors/notAllowedMethodError');
 const NotFoundError = require('./_errors/notFoundError');
@@ -62,7 +62,7 @@ app.use(express.urlencoded({ extended: true }));
 
 
 /*============ REQUESTS RATE-LIMITER ============*/
-app.use(requestsLimiter);
+app.use(RequestsLimiter);
 
 
 /*============ IMPORT ROUTER MODULES ============*/
@@ -107,7 +107,7 @@ app.use('/api/users', UsersRouter);
 app.use('/api/articles', ArticlesRouter);
 
 /*=== ADMINS ===*/
-app.use('/api/admins', adminCheck, AdminRouter);
+app.use('/api/admins', AdminCheck, AdminRouter);
 
 /*=== 404 ===*/
 app.get('*', (_req, _res) => {
