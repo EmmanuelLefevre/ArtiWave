@@ -7,6 +7,9 @@
 // Repositories
 const AdminRepository = require('../repositories/adminRepository');
 
+// Response validation
+const { InvertRoleResponseValidation } = require('../_validation/responses/invertRoleResponseValidation');
+
 // Errors
 const ArticleNotFoundError = require('../_errors/articleNotFoundError');
 const InternalServerError = require('../_errors/internalServerError');
