@@ -1,3 +1,8 @@
+/*===============================================*/
+/*============ capitalizeEachWord.js ============*/
+/*===============================================*/
+
+
 /*============ CAPITALIZE FIRST LETTERS MODULE ============*/
 const capitalizeEachWord = (str) => {
     return str

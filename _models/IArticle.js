@@ -1,3 +1,8 @@
+/*=====================================*/
+/*============ IArticle.js ============*/
+/*=====================================*/
+
+
 /*============ IMPORT USED MODULES ============*/
 const mongoose = require('mongoose');
 const { Schema } = require('mongoose');
