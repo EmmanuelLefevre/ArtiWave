@@ -25,7 +25,7 @@ const UserTokenResponseValidation = object({
 
 
 /*=== REGISTER RESPONSE VALIDATION ===*/
-const userRegisterResponseValidation = object({
+const UserRegisterResponseValidation = object({
     email: string().required(),
     nickname: string().required(),
     registeredAt: string().required()
@@ -35,7 +35,7 @@ const userRegisterResponseValidation = object({
 /*=== GET USER ===*/
 
 /*----- ADMIN RESPONSE VALIDATION -----*/
-const userResponseValidationRoleAdmin = object({
+const UserResponseValidationRoleAdmin = object({
     _id: string().matches(/^[0-9a-fA-F]{24}$/).required(),
     email: string().required(),
     nickname: string().required(),
@@ -45,7 +45,7 @@ const userResponseValidationRoleAdmin = object({
 });
 
 /*----- BASE USER RESPONSE VALIDATION -----*/
-const userResponseValidationBase = object({
+const UserResponseValidationBase = object({
     email: string(),
     nickname: string().required(),
     registeredAt: string().required(),
@@ -57,14 +57,14 @@ const userResponseValidationBase = object({
 /*=== GET ALL USERS ===*/
 
 /*----- ADMIN GET ALL USERS RESPONSE VALIDATION -----*/
-const usersResponseValidationRoleAdmin = object({
-    data: array().of(userResponseValidationRoleAdmin).required(),
+const UsersResponseValidationRoleAdmin = object({
+    data: array().of(UserResponseValidationRoleAdmin).required(),
     dataCount: number().integer().required()
 });
 
 /*----- CERTIFIED GET ALL USERS RESPONSE VALIDATION -----*/
-const usersResponseValidationRoleCertified = object({
-    data: array().of(userResponseValidationBase).required(),
+const UsersResponseValidationRoleCertified = object({
+    data: array().of(UserResponseValidationBase).required(),
     dataCount: number().integer().required()
 });
 
@@ -73,26 +73,26 @@ const usersResponseValidationRoleCertified = object({
 /*=== UPDATE USER ===*/
 
 /*----- ADMIN USER UPDATED RESPONSE VALIDATION -----*/
-const userUpdatedResponseValidationRoleAdmin = object({
-    data: array().of(userResponseValidationRoleAdmin).required(),
+const UserUpdatedResponseValidationRoleAdmin = object({
+    data: array().of(UserResponseValidationRoleAdmin).required(),
     modifiedProperties: object().required()
 });
 
 /*----- BASE USER UPDATED RESPONSE VALIDATION -----*/
-const userUpdatedResponseValidationBase = object({
-    data: array().of(userResponseValidationBase).required(),
+const UserUpdatedResponseValidationBase = object({
+    data: array().of(UserResponseValidationBase).required(),
     modifiedProperties: object().required()
 });
 
 
 /*============ EXPORT MODULE ============*/
 module.exports = {
-    userRegisterResponseValidation,
+    UserRegisterResponseValidation,
     UserTokenResponseValidation,
-    userResponseValidationRoleAdmin,
-    userResponseValidationBase,
-    usersResponseValidationRoleAdmin,
-    usersResponseValidationRoleCertified,
-    userUpdatedResponseValidationRoleAdmin,
-    userUpdatedResponseValidationBase
+    UserResponseValidationRoleAdmin,
+    UserResponseValidationBase,
+    UsersResponseValidationRoleAdmin,
+    UsersResponseValidationRoleCertified,
+    UserUpdatedResponseValidationRoleAdmin,
+    UserUpdatedResponseValidationBase
 };
