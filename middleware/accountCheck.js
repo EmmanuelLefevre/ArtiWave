@@ -9,7 +9,7 @@ const AccountCheckError = require('../_errors/accountCheckError');
 
 /*============ CHECK IF REQUEST HAS AUTHORIZATION ============*/
 // Check user own an account
-const accountCheck = (req, _res, next) => {
+const AccountCheck = (req, _res, next) => {
     if (!req.headers.authorization) {
         throw new AccountCheckError();
     }
@@ -19,4 +19,4 @@ const accountCheck = (req, _res, next) => {
 
 
 /*============ EXPORT MODULE ============*/
-module.exports = accountCheck;
+module.exports = AccountCheck;
