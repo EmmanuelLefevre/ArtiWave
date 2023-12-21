@@ -18,7 +18,14 @@ const { ArticleResponseValidationRoleAdmin,
     require('../_validation/responses/articleResponseValidation');
 
 // Errors
-const ErrorHandler = require('../_errors/errorHandler');
+const ArticleAlreadyExistsError = require('../_errors/articleAlreadyExistsError');
+const ArticleNotFoundError = require('../_errors/articleNotFoundError');
+const CreationResponseObjectError = require('../_errors/creationResponseObjectError');
+const InternalServerError = require('../_errors/internalServerError');
+const ResponseValidationError = require('../_errors/responseValidationError');
+const UnknownUserRoleError = require('../_errors/unknownUserRoleError');
+const UserInfoNotFoundError = require('../_errors/userInfoNotFoundError');
+const UserNotFoundError = require('../_errors/userNotFoundError');
 
 // Models
 const Article = require('../models/IArticle');
@@ -38,7 +45,7 @@ class ArticleController {
             // Check if user exists
             const existingUser = await User.findById(req.userId);
             if (!existingUser) {
-                return ErrorHandler.handleUserNotFound(res);
+                throw new UserNotFoundError();
             }
 
             // Create Article model instance
@@ -74,7 +81,7 @@ class ArticleController {
                 await responseValidationSchema.validate(responseObject, { abortEarly: false });
             }
             catch (validationError) {
-                return ErrorHandler.sendValidationResponseError(res, validationError);
+                throw new ResponseValidationError();
             }
 
             // Return the created article
@@ -82,10 +89,11 @@ class ArticleController {
         }
         catch (err) {
             if (err.code === 11000 && err.keyPattern.title) {
-                return res.status(409).json({ message: 'Article with the same title already posted!' });
+                throw new ArticleAlreadyExistsError();
             }
-
-            return ErrorHandler.sendDatabaseError(res, err);
+            else {
+                throw new InternalServerError();
+            }
         }
     }
 
@@ -95,7 +103,7 @@ class ArticleController {
             let articles = await Article.find({}, 'id title content author createdAt updatedAt');
 
             if (articles.length === 0) {
-                return ErrorHandler.handleArticleNotFound(res);
+                throw new ArticleNotFoundError();
             }
 
             // Add author's id and nickname for each article if admin, if not just add author's nickname
@@ -130,14 +138,14 @@ class ArticleController {
                 await responseValidationSchema.validate(responseObject, { abortEarly: false });
             }
             catch (validationError) {
-                return ErrorHandler.sendValidationResponseError(res, validationError);
+                throw new ResponseValidationError();
             }
 
             // Return all articles
             return res.status(200).json(responseObject);
         }
         catch (err) {
-            return ErrorHandler.sendDatabaseError(res, err);
+            throw new InternalServerError();
         }
     }
 
@@ -149,7 +157,7 @@ class ArticleController {
             let article = await Article.findById(articleId, { _id: 1, title: 1, content: 1, author: 1, createdAt: 1, updatedAt: 1 });
 
             if (!article) {
-                return ErrorHandler.handleArticleNotFound(res);
+                throw new ArticleNotFoundError();
             }
 
             // Add author's id and nickname for the article if admin, if not just add author's nickname
@@ -174,14 +182,14 @@ class ArticleController {
                 await responseValidationSchema.validate(responseObject, { abortEarly: false });
             }
             catch (validationError) {
-                return ErrorHandler.sendValidationResponseError(res, validationError);
+                throw new ResponseValidationError();
             }
 
             // Return single article
             return res.status(200).json(responseObject);
         }
         catch (err) {
-            return ErrorHandler.sendDatabaseError(res, err);
+            throw new InternalServerError();
         }
     }
 
@@ -194,7 +202,7 @@ class ArticleController {
             const existingUser = await User.findById(userId);
 
             if (!existingUser) {
-                return ErrorHandler.handleUserNotFound(res);
+                throw new ArticleNotFoundError();
             }
 
             // Count articles for the user
@@ -234,14 +242,14 @@ class ArticleController {
                 await responseValidationSchema.validate(responseObject, { abortEarly: false });
             }
             catch (validationError) {
-                return ErrorHandler.sendValidationResponseError(res, validationError);
+                throw new ResponseValidationError();
             }
 
             // Return all articles owned by a single user
             return res.status(200).json(responseObject);
         }
         catch (err) {
-            return ErrorHandler.sendDatabaseError(res, err);
+            throw new InternalServerError();
         }
     }
 
@@ -253,7 +261,7 @@ class ArticleController {
             let article = await Article.findById(articleId);
 
             if (!article) {
-                return ErrorHandler.handleArticleNotFound(res);
+                throw new ArticleNotFoundError();
             }
 
             // Save original article data
@@ -320,7 +328,7 @@ class ArticleController {
                 await responseValidationSchema.validate(responseObject, { abortEarly: false });
             }
             catch (validationError) {
-                return ErrorHandler.sendValidationResponseError(res, validationError);
+                throw new ResponseValidationError();
             }
 
             // Return the updated article
@@ -328,10 +336,12 @@ class ArticleController {
         }
         catch (err) {
             if (err.code === 11000 && err.keyPattern.title) {
-                return res.status(409).json({ message: 'Article with the same title already posted!' });
+                throw new ArticleAlreadyExistsError();
+            }
+            else {
+                throw new InternalServerError();
             }
 
-            return ErrorHandler.sendDatabaseError(res, err);
         }
     }
 
@@ -343,7 +353,7 @@ class ArticleController {
             let article = await Article.findById(articleId);
 
             if (!article) {
-                return ErrorHandler.handleArticleNotFound(res);
+                throw new ArticleNotFoundError();
             }
 
             // Check if the author's article matches the userId making the request
@@ -369,7 +379,7 @@ class ArticleController {
             return res.sendStatus(204);
         }
         catch (err) {
-            return ErrorHandler.sendDatabaseError(res, err);
+            throw new InternalServerError();
         }
     }
 
@@ -382,7 +392,7 @@ class ArticleController {
             return user ? { nickname: user.nickname, roles: user.roles } : null;
         }
         catch (err) {
-            return ErrorHandler.handleUserInfoNotFound(res, err);
+            throw new UserInfoNotFoundError();
         }
     }
 
@@ -414,11 +424,11 @@ class ArticleController {
                 case 'user':
                     return commonFields;
                 default:
-                    return ErrorHandler.handleUserUnknownRole(res, err);
+                    throw UnknownUserRoleError();
             }
         }
         catch (err) {
-            return ErrorHandler.sendCreationResponseObjectError(res, err);
+            throw new CreationResponseObjectError();
         }
     }
 }
