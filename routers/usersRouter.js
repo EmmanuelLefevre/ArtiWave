@@ -156,6 +156,7 @@ class UsersRouter {
 
     static #validateRegister(req, _res, next) {
         try {
+            // Check presence of data email && password && nickname
             const { email, password, nickname } = req.body;
 
             if (!email || !password || !nickname) {
