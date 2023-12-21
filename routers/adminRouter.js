@@ -35,56 +35,64 @@ class AdminRouter {
         /*=== DELETE NON ADMIN USERS AND THEIR OWNED ARTICLES ===*/
         adminRouter.route('/delete_all_users')
             .all(AllowedCurrentMethodCheck(['DELETE']))
-            .delete((req, res) => {
-                try {
-                    AdminController.deleteAllUsers(req, res);
+            .delete(
+                (req, res) => {
+                    try {
+                        AdminController.deleteAllUsers(req, res);
+                    }
+                    catch (err) {
+                        throw new InternalServerError();
+                    }
                 }
-                catch (err) {
-                    throw new InternalServerError();
-                }
-        });
+        );
 
         /*=== DELETE ALL ARTICLES EXCEPT THOSE OWNED BY ADMIN ===*/
         adminRouter.route('/delete_all_articles')
             .all(AllowedCurrentMethodCheck(['DELETE']))
-            .delete((req, res) => {
-                try {
-                    AdminController.deleteAllArticles(req, res);
+            .delete(
+                (req, res) => {
+                    try {
+                        AdminController.deleteAllArticles(req, res);
+                    }
+                    catch (err) {
+                        throw new InternalServerError();
+                    }
                 }
-                catch (err) {
-                    throw new InternalServerError();
-                }
-        });
+        );
 
         /*=== DELETE ALL ARTICLES BY USER ===*/
         adminRouter.route('/delete_all_articles/:id')
             .all(AllowedCurrentMethodCheck(['DELETE']))
-            .delete((req, res) => {
-                try {
-                    ValidateURIParam('id'),
-                    AdminRouter.#validateURIParam,
-                    // Successful validation, proceed
-                    AdminController.deleteAllArticlesByUser(req, res);
+            .delete(
+                ValidateURIParam('id'),
+                AdminRouter.#validateURIParam,
+                (req, res) => {
+                    try {
+                        // Successful validation, proceed
+                        AdminController.deleteAllArticlesByUser(req, res);
+                    }
+                    catch (err) {
+                        throw new InternalServerError();
+                    }
                 }
-                catch (err) {
-                    throw new InternalServerError();
-                }
-        });
+        );
 
         /*=== INVERT USER ROLE ===*/
         adminRouter.route('/invert_user_role/:id')
             .all(AllowedCurrentMethodCheck(['PATCH']))
-            .patch((req, res) => {
-                try {
-                    ValidateURIParam('id'),
-                    AdminRouter.#validateURIParam,
-                    // Successful validation, proceed
-                    AdminController.invertUserRole(req, res)
+            .patch(
+                ValidateURIParam('id'),
+                AdminRouter.#validateURIParam,
+                (req, res) => {
+                    try {
+                        // Successful validation, proceed
+                        AdminController.invertUserRole(req, res)
+                    }
+                    catch (err) {
+                        throw new InternalServerError();
+                    }
                 }
-                catch (err) {
-                    throw new InternalServerError();
-                }
-        });
+        );
 
         return adminRouter;
     }
