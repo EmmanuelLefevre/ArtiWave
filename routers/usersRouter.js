@@ -5,211 +5,205 @@
 
 /*============ IMPORT USED MODULES ============*/
 const express = require('express');
+
+// Controller
+const UsersController = require('../controllers/usersController');
+
+// Middlewares
+const AccountCheck = require('../middleware/accountCheck');
+const AllowedCurrentMethodCheck = require('../middleware/allowedCurrentMethodCheck');
+const JwtCheck = require('../middleware/jwtCheck');
+const PremiumCheck = require('../middleware/premiumCheck');
+const ValidateURIParam = require('../_validation/URI/validateURIParam');
+const { RegisterLimiter } = require('../middleware/rateLimiter');
+
+// Validation
 const { validationResult } = require('express-validator');
+const UserValidationRules = require('../_validation/validators/userValidator');
 
-const usersController = require('../controllers/usersController');
+// Errors
+const InternalServerError = require('../_errors/internalServerError');
+const InvalidRequestError = require('../_errors/invalidRequestError');
+const ValidationError = require('../_errors/validationError');
 
-const { registerLimiter } = require('../middleware/rateLimiter');
-const jwtCheck = require('../middleware/jwtCheck');
-const accountCheck = require('../middleware/accountCheck');
-const premiumCheck = require('../middleware/premiumCheck');
-const allowedCurrentMethodCheck = require('../middleware/allowedCurrentMethodCheck');
-
-const ErrorHandler = require('../_errors/errorHandler');
-const ValidationErrorHandler = require('../_validation/validationErrorHandler');
-const validateURIParam = require('../_validation/URI/validateURIParam');
-const userValidationRule = require('../_validation/validators/userValidator');
-const expressSanitizer = require('express-sanitizer');
-
+// Logs
 const { usersLogs } = require('../_logs/users/usersLogger');
 
 
-/*============ EXPRESS ROUTER ============*/
-let router = express.Router();
+/*============ EXPRESS ROUTES FOR USERS ============*/
 
+class UsersRouter {
+    static init() {
+        // Express router
+        const usersRouter = express.Router();
+        // Middleware auth requests logs
+        usersRouter.use(usersLogs);
 
-/*============ MIDDLEWARE REQUEST LOGS ============*/
-router.use(usersLogs);
+        /*=== REGISTER ===*/
+        usersRouter.route('/register')
+            .all(AllowedCurrentMethodCheck(['POST']))
+            .post((req, res) => {
+                // try {
+                    UserValidationRules,
+                    UsersRouter.#validateRegister,
+                    RegisterLimiter,
+                    // Successful validation, proceed
+                    UsersController.register(req, res);
+                // }
+                // catch (err) {
+                //     throw new InternalServerError();
+                // }
+        });
 
+        /*=== GET ALL USERS ===*/
+        usersRouter.route('/')
+            .all(AllowedCurrentMethodCheck(['GET']))
+            .get((req, res) => {
+                try {
+                    JwtCheck,
+                    PremiumCheck,
+                    // Successful validation, proceed
+                    UsersController.getAllUsers(req, res);
+                }
+                catch (err) {
+                    throw new InternalServerError();
+                }
+        });
 
-/*============ ROUTES FOR USERS ============*/
+        /*=== GET SINGLE USER ===*/
+        usersRouter.route('/:id')
+            .all(AllowedCurrentMethodCheck(['GET']))
+            .get((req, res) => {
+                try {
+                    AccountCheck,
+                    JwtCheck,
+                    ValidateURIParam('id'),
+                    UsersRouter.#validateURIParam,
+                    // Successful validation, proceed
+                    UsersController.getUser(req, res);
+                }
+                catch (err) {
+                    throw new InternalServerError();
+                }
+        });
 
-/*=== REGISTER ===*/
-router.route('/register')
-    .all(allowedCurrentMethodCheck(['POST']))
-    .post([
-        expressSanitizer(),
-        (req, _res, next) => {
-            // Sanitize individual fields
-            req.body.email = req.sanitize(req.body.email);
-            req.body.nickname = req.sanitize(req.body.nickname);
-            req.body.password = req.sanitize(req.body.password);
+        /*=== UPDATE USER ===*/
+        usersRouter.route('/:id')
+            .all(AllowedCurrentMethodCheck(['PATCH']))
+            .patch((req, res) => {
+                try {
+                    JwtCheck,
+                    ValidateURIParam('id'),
+                    UsersRouter.#validateURIParam,
+                    UsersRouter.#validateUpdateUser,
+                    UserValidationRules,
+                    // Successful validation, proceed
+                    UsersController.updateUser(req, res);
+                }
+                catch (err) {
+                    throw new InternalServerError();
+                }
+        });
+
+        /*=== DELETE USER ===*/
+        usersRouter.route('/:id')
+            .all(AllowedCurrentMethodCheck(['DELETE']))
+            .delete((req, res) => {
+                try {
+                    JwtCheck,
+                    ValidateURIParam('id'),
+                    UsersRouter.#validateURIParam,
+                    // Successful validation, proceed
+                    UsersController.deleteUser(req, res);
+                }
+                catch (err) {
+                    throw new InternalServerError();
+                }
+        });
+
+        return usersRouter;
+    }
+
+    static #validateURIParam(req, _res, next) {
+        try {
+            const errors = validationResult(req);
+
+            if (!errors.isEmpty()) {
+                throw new ValidationError(errors.array());
+            }
+
             next();
-        },
-        userValidationRule,
-        (req, res, next) => {
-            try {
-                // Check presence of data email && password && nickname
-                const { email, password, nickname } = req.body;
-
-                if (!email || !password || !nickname) {
-                    return res.status(400).json({ message: 'Invalid request!' });
-                }
-
-                // Pass to validation middleware
-                next();
+        }
+        catch (err) {
+            if (err instanceof ValidationError) {
+                return next(err);
             }
-            catch (err) {
-                return ErrorHandler.sendInternalServerError(res, err);
-            }
-        },
-        async (req, res, next) => {
-            try {
-                const errors = validationResult(req);
-
-                if (!errors.isEmpty()) {
-                    return ValidationErrorHandler.handle(res, errors);
-                }
-
-                // Pass to registerLimiter middleware
-                next();
-            }
-            catch (err) {
-                return ErrorHandler.sendInternalServerError(res, err);
-            }
-        },
-        registerLimiter,
-        async (req, res) => {
-            try {
-
-                console.log(req.body);
-
-                // Validation successful, proceed with registration
-                await usersController.register(req, res);
-            }
-            catch (err) {
-                return ErrorHandler.sendInternalServerError(res, err);
+            else {
+                throw new InternalServerError();
             }
         }
-    ]);
+    }
 
+    static #validateRegister(req, _res, next) {
+        try {
+            const { email, password, nickname } = req.body;
 
-/*=== GET ALL USERS ===*/
-router.route('/')
-    .all(allowedCurrentMethodCheck(['GET']))
-    .get([
-        jwtCheck,
-        premiumCheck,
-        async (req, res) => {
-            try {
-                await usersController.getAllUsers(req, res);
+            if (!email || !password || !nickname) {
+                throw new InvalidRequestError();
             }
-            catch (err) {
-                return ErrorHandler.sendInternalServerError(res, err);
+
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                throw new ValidationError(errors.array());
+            }
+
+            next();
+        }
+        catch (err) {
+            if (err instanceof InvalidRequestError ||
+                err instanceof ValidationError) {
+                return next(err);
+            }
+            else {
+                throw new InternalServerError();
             }
         }
-    ]);
+    }
 
+    static #validateUpdateUser(req, res, next) {
+        try {
+            // Check presence of forbidden parameters roles || registeredAt || updatedAt
+            const params = ['roles', 'registeredAt', 'updatedAt'];
+            const forbiddenParams = Object.keys(req.body).filter(param => params.includes(param));
 
-/*=== GET SINGLE USER ===*/
-router.route('/:id')
-    .all(allowedCurrentMethodCheck(['GET']))
-    .get([
-        accountCheck,
-        jwtCheck,
-        validateURIParam('id'),
-        async (req, res) => {
-            try {
-                const errors = validationResult(req);
-
-                if (!errors.isEmpty()) {
-                    return ValidationErrorHandler.handle(res, errors);
-                }
-
-                await usersController.getUser(req, res);
+            if (forbiddenParams.length > 0) {
+                const errorMessage = `These parameters can't be modified: ${forbiddenParams.join(' and ')}`;
+                return res.status(400).json({ message: errorMessage });
             }
-            catch (err) {
-                return ErrorHandler.sendInternalServerError(res, err);
+
+            // Check presence of at least parameter email || nickname || password
+            if (req.method === 'PATCH') {
+                const allowedProperties = ['email', 'nickname', 'password'];
+                const isValidUpdate = Object.keys(req.body).some(prop => allowedProperties.includes(prop));
+
+                if (!isValidUpdate) {
+                    throw new InvalidRequestError();
+                }
+            }
+
+            next();
+        }
+        catch (err) {
+            if (err instanceof InvalidRequestError) {
+                return next(err);
+            }
+            else {
+                throw new InternalServerError();
             }
         }
-    ]);
-
-
-/*=== UPDATE USER ===*/
-router.route('/:id')
-    .all(allowedCurrentMethodCheck(['PATCH']))
-    .patch([
-        jwtCheck,
-        validateURIParam('id'),
-        // Custom validation rules
-        userValidationRule,
-        (req, res, next) => {
-            try {
-                // Check presence of forbidden paramaters roles || registeredAt || updatedAt
-                const params = ['roles', 'registeredAt', 'updatedAt'];
-                const forbiddenParams = Object.keys(req.body).filter(param => params.includes(param));
-
-                if (forbiddenParams.length > 0) {
-                    const errorMessage = `These parameters can't be modified: ${forbiddenParams.join(' and ')}`;
-                    return res.status(400).json({ message: errorMessage });
-                }
-
-                // Check presence of at least parameter email || nickname || password
-                if (req.method === 'PATCH') {
-                    const allowedProperties = ['email', 'nickname', 'password'];
-                    const isValidUpdate = Object.keys(req.body).some(prop => allowedProperties.includes(prop));
-
-                    if (!isValidUpdate) {
-                        return res.status(400).json({ message: 'Invalid request!' });
-                    }
-                }
-
-                // Pass to validation middleware
-                next();
-            }
-            catch (err) {
-                return ErrorHandler.sendInternalServerError(res, err);
-            }
-        },
-        async (req, res) => {
-            try {
-                const errors = validationResult(req);
-
-                if (!errors.isEmpty()) {
-                    return ValidationErrorHandler.handle(res, errors);
-                }
-
-                await usersController.updateUser(req, res);
-            }
-            catch (err) {
-                return ErrorHandler.sendInternalServerError(res, err);
-            }
-        }
-    ]);
-
-
-/*=== DELETE USER ===*/
-router.route('/:id')
-    .all(allowedCurrentMethodCheck(['DELETE']))
-    .delete([
-        jwtCheck,
-        validateURIParam('id'),
-        async (req, res) => {
-            try {
-                const errors = validationResult(req);
-
-                if (!errors.isEmpty()) {
-                    return ValidationErrorHandler.handle(res, errors);
-                }
-
-                await usersController.deleteUser(req, res);
-            }
-            catch (err) {
-                return ErrorHandler.sendInternalServerError(res, err);
-            }
-        }
-    ]);
+    }
+}
 
 
 /*============ EXPORT MODULE ============*/
-module.exports = router;
+module.exports = UsersRouter.init();
