@@ -394,66 +394,93 @@ swaggerSpec.paths['/api/users/{id}'] = {
 };
 
 /*=== UPDATE USER ===*/
-swaggerSpec.paths['/api/users/{id}'].patch = {
-    summary: 'Update user by Id',
-    description: 'Update user details by their Id.',
-    tags: ['Users'],
-    security: [
-        {
-            bearerAuth: [],
-        },
-    ],
-    parameters: [
-        {
-            in: 'path',
-            name: 'id',
-            required: true,
-            description: 'User Id',
-            schema: {
-                type: 'string',
+swaggerSpec.paths['/api/users/update/{id}'] = {
+    patch: {
+        summary: 'Update user by Id',
+        description: 'Update user details by their Id.',
+        tags: ['Users'],
+        security: [
+            {
+                bearerAuth: [],
             },
-        },
-    ],
-    requestBody: {
-        description: 'User details to update',
-        content: {
-            'application/json': {
+        ],
+        parameters: [
+            {
+                in: 'path',
+                name: 'id',
+                required: true,
+                description: 'User Id',
                 schema: {
-                    type: 'object',
-                    properties: {
-                        email: {
-                            type: 'string',
-                            optionnal: true
-                        },
-                        nickname: {
-                            type: 'string',
-                            optionnal: true
-                        },
-                        password: {
-                            type: 'string',
-                            optionnal: true
-                        },
-                    },
+                    type: 'string',
                 },
             },
-        },
-    },
-    responses: {
-        '200': {
-            description: 'Single user updated successfully.',
+        ],
+        requestBody: {
+            description: 'User details to update',
             content: {
                 'application/json': {
                     schema: {
                         type: 'object',
                         properties: {
-                            data: {
-                                type: 'array',
-                                items: {
+                            email: {
+                                type: 'string',
+                                optionnal: true
+                            },
+                            nickname: {
+                                type: 'string',
+                                optionnal: true
+                            },
+                            password: {
+                                type: 'string',
+                                optionnal: true
+                            },
+                        },
+                    },
+                },
+            },
+        },
+        responses: {
+            '200': {
+                description: 'Single user updated successfully.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            type: 'object',
+                            properties: {
+                                data: {
+                                    type: 'array',
+                                    items: {
+                                        type: 'object',
+                                        properties: {
+                                            _id: {
+                                                type: 'string',
+                                                optional: true
+                                            },
+                                            email: {
+                                                type: 'string',
+                                                optional: true
+                                            },
+                                            nickname: {
+                                                type: 'string',
+                                                required: true
+                                            },
+                                            registeredAt: {
+                                                type: 'string',
+                                                required: true
+                                            },
+                                            updatedAt: {
+                                                type: 'string',
+                                                required: true
+                                            },
+                                        },
+                                    },
+                                },
+                                modifiedProperties: {
                                     type: 'object',
                                     properties: {
-                                        _id: {
+                                        updatedAt: {
                                             type: 'string',
-                                            optional: true
+                                            required: true
                                         },
                                         email: {
                                             type: 'string',
@@ -461,33 +488,8 @@ swaggerSpec.paths['/api/users/{id}'].patch = {
                                         },
                                         nickname: {
                                             type: 'string',
-                                            required: true
+                                            optional: true
                                         },
-                                        registeredAt: {
-                                            type: 'string',
-                                            required: true
-                                        },
-                                        updatedAt: {
-                                            type: 'string',
-                                            required: true
-                                        },
-                                    },
-                                },
-                            },
-                            modifiedProperties: {
-                                type: 'object',
-                                properties: {
-                                    updatedAt: {
-                                        type: 'string',
-                                        required: true
-                                    },
-                                    email: {
-                                        type: 'string',
-                                        optional: true
-                                    },
-                                    nickname: {
-                                        type: 'string',
-                                        optional: true
                                     },
                                 },
                             },
@@ -495,71 +497,71 @@ swaggerSpec.paths['/api/users/{id}'].patch = {
                     },
                 },
             },
-        },
-        '400': {
-            description: 'Bad requests.',
-            content: {
-                'application/json': {
-                    schema: {
-                        oneOf: [
-                            { $ref: '#/components/schemas/ForbiddenParams' },
-                            { $ref: '#/components/schemas/InvalidRequest' },
-                            { $ref: '#/components/schemas/UnknownUserRole' },
-                        ],
+            '400': {
+                description: 'Bad requests.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            oneOf: [
+                                { $ref: '#/components/schemas/ForbiddenParams' },
+                                { $ref: '#/components/schemas/InvalidRequest' },
+                                { $ref: '#/components/schemas/UnknownUserRole' },
+                            ],
+                        },
                     },
                 },
             },
-        },
-        '401': {
-            description: 'Authorization errors.',
-            content: {
-                'application/json': {
-                    schema: {
-                        oneOf: [
-                            { $ref: '#/components/schemas/NoToken' },
-                            { $ref: '#/components/schemas/FalseToken' },
-                            { $ref: '#/components/schemas/AccountCheck' },
-                        ],
+            '401': {
+                description: 'Authorization errors.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            oneOf: [
+                                { $ref: '#/components/schemas/NoToken' },
+                                { $ref: '#/components/schemas/FalseToken' },
+                                { $ref: '#/components/schemas/AccountCheck' },
+                            ],
+                        },
                     },
                 },
             },
-        },
-        '403': {
-            description: 'You are not allowed to update a user other than yourself.',
-        },
-        '404': {
-            description: 'No user was found.',
-        },
-        '405': {
-            description: 'Method not allowed.',
-        },
-        '409': {
-            description: 'Nickname already exists.',
-        },
-        '422': {
-            description: 'Unprocessable entities.',
-            content: {
-                'application/json': {
-                    schema: {
-                        oneOf: [
-                            { $ref: '#/components/schemas/InvalidURI' },
-                            { $ref: '#/components/schemas/InvalidValidationRule' },
-                        ],
+            '403': {
+                description: 'You are not allowed to update a user other than yourself.',
+            },
+            '404': {
+                description: 'No user was found.',
+            },
+            '405': {
+                description: 'Method not allowed.',
+            },
+            '409': {
+                description: 'Nickname already exists.',
+            },
+            '422': {
+                description: 'Unprocessable entities.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            oneOf: [
+                                { $ref: '#/components/schemas/InvalidURI' },
+                                { $ref: '#/components/schemas/InvalidValidationRule' },
+                            ],
+                        },
                     },
                 },
             },
-        },
-        '500': {
-            description: 'Server errors.',
-            content: {
-                'application/json': {
-                    schema: {
-                        oneOf: [
-                            { $ref: '#/components/schemas/InternalServerError' },
-                            { $ref: '#/components/schemas/DatabaseError' },
-                            { $ref: '#/components/schemas/ValidationResponseError' },
-                            { $ref: '#/components/schemas/CreationResponseObjectError' },
-                        ],
+            '500': {
+                description: 'Server errors.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            oneOf: [
+                                { $ref: '#/components/schemas/InternalServerError' },
+                                { $ref: '#/components/schemas/DatabaseError' },
+                                { $ref: '#/components/schemas/ValidationResponseError' },
+                                { $ref: '#/components/schemas/CreationResponseObjectError' },
+                            ],
+                        },
                     },
                 },
             },
@@ -569,65 +571,67 @@ swaggerSpec.paths['/api/users/{id}'].patch = {
 
 
 /*=== DELETE USER ===*/
-swaggerSpec.paths['/api/users/{id}'].delete = {
-    summary: 'Delete user by Id',
-    description: 'Delete a user by their Id.',
-    tags: ['Users'],
-    security: [
-        {
-            bearerAuth: [],
-        },
-    ],
-    parameters: [
-        {
-            name: 'id',
-            in: 'path',
-            required: true,
-            description: 'User Id',
-            schema: {
-                type: 'string',
+swaggerSpec.paths['/api/users/{id}'] = {
+    delete : {
+        summary: 'Delete user by Id',
+        description: 'Delete a user by their Id.',
+        tags: ['Users'],
+        security: [
+            {
+                bearerAuth: [],
             },
-        },
-    ],
-    responses: {
-        '204': {
-            description: 'Single user deleted successfully.',
-        },
-        '401': {
-            description: 'Authorization errors.',
-            content: {
-                'application/json': {
-                    schema: {
-                        oneOf: [
-                            { $ref: '#/components/schemas/NoToken' },
-                            { $ref: '#/components/schemas/FalseToken' },
-                        ],
+        ],
+        parameters: [
+            {
+                name: 'id',
+                in: 'path',
+                required: true,
+                description: 'User Id',
+                schema: {
+                    type: 'string',
+                },
+            },
+        ],
+        responses: {
+            '204': {
+                description: 'Single user deleted successfully.',
+            },
+            '401': {
+                description: 'Authorization errors.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            oneOf: [
+                                { $ref: '#/components/schemas/NoToken' },
+                                { $ref: '#/components/schemas/FalseToken' },
+                            ],
+                        },
                     },
                 },
             },
-        },
-        '403': {
-            description: 'You are not allowed to delete a user other than yourself.',
-        },
-        '404': {
-            description: 'No user was found.',
-        },
-        '405': {
-            description: 'Method not allowed.',
-        },
-        '422': {
-            description: 'Invalid URI format.',
-        },
-        '500': {
-            description: 'Server errors.',
-            content: {
-                'application/json': {
-                    schema: {
-                        oneOf: [
-                            { $ref: '#/components/schemas/InternalServerError' },
-                            { $ref: '#/components/schemas/DatabaseError' },
-                            { $ref: '#/components/schemas/ValidationResponseError' },
-                        ],
+            '403': {
+                description: 'You are not allowed to delete a user other than yourself.',
+            },
+            '404': {
+                description: 'No user was found.',
+            },
+            '405': {
+                description: 'Method not allowed.',
+            },
+            '422': {
+                description: 'Invalid URI format.',
+            },
+            '500': {
+                description: 'Server errors.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            oneOf: [
+                                { $ref: '#/components/schemas/InternalServerError' },
+                                { $ref: '#/components/schemas/DatabaseError' },
+                                { $ref: '#/components/schemas/ValidationResponseError' },
+                            ],
+                        },
                     },
                 },
             },
@@ -639,7 +643,7 @@ swaggerSpec.paths['/api/users/{id}'].delete = {
 /*============ ARTICLES ============*/
 
 /*=== CREATE ARTICLE ===*/
-swaggerSpec.paths['/api/articles'] = {
+swaggerSpec.paths['/api/articles/create'] = {
     post: {
         summary: 'Create an article',
         description: 'Create an article with a title, content, and author.',
@@ -790,116 +794,118 @@ swaggerSpec.paths['/api/articles'] = {
 };
 
 /*=== GET ALL ARTICLES ===*/
-swaggerSpec.paths['/api/articles'].get = {
-    summary: 'Get all articles',
-    description: 'Retrieve a list of all articles.',
-    tags: ['Articles'],
-    security: [
-        {
-            bearerAuth: [],
-        },
-    ],
-    responses: {
-        '200': {
-            description: 'List of articles retrieved successfully.',
-            content: {
-                'application/json': {
-                    schema: {
-                        type: 'object',
-                        properties: {
-                            data: {
-                                type: 'array',
-                                items: {
-                                    type: 'object',
-                                    properties: {
-                                        _id: {
-                                            type: 'string',
-                                            optional: true,
-                                        },
-                                        title: {
-                                            type: 'string',
-                                            required: true,
-                                        },
-                                        content: {
-                                            type: 'string',
-                                            required: true,
-                                        },
-                                        createdAt: {
-                                            type: 'string',
-                                            required: true,
-                                        },
-                                        updatedAt: {
-                                            type: 'string',
-                                            required: true,
-                                        },
-                                        author: {
-                                            type: 'object',
-                                            properties: {
-                                                _id: {
-                                                    type: 'string',
-                                                    optional: true,
-                                                },
-                                                nickname: {
-                                                    type: 'string',
-                                                    required: true,
+swaggerSpec.paths['/api/articles'] = {
+    get: {
+        summary: 'Get all articles',
+        description: 'Retrieve a list of all articles.',
+        tags: ['Articles'],
+        security: [
+            {
+                bearerAuth: [],
+            },
+        ],
+        responses: {
+            '200': {
+                description: 'List of articles retrieved successfully.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            type: 'object',
+                            properties: {
+                                data: {
+                                    type: 'array',
+                                    items: {
+                                        type: 'object',
+                                        properties: {
+                                            _id: {
+                                                type: 'string',
+                                                optional: true,
+                                            },
+                                            title: {
+                                                type: 'string',
+                                                required: true,
+                                            },
+                                            content: {
+                                                type: 'string',
+                                                required: true,
+                                            },
+                                            createdAt: {
+                                                type: 'string',
+                                                required: true,
+                                            },
+                                            updatedAt: {
+                                                type: 'string',
+                                                required: true,
+                                            },
+                                            author: {
+                                                type: 'object',
+                                                properties: {
+                                                    _id: {
+                                                        type: 'string',
+                                                        optional: true,
+                                                    },
+                                                    nickname: {
+                                                        type: 'string',
+                                                        required: true,
+                                                    },
                                                 },
                                             },
                                         },
                                     },
                                 },
-                            },
-                            dataCount: {
-                                type: 'integer',
-                                description: 'Total count of articles.',
+                                dataCount: {
+                                    type: 'integer',
+                                    description: 'Total count of articles.',
+                                },
                             },
                         },
                     },
                 },
             },
-        },
-        '400': {
-            description: 'Unknown user role.',
-        },
-        '401': {
-            description: 'Authorization errors.',
-            content: {
-                'application/json': {
-                    schema: {
-                        oneOf: [
-                            { $ref: '#/components/schemas/NoToken' },
-                            { $ref: '#/components/schemas/FalseToken' },
-                        ],
+            '400': {
+                description: 'Unknown user role.',
+            },
+            '401': {
+                description: 'Authorization errors.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            oneOf: [
+                                { $ref: '#/components/schemas/NoToken' },
+                                { $ref: '#/components/schemas/FalseToken' },
+                            ],
+                        },
                     },
                 },
             },
-        },
-        '404': {
-            description: 'Not found errors.',
-            content: {
-                'application/json': {
-                    schema: {
-                        oneOf: [
-                            { $ref: '#/components/schemas/NoUserFound' },
-                            { $ref: '#/components/schemas/NoUserInfoFound' },
-                        ],
+            '404': {
+                description: 'Not found errors.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            oneOf: [
+                                { $ref: '#/components/schemas/NoUserFound' },
+                                { $ref: '#/components/schemas/NoUserInfoFound' },
+                            ],
+                        },
                     },
                 },
             },
-        },
-        '405': {
-            description: 'Method not allowed.',
-        },
-        '500': {
-            description: 'Server errors.',
-            content: {
-                'application/json': {
-                    schema: {
-                        oneOf: [
-                            { $ref: '#/components/schemas/InternalServerError' },
-                            { $ref: '#/components/schemas/DatabaseError' },
-                            { $ref: '#/components/schemas/ValidationResponseError' },
-                            { $ref: '#/components/schemas/CreationResponseObjectError' },
-                        ],
+            '405': {
+                description: 'Method not allowed.',
+            },
+            '500': {
+                description: 'Server errors.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            oneOf: [
+                                { $ref: '#/components/schemas/InternalServerError' },
+                                { $ref: '#/components/schemas/DatabaseError' },
+                                { $ref: '#/components/schemas/ValidationResponseError' },
+                                { $ref: '#/components/schemas/CreationResponseObjectError' },
+                            ],
+                        },
                     },
                 },
             },
@@ -1176,61 +1182,101 @@ swaggerSpec.paths['/api/articles/user/{userId}'] = {
 };
 
 /*=== UPDATE ARTICLE ===*/
-swaggerSpec.paths['/api/articles/{id}'].patch = {
-    summary: 'Update article by Id',
-    description: 'Update article details by their ID.',
-    tags: ['Articles'],
-    security: [
-        {
-            bearerAuth: [],
-        },
-    ],
-    parameters: [
-        {
-            in: 'path',
-            name: 'id',
-            required: true,
-            description: 'Article Id',
-            schema: {
-                type: 'string',
+swaggerSpec.paths['/api/articles/update/{id}'] = {
+    patch: {
+        summary: 'Update article by Id',
+        description: 'Update article details by their ID.',
+        tags: ['Articles'],
+        security: [
+            {
+                bearerAuth: [],
             },
-        },
-    ],
-    requestBody: {
-        description: 'Article details to update',
-        content: {
-            'application/json': {
+        ],
+        parameters: [
+            {
+                in: 'path',
+                name: 'id',
+                required: true,
+                description: 'Article Id',
                 schema: {
-                    type: 'object',
-                    properties: {
-                        title: {
-                            type: 'string',
-                            optional: true,
+                    type: 'string',
+                },
+            },
+        ],
+        requestBody: {
+            description: 'Article details to update',
+            content: {
+                'application/json': {
+                    schema: {
+                        type: 'object',
+                        properties: {
+                            title: {
+                                type: 'string',
+                                optional: true,
+                            },
+                            content: {
+                                type: 'string',
+                                optional: true,
+                            }
                         },
-                        content: {
-                            type: 'string',
-                            optional: true,
-                        }
                     },
                 },
             },
         },
-    },
-    responses: {
-        '200': {
-            description: 'Single user updated successfully.',
-            content: {
-                'application/json': {
-                    schema: {
-                        properties: {
-                            data: {
-                                type: 'array',
-                                items: {
+        responses: {
+            '200': {
+                description: 'Single user updated successfully.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            properties: {
+                                data: {
+                                    type: 'array',
+                                    items: {
+                                        type: 'object',
+                                        properties: {
+                                            _id: {
+                                                type: 'string',
+                                                optional: true
+                                            },
+                                            title: {
+                                                type: 'string',
+                                                optional: true
+                                            },
+                                            content: {
+                                                type: 'string',
+                                                required: true
+                                            },
+                                            createdAt: {
+                                                type: 'string',
+                                                required: true
+                                            },
+                                            updatedAt: {
+                                                type: 'string',
+                                                required: true
+                                            },
+                                            author: {
+                                                type: 'object',
+                                                properties: {
+                                                    _id: {
+                                                        type: 'string',
+                                                        optional: true,
+                                                    },
+                                                    nickname: {
+                                                        type: 'string',
+                                                        required: true,
+                                                    },
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                                modifiedProperties: {
                                     type: 'object',
                                     properties: {
-                                        _id: {
+                                        updatedAt: {
                                             type: 'string',
-                                            optional: true
+                                            required: true
                                         },
                                         title: {
                                             type: 'string',
@@ -1238,46 +1284,8 @@ swaggerSpec.paths['/api/articles/{id}'].patch = {
                                         },
                                         content: {
                                             type: 'string',
-                                            required: true
+                                            optional: true
                                         },
-                                        createdAt: {
-                                            type: 'string',
-                                            required: true
-                                        },
-                                        updatedAt: {
-                                            type: 'string',
-                                            required: true
-                                        },
-                                        author: {
-                                            type: 'object',
-                                            properties: {
-                                                _id: {
-                                                    type: 'string',
-                                                    optional: true,
-                                                },
-                                                nickname: {
-                                                    type: 'string',
-                                                    required: true,
-                                                },
-                                            },
-                                        },
-                                    },
-                                },
-                            },
-                            modifiedProperties: {
-                                type: 'object',
-                                properties: {
-                                    updatedAt: {
-                                        type: 'string',
-                                        required: true
-                                    },
-                                    title: {
-                                        type: 'string',
-                                        optional: true
-                                    },
-                                    content: {
-                                        type: 'string',
-                                        optional: true
                                     },
                                 },
                             },
@@ -1285,90 +1293,90 @@ swaggerSpec.paths['/api/articles/{id}'].patch = {
                     },
                 },
             },
-        },
-        '400': {
-            description: 'Bad requests.',
-            content: {
-                'application/json': {
-                    schema: {
-                        oneOf: [
-                            { $ref: '#/components/schemas/ForbiddenParams' },
-                            { $ref: '#/components/schemas/InvalidRequest' },
-                            { $ref: '#/components/schemas/UnknownUserRole' },
-                        ],
+            '400': {
+                description: 'Bad requests.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            oneOf: [
+                                { $ref: '#/components/schemas/ForbiddenParams' },
+                                { $ref: '#/components/schemas/InvalidRequest' },
+                                { $ref: '#/components/schemas/UnknownUserRole' },
+                            ],
+                        },
                     },
                 },
             },
-        },
-        '401': {
-            description: 'Authorization errors.',
-            content: {
-                'application/json': {
-                    schema: {
-                        oneOf: [
-                            { $ref: '#/components/schemas/NoToken' },
-                            { $ref: '#/components/schemas/FalseToken' },
-                        ],
+            '401': {
+                description: 'Authorization errors.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            oneOf: [
+                                { $ref: '#/components/schemas/NoToken' },
+                                { $ref: '#/components/schemas/FalseToken' },
+                            ],
+                        },
                     },
                 },
             },
-        },
-        '403': {
-            description: 'Forbidden errors.',
-            content: {
-                'application/json': {
-                    schema: {
-                        oneOf: [
-                            { $ref: '#/components/schemas/NotAllowedToUpdateArticle' },
-                            { $ref: '#/components/schemas/OnlyCertifiedMembersUpdateArticle' },
-                        ],
+            '403': {
+                description: 'Forbidden errors.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            oneOf: [
+                                { $ref: '#/components/schemas/NotAllowedToUpdateArticle' },
+                                { $ref: '#/components/schemas/OnlyCertifiedMembersUpdateArticle' },
+                            ],
+                        },
                     },
                 },
             },
-        },
-        '404': {
-            description: 'Not found errors.',
-            content: {
-                'application/json': {
-                    schema: {
-                        oneOf: [
-                            { $ref: '#/components/schemas/NoArticleFound' },
-                            { $ref: '#/components/schemas/NoUserInfoFound' },
-                        ],
+            '404': {
+                description: 'Not found errors.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            oneOf: [
+                                { $ref: '#/components/schemas/NoArticleFound' },
+                                { $ref: '#/components/schemas/NoUserInfoFound' },
+                            ],
+                        },
                     },
                 },
             },
-        },
-        '405': {
-            description: 'Method not allowed.',
-        },
-        '409': {
-            description: 'Article with same title already posted.',
-        },
-        '422': {
-            description: 'Unprocessable entities.',
-            content: {
-                'application/json': {
-                    schema: {
-                        oneOf: [
-                            { $ref: '#/components/schemas/InvalidURI' },
-                            { $ref: '#/components/schemas/InvalidValidationRule' },
-                        ],
+            '405': {
+                description: 'Method not allowed.',
+            },
+            '409': {
+                description: 'Article with same title already posted.',
+            },
+            '422': {
+                description: 'Unprocessable entities.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            oneOf: [
+                                { $ref: '#/components/schemas/InvalidURI' },
+                                { $ref: '#/components/schemas/InvalidValidationRule' },
+                            ],
+                        },
                     },
                 },
             },
-        },
-        '500': {
-            description: 'Server errors.',
-            content: {
-                'application/json': {
-                    schema: {
-                        oneOf: [
-                            { $ref: '#/components/schemas/InternalServerError' },
-                            { $ref: '#/components/schemas/DatabaseError' },
-                            { $ref: '#/components/schemas/ValidationResponseError' },
-                            { $ref: '#/components/schemas/CreationResponseObjectError' },
-                        ],
+            '500': {
+                description: 'Server errors.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            oneOf: [
+                                { $ref: '#/components/schemas/InternalServerError' },
+                                { $ref: '#/components/schemas/DatabaseError' },
+                                { $ref: '#/components/schemas/ValidationResponseError' },
+                                { $ref: '#/components/schemas/CreationResponseObjectError' },
+                            ],
+                        },
                     },
                 },
             },
@@ -1377,75 +1385,77 @@ swaggerSpec.paths['/api/articles/{id}'].patch = {
 };
 
 /*=== DELETE ARTICLE ===*/
-swaggerSpec.paths['/api/articles/{id}'].delete = {
-    summary: 'Delete article by Id',
-    description: 'Delete a article by their Id.',
-    tags: ['Articles'],
-    security: [
-        {
-            bearerAuth: [],
-        },
-    ],
-    parameters: [
-        {
-            in: 'path',
-            name: 'id',
-            required: true,
-            description: 'Article Id',
-            schema: {
-                type: 'string',
+swaggerSpec.paths['/api/articles/delete/{id}'] = {
+    delete: {
+        summary: 'Delete article by Id',
+        description: 'Delete a article by their Id.',
+        tags: ['Articles'],
+        security: [
+            {
+                bearerAuth: [],
             },
-        },
-    ],
-    responses: {
-        '204': {
-            description: 'Single article deleted successfully.',
-        },
-        '401': {
-            description: 'Authorization errors.',
-            content: {
-                'application/json': {
-                    schema: {
-                        oneOf: [
-                            { $ref: '#/components/schemas/NoToken' },
-                            { $ref: '#/components/schemas/FalseToken' },
-                        ],
+        ],
+        parameters: [
+            {
+                in: 'path',
+                name: 'id',
+                required: true,
+                description: 'Article Id',
+                schema: {
+                    type: 'string',
+                },
+            },
+        ],
+        responses: {
+            '204': {
+                description: 'Single article deleted successfully.',
+            },
+            '401': {
+                description: 'Authorization errors.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            oneOf: [
+                                { $ref: '#/components/schemas/NoToken' },
+                                { $ref: '#/components/schemas/FalseToken' },
+                            ],
+                        },
                     },
                 },
             },
-        },
-        '403': {
-            description: 'Forbidden errors.',
-            content: {
-                'application/json': {
-                    schema: {
-                        oneOf: [
-                            { $ref: '#/components/schemas/NotAllowedToDeleteArticle' },
-                            { $ref: '#/components/schemas/OnlyCertifiedMembersDeleteArticle' },
-                        ],
+            '403': {
+                description: 'Forbidden errors.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            oneOf: [
+                                { $ref: '#/components/schemas/NotAllowedToDeleteArticle' },
+                                { $ref: '#/components/schemas/OnlyCertifiedMembersDeleteArticle' },
+                            ],
+                        },
                     },
                 },
             },
-        },
-        '404': {
-            description: 'No article was found.',
-        },
-        '405': {
-            description: 'Method not allowed.',
-        },
-        '422': {
-            description: 'Invalid URI format.',
-        },
-        '500': {
-            description: 'Server errors.',
-            content: {
-                'application/json': {
-                    schema: {
-                        oneOf: [
-                            { $ref: '#/components/schemas/InternalServerError' },
-                            { $ref: '#/components/schemas/DatabaseError' },
-                            { $ref: '#/components/schemas/ValidationResponseError' },
-                        ],
+            '404': {
+                description: 'No article was found.',
+            },
+            '405': {
+                description: 'Method not allowed.',
+            },
+            '422': {
+                description: 'Invalid URI format.',
+            },
+            '500': {
+                description: 'Server errors.',
+                content: {
+                    'application/json': {
+                        schema: {
+                            oneOf: [
+                                { $ref: '#/components/schemas/InternalServerError' },
+                                { $ref: '#/components/schemas/DatabaseError' },
+                                { $ref: '#/components/schemas/ValidationResponseError' },
+                            ],
+                        },
                     },
                 },
             },
