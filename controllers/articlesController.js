@@ -268,9 +268,11 @@ class ArticleController {
                 if (req.isAdmin) {
                     // Allow admin to update the article of any user
                     await Article.updateOne({ _id: articleId }, req.body);
-                } else if (req.isUser) {
+                }
+                else if (req.isUser) {
                     return res.status(403).json({ message: 'Only certified members are allowed to update an article!' });
-                } else {
+                }
+                else {
                     return res.status(403).json({ message: 'You are not allowed to update an article that does not belong to you!' });
                 }
             } else {
@@ -316,13 +318,15 @@ class ArticleController {
             // Validate response format
             try {
                 await responseValidationSchema.validate(responseObject, { abortEarly: false });
-            } catch (validationError) {
+            }
+            catch (validationError) {
                 return ErrorHandler.sendValidationResponseError(res, validationError);
             }
 
             // Return the updated article
             return res.status(200).json(responseObject);
-        } catch (err) {
+        }
+        catch (err) {
             if (err.code === 11000 && err.keyPattern.title) {
                 return res.status(409).json({ message: 'Article with the same title already posted!' });
             }
@@ -350,9 +354,11 @@ class ArticleController {
                     await Article.deleteOne({ _id: articleId });
 
                     return res.sendStatus(204);
-                } else if (req.isUser) {
+                }
+                else if (req.isUser) {
                     return res.status(403).json({ message: 'Only certified members are allowed to delete an article!' });
-                } else {
+                }
+                else {
                     return res.status(403).json({ message: 'You are not allowed to delete an article that does not belong to you!' });
                 }
             }
@@ -361,7 +367,8 @@ class ArticleController {
             await Article.deleteOne({ _id: articleId });
 
             return res.sendStatus(204);
-        } catch (err) {
+        }
+        catch (err) {
             return ErrorHandler.sendDatabaseError(res, err);
         }
     }
@@ -373,7 +380,8 @@ class ArticleController {
         try {
             let user = await User.findById(userId, 'nickname roles');
             return user ? { nickname: user.nickname, roles: user.roles } : null;
-        } catch (err) {
+        }
+        catch (err) {
             return ErrorHandler.handleUserInfoNotFound(res, err);
         }
     }
@@ -408,7 +416,8 @@ class ArticleController {
                 default:
                     return ErrorHandler.handleUserUnknownRole(res, err);
             }
-        } catch (err) {
+        }
+        catch (err) {
             return ErrorHandler.sendCreationResponseObjectError(res, err);
         }
     }
