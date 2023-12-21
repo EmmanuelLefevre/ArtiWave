@@ -24,7 +24,7 @@ const extractBearer = authorization => {
 
 
 /*============ CHECK IF TOKEN IS PRESENT AND CHECK IT ============*/
-const adminCheck = (req, res, next) => {
+const AdminCheck = (req, res, next) => {
     try {
         const token = req.headers.authorization && extractBearer(req.headers.authorization);
 
@@ -66,4 +66,4 @@ const adminCheck = (req, res, next) => {
 
 
 /*============ EXPORT MODULE ============*/
-module.exports = adminCheck;
+module.exports = AdminCheck;
