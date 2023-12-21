@@ -8,10 +8,13 @@ const argon2 = require('argon2');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
 
+// Repositories
 const UserRepository = require('../repositories/userRepository');
 
+// Response validation
 const { UserTokenResponseValidation } = require('../_validation/responses/userResponseValidation');
 
+// Errors
 const BadCredentialsError = require('../_errors/badCredentialsError');
 const InternalServerError = require('../_errors/internalServerError');
 const LoginLimiterError = require('../_errors/loginLimiterError');
