@@ -4,7 +4,7 @@
 
 
 /*============ IMPORT USED MODULES ============*/
-const User = require('../_models/IUser');
+const User = require('../models/IUser');
 
 const InternalServerError = require('../_errors/internalServerError');
 const UserNotFoundError = require('../_errors/userNotFoundError');

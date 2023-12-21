@@ -6,8 +6,8 @@
 /*============ IMPORT USED MODULES ============*/
 const argon2 = require('argon2');
 
-const User = require('../_models/IUser');
-const Article = require('../_models/IArticle');
+const User = require('../models/IUser');
+const Article = require('../models/IArticle');
 const ErrorHandler = require('../_errors/errorHandler');
 
 const { userResponseValidationRoleAdmin,

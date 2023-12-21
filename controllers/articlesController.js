@@ -4,8 +4,8 @@
 
 
 /*============ IMPORT USED MODULES ============*/
-const Article = require('../_models/IArticle');
-const User = require('../_models/IUser');
+const Article = require('../models/IArticle');
+const User = require('../models/IUser');
 const ErrorHandler = require('../_errors/errorHandler');
 
 const { articleResponseValidationRoleAdmin,
