@@ -6,15 +6,21 @@
 /*============ IMPORT USED MODULES ============*/
 const express = require('express');
 
+// Controller
 const AdminController = require('../controllers/adminController');
 
-const allowedCurrentMethodCheck = require('../middleware/allowedCurrentMethodCheck');
-const validateURIParam = require('../_validation/URI/validateURIParam');
+// Middlewares
+const AllowedCurrentMethodCheck = require('../middleware/allowedCurrentMethodCheck');
+const ValidateURIParam = require('../_validation/URI/validateURIParam');
+
+// Validation
 const { validationResult } = require('express-validator');
 
+// Errors
 const InternalServerError = require('../_errors/internalServerError');
 const ValidationError = require('../_errors/validationError');
 
+// Logs
 const { adminsLogs } = require('../_logs/admins/adminsLogger');
 
 
@@ -28,33 +34,35 @@ class AdminRouter {
 
         /*=== DELETE NON ADMIN USERS AND THEIR OWNED ARTICLES ===*/
         adminRouter.route('/delete_all_users')
-            .all(allowedCurrentMethodCheck(['DELETE']))
+            .all(AllowedCurrentMethodCheck(['DELETE']))
             .delete((req, res) => {
                 AdminController.deleteAllUsers(req, res);
             });
 
         /*=== DELETE ALL ARTICLES EXCEPT THOSE OWNED BY ADMIN ===*/
         adminRouter.route('/delete_all_articles')
-            .all(allowedCurrentMethodCheck(['DELETE']))
+            .all(AllowedCurrentMethodCheck(['DELETE']))
             .delete((req, res) => {
                 AdminController.deleteAllArticles(req, res);
             });
 
         /*=== DELETE ALL ARTICLES BY USER ===*/
         adminRouter.route('/delete_all_articles/:id')
-            .all(allowedCurrentMethodCheck(['DELETE']))
+            .all(AllowedCurrentMethodCheck(['DELETE']))
             .delete((req, res) => [
-                validateURIParam('id'),
+                ValidateURIParam('id'),
                 AdminRouter.#validateURIParam,
+                // Successful validation, proceed
                 AdminController.deleteAllArticlesByUser(req, res)
             ]);
 
         /*=== INVERT USER ROLE ===*/
         adminRouter.route('/invert_user_role/:id')
-            .all(allowedCurrentMethodCheck(['PATCH']))
+            .all(AllowedCurrentMethodCheck(['PATCH']))
             .patch((req, res) => [
-                validateURIParam('id'),
+                ValidateURIParam('id'),
                 AdminRouter.#validateURIParam,
+                // Successful validation, proceed
                 AdminController.invertUserRole(req, res)
             ]);
 
