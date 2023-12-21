@@ -73,7 +73,7 @@ class UserController {
 
             // Validate response format
             try {
-                await userRegisterResponseValidation.validate(response, { abortEarly: false });
+                await UserRegisterResponseValidation.validate(response, { abortEarly: false });
             }
             catch (validationError) {
                 return ErrorHandler.sendValidationResponseError(res, validationError);
@@ -113,13 +113,13 @@ class UserController {
 
             switch (req.userRole) {
                 case 'admin':
-                    responseValidationSchema = usersResponseValidationRoleAdmin;
+                    responseValidationSchema = UsersResponseValidationRoleAdmin;
                     responseObject = {
                         data: users.map(user => this.#createResponseUserObject(user, req.userRole))
                     };
                     break;
                 case 'certified':
-                    responseValidationSchema = usersResponseValidationRoleCertified;
+                    responseValidationSchema = UsersResponseValidationRoleCertified;
                     responseObject = {
                         data: users.map(user => this.#createResponseUserObject(user, req.userRole))
                     };
@@ -162,11 +162,11 @@ class UserController {
 
             switch (req.userRole) {
                 case 'admin':
-                    responseValidationSchema = userResponseValidationRoleAdmin;
+                    responseValidationSchema = UserResponseValidationRoleAdmin;
                     responseObject = this.#createResponseUserObject(user, req.userRole);
                     break;
                 default:
-                    responseValidationSchema = userResponseValidationBase;
+                    responseValidationSchema = UserResponseValidationBase;
                     responseObject = this.#createResponseUserObject(user, req.userRole);
                     break;
             }
@@ -255,13 +255,13 @@ class UserController {
 
             switch (req.userRole) {
                 case 'admin':
-                    responseValidationSchema = userUpdatedResponseValidationRoleAdmin;
+                    responseValidationSchema = UserUpdatedResponseValidationRoleAdmin;
                     responseObject = {
                         data: [this.#createResponseUserObject(user, req.userRole)]
                     };
                     break;
                 default:
-                    responseValidationSchema = userUpdatedResponseValidationBase;
+                    responseValidationSchema = UserUpdatedResponseValidationBase;
                     responseObject = {
                         data: [this.#createResponseUserObject(user, req.userRole)]
                     };
