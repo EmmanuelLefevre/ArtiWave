@@ -30,6 +30,8 @@ let failedLoginAttempts = 0;
 let lastFailedLoginDate = null;
 
 class AuthController {
+
+    /*=== LOGIN ===*/
     static login(req, res, next) {
         try {
             const { email, password } = req.body;
