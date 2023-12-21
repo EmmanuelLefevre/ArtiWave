@@ -10,7 +10,7 @@ const { object, string, array } = require('yup');
 /*============ VALIDATION SCHEMA ============*/
 
 /*=== INVERT ROLE RESPONSE VALIDATION ===*/
-const invertRoleResponseValidation = object({
+const InvertRoleResponseValidation = object({
     data: array().of(
         object({
             _id: string().matches(/^[0-9a-fA-F]{24}$/).required(),
@@ -24,5 +24,5 @@ const invertRoleResponseValidation = object({
 
 /*============ EXPORT MODULE ============*/
 module.exports = {
-    invertRoleResponseValidation
+    InvertRoleResponseValidation
 };
