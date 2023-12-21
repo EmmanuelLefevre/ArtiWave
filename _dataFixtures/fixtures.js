@@ -10,8 +10,8 @@ const { faker } = require('@faker-js/faker');
 
 const connectDB = require('./../db.config');
 
-const User = require('./../_models/IUser');
-const Article = require('./../_models/IArticle');
+const User = require('./../models/IUser');
+const Article = require('./../models/IArticle');
 
 
 /*============ APP INITIALIZATION ============*/
