@@ -5,21 +5,27 @@
 
 /*============ IMPORT USED MODULES ============*/
 const express = require('express');
-const { validationResult } = require('express-validator');
 
+// Controller
 const articlesController = require('../controllers/articlesController');
-const allowedCurrentMethodCheck = require('../middleware/allowedCurrentMethodCheck');
 
-const { createArticleLimiter } = require('../middleware/rateLimiter');
-const jwtCheck = require('../middleware/jwtCheck');
-const accountCheck = require('../middleware/accountCheck');
-const premiumCheck = require('../middleware/premiumCheck');
+// Middlewares
+const AccountCheck = require('../middleware/accountCheck');
+const AllowedCurrentMethodCheck = require('../middleware/allowedCurrentMethodCheck');
+const JwtCheck = require('../middleware/jwtCheck');
+const PremiumCheck = require('../middleware/premiumCheck');
+const ValidateURIParam = require('../_validation/URI/validateURIParam');
+const { CreateArticleLimiter } = require('../middleware/rateLimiter');
 
+// Validation
+const { validationResult } = require('express-validator');
+const ArticleValidationRules = require('../_validation/validators/articleValidator');
+
+// Errors
 const ErrorHandler = require('../_errors/errorHandler');
 const ValidationErrorHandler = require('../_validation/validationErrorHandler');
-const validateURIParam = require('../_validation/URI/validateURIParam');
-const articleValidationRules = require('../_validation/validators/articleValidator');
 
+// Logs
 const { articlesLogs } = require('../_logs/articles/articlesLogger');
 
 
@@ -35,12 +41,12 @@ router.use(articlesLogs);
 
 /*=== CREATE ARTICLE ===*/
 router.route('/')
-    .all(allowedCurrentMethodCheck(['POST']))
+    .all(AllowedCurrentMethodCheck(['POST']))
     .post([
-        jwtCheck,
-        premiumCheck,
-        articleValidationRules(),
-        createArticleLimiter,
+        JwtCheck,
+        PremiumCheck,
+        ArticleValidationRules(),
+        CreateArticleLimiter,
         (req, res, next) => {
             try {
                 // Check presence of data title && content
@@ -76,9 +82,9 @@ router.route('/')
 
 /*=== GET ALL ARTICLES ===*/
 router.route('/')
-    .all(allowedCurrentMethodCheck(['GET']))
+    .all(AllowedCurrentMethodCheck(['GET']))
     .get([
-        jwtCheck,
+        JwtCheck,
         async (req, res) => {
             try {
                 await articlesController.getAllArticles(req, res);
@@ -92,10 +98,10 @@ router.route('/')
 
 /*=== GET SINGLE ARTICLE ===*/
 router.route('/:id')
-    .all(allowedCurrentMethodCheck(['GET']))
+    .all(AllowedCurrentMethodCheck(['GET']))
     .get([
-        jwtCheck,
-        validateURIParam('id'),
+        JwtCheck,
+        ValidateURIParam('id'),
         async (req, res) => {
             try {
                 const errors = validationResult(req);
@@ -115,11 +121,11 @@ router.route('/:id')
 
 /*=== GET ARTICLES BY USER ===*/
 router.route('/user/:userId')
-    .all(allowedCurrentMethodCheck(['GET']))
+    .all(AllowedCurrentMethodCheck(['GET']))
     .get([
-        jwtCheck,
-        accountCheck,
-        validateURIParam('userId'),
+        JwtCheck,
+        AccountCheck,
+        ValidateURIParam('userId'),
         async (req, res) => {
             try {
                 const errors = validationResult(req);
@@ -140,11 +146,11 @@ router.route('/user/:userId')
 
 /*=== UPDATE ARTICLE ===*/
 router.route('/:id')
-    .all(allowedCurrentMethodCheck(['PATCH']))
+    .all(AllowedCurrentMethodCheck(['PATCH']))
     .patch([
-        jwtCheck,
-        validateURIParam('id'),
-        articleValidationRules(),
+        JwtCheck,
+        ValidateURIParam('id'),
+        ArticleValidationRules(),
         (req, res, next) => {
             try {
                 // Check presence of forbidden paramaters author || createdAt || updatedAt
@@ -191,10 +197,10 @@ router.route('/:id')
 
 /*=== DELETE ARTICLE ===*/
 router.route('/:id')
-    .all(allowedCurrentMethodCheck(['DELETE']))
+    .all(AllowedCurrentMethodCheck(['DELETE']))
     .delete([
-        jwtCheck,
-        validateURIParam('id'),
+        JwtCheck,
+        ValidateURIParam('id'),
         async (req, res) => {
             try {
                 const errors = validationResult(req);
