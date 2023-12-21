@@ -6,17 +6,22 @@
 /*============ IMPORT USED MODULES ============*/
 const argon2 = require('argon2');
 
+// Models
 const User = require('../models/IUser');
 const Article = require('../models/IArticle');
-const ErrorHandler = require('../_errors/errorHandler');
 
-const { userResponseValidationRoleAdmin,
-        userResponseValidationBase,
-        usersResponseValidationRoleAdmin,
-        usersResponseValidationRoleCertified,
-        userUpdatedResponseValidationRoleAdmin,
-        userUpdatedResponseValidationBase,
-        userRegisterResponseValidation } = require('../_validation/responses/userResponseValidation');
+// Response validation
+const { UserResponseValidationRoleAdmin,
+        UserResponseValidationBase,
+        UsersResponseValidationRoleAdmin,
+        UsersResponseValidationRoleCertified,
+        UserUpdatedResponseValidationRoleAdmin,
+        UserUpdatedResponseValidationBase,
+        UserRegisterResponseValidation } =
+    require('../_validation/responses/userResponseValidation');
+
+// Errors
+const ErrorHandler = require('../_errors/errorHandler');
 
 
 /*============ USERS ============*/
