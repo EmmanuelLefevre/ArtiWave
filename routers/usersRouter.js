@@ -43,16 +43,16 @@ class UsersRouter {
         usersRouter.route('/register')
             .all(AllowedCurrentMethodCheck(['POST']))
             .post((req, res) => {
-                // try {
+                try {
                     UserValidationRules,
                     UsersRouter.#validateRegister,
                     RegisterLimiter,
                     // Successful validation, proceed
                     UsersController.register(req, res);
-                // }
-                // catch (err) {
-                //     throw new InternalServerError();
-                // }
+                }
+                catch (err) {
+                    throw new InternalServerError();
+                }
         });
 
         /*=== GET ALL USERS ===*/
