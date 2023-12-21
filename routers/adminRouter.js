@@ -36,35 +36,55 @@ class AdminRouter {
         adminRouter.route('/delete_all_users')
             .all(AllowedCurrentMethodCheck(['DELETE']))
             .delete((req, res) => {
-                AdminController.deleteAllUsers(req, res);
-            });
+                try {
+                    AdminController.deleteAllUsers(req, res);
+                }
+                catch (err) {
+                    throw new InternalServerError();
+                }
+        });
 
         /*=== DELETE ALL ARTICLES EXCEPT THOSE OWNED BY ADMIN ===*/
         adminRouter.route('/delete_all_articles')
             .all(AllowedCurrentMethodCheck(['DELETE']))
             .delete((req, res) => {
-                AdminController.deleteAllArticles(req, res);
-            });
+                try {
+                    AdminController.deleteAllArticles(req, res);
+                }
+                catch (err) {
+                    throw new InternalServerError();
+                }
+        });
 
         /*=== DELETE ALL ARTICLES BY USER ===*/
         adminRouter.route('/delete_all_articles/:id')
             .all(AllowedCurrentMethodCheck(['DELETE']))
-            .delete((req, res) => [
-                ValidateURIParam('id'),
-                AdminRouter.#validateURIParam,
-                // Successful validation, proceed
-                AdminController.deleteAllArticlesByUser(req, res)
-            ]);
+            .delete((req, res) => {
+                try {
+                    ValidateURIParam('id'),
+                    AdminRouter.#validateURIParam,
+                    // Successful validation, proceed
+                    AdminController.deleteAllArticlesByUser(req, res);
+                }
+                catch (err) {
+                    throw new InternalServerError();
+                }
+        });
 
         /*=== INVERT USER ROLE ===*/
         adminRouter.route('/invert_user_role/:id')
             .all(AllowedCurrentMethodCheck(['PATCH']))
-            .patch((req, res) => [
-                ValidateURIParam('id'),
-                AdminRouter.#validateURIParam,
-                // Successful validation, proceed
-                AdminController.invertUserRole(req, res)
-            ]);
+            .patch((req, res) => {
+                try {
+                    ValidateURIParam('id'),
+                    AdminRouter.#validateURIParam,
+                    // Successful validation, proceed
+                    AdminController.invertUserRole(req, res)
+                }
+                catch (err) {
+                    throw new InternalServerError();
+                }
+        });
 
         return adminRouter;
     }
