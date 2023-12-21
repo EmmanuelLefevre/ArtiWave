@@ -97,9 +97,9 @@ class ArticlesRouter {
         articlesRouter.route('/user/:userId')
             .all(AllowedCurrentMethodCheck(['GET']))
             .get(
-                JwtCheck,
                 AccountCheck,
-                ValidateURIParam('id'),
+                JwtCheck,
+                ValidateURIParam('userId'),
                 ArticlesRouter.#validateURIParam,
                 (req, res) => {
                     try {
