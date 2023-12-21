@@ -64,12 +64,6 @@ class AdminRepository {
 module.exports = AdminRepository;
 
 
-
-
-
-
-
-
 // class AdminRepository {
 //     static findNonAdminsUsers() {
 //         return new Promise((resolve, reject) => {
