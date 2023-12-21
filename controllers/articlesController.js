@@ -61,11 +61,11 @@ class ArticleController {
 
             switch (req.userRole) {
                 case 'admin':
-                    responseValidationSchema = articleResponseValidationRoleAdmin;
+                    responseValidationSchema = ArticleResponseValidationRoleAdmin;
                     responseObject = createdArticle;
                     break;
                 default:
-                    responseValidationSchema = articleResponseValidationBase;
+                    responseValidationSchema = ArticleResponseValidationBase;
                     responseObject = createdArticle;
             }
 
@@ -110,13 +110,13 @@ class ArticleController {
 
             switch (req.userRole) {
                 case 'admin':
-                    responseValidationSchema = articlesResponseValidationRoleAdmin;
+                    responseValidationSchema = ArticlesResponseValidationRoleAdmin;
                     responseObject = {
                         data: articles
                     };
                     break;
                 default:
-                    responseValidationSchema = articlesResponseValidationBase;
+                    responseValidationSchema = ArticlesResponseValidationBase;
                     responseObject = {
                         data: articles
                     };
@@ -161,11 +161,11 @@ class ArticleController {
 
             switch (req.userRole) {
                 case 'admin':
-                    responseValidationSchema = articleResponseValidationRoleAdmin;
+                    responseValidationSchema = ArticleResponseValidationRoleAdmin;
                     responseObject = article;
                     break;
                 default:
-                    responseValidationSchema = articleResponseValidationBase;
+                    responseValidationSchema = ArticleResponseValidationBase;
                     responseObject = article;
             }
 
@@ -214,13 +214,13 @@ class ArticleController {
 
             switch (req.userRole) {
                 case 'admin':
-                    responseValidationSchema = articlesResponseValidationRoleAdmin;
+                    responseValidationSchema = ArticlesResponseValidationRoleAdmin;
                     responseObject = {
                         data: articles
                     };
                     break;
                 default:
-                    responseValidationSchema = articlesResponseValidationBase;
+                    responseValidationSchema = ArticlesResponseValidationBase;
                     responseObject = {
                         data: articles
                     };
@@ -300,13 +300,13 @@ class ArticleController {
 
             switch (req.userRole) {
                 case 'admin':
-                    responseValidationSchema = articleUpdatedResponseValidationRoleAdmin;
+                    responseValidationSchema = ArticleUpdatedResponseValidationRoleAdmin;
                     responseObject = {
                         data: article
                     };
                     break;
                 default:
-                    responseValidationSchema = articleUpdatedResponseValidationBase;
+                    responseValidationSchema = ArticleUpdatedResponseValidationBase;
                     responseObject = {
                         data: article
                     };
