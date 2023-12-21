@@ -9,7 +9,7 @@ const NotAllowedMethodError = require('../_errors/notAllowedMethodError');
 
 /*============ CHECK IF REQUEST CURRENT METHOD IS ALLOWED ============*/
 // Check method verb
-const allowedCurrentMethodCheck = (allowedMethods) => {
+const AllowedCurrentMethodCheck = (allowedMethods) => {
     return (req, _res, next) => {
         const currentMethod = req.method;
 
@@ -22,4 +22,4 @@ const allowedCurrentMethodCheck = (allowedMethods) => {
 
 
 /*============ EXPORT MODULE ============*/
-module.exports = allowedCurrentMethodCheck;
+module.exports = AllowedCurrentMethodCheck;
