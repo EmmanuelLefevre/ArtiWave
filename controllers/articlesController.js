@@ -383,6 +383,7 @@ class ArticleController {
         }
     }
 
+
     /*============ FUNCTIONS ============*/
 
     /*=== GET INFO ===*/
