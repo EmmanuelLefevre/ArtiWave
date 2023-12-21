@@ -11,7 +11,7 @@ const capitalizeFirstLetter = require('../../_utils/capitalizeFirstLetter');
 
 
 /*============ ARTICLE VALIDATION ============*/
-const articleValidationRules = () => {
+const ArticleValidationRules = () => {
     return [
         body('title')
             .optional({ nullable: true }).bail()
@@ -38,4 +38,4 @@ const articleValidationRules = () => {
 
 
 /*============ EXPORT MODULE ============*/
-module.exports = articleValidationRules;
+module.exports = ArticleValidationRules;
