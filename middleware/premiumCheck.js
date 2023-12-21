@@ -9,7 +9,7 @@ const PremiumCheckError = require('../_errors/premiumCheckError');
 
 /*============ CHECK IF REQUEST HAS ROLE ADMIN OR CERTIFIED ============*/
 // Check if user has required role (admin or certified)
-const premiumCheck = (req, _res, next) => {
+const PremiumCheck = (req, _res, next) => {
     if (!(req.isAdmin || req.isCertified)) {
         throw new PremiumCheckError();
     }
@@ -19,4 +19,4 @@ const premiumCheck = (req, _res, next) => {
 
 
 /*============ EXPORT MODULE ============*/
-module.exports = premiumCheck;
+module.exports = PremiumCheck;
