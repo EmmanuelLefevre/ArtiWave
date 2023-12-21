@@ -53,7 +53,7 @@ class ArticleController {
             await newArticle.save();
 
             // Add author's id and nickname for the article if admin, if not just add author's nickname
-            const createdArticle = await createResponseArticleObject(newArticle, req.userRole);
+            const createdArticle = await this.createResponseArticleObject(newArticle, req.userRole);
 
             // Set response and determine the response validation schema based on user role
             let responseValidationSchema;
@@ -99,7 +99,7 @@ class ArticleController {
             }
 
             // Add author's id and nickname for each article if admin, if not just add author's nickname
-            articles = await Promise.all(articles.map(article => createResponseArticleObject(article, req.userRole)));
+            articles = await Promise.all(articles.map(article => this.createResponseArticleObject(article, req.userRole)));
 
             // Count articles
             const articlesCount = articles.length;
@@ -153,7 +153,7 @@ class ArticleController {
             }
 
             // Add author's id and nickname for the article if admin, if not just add author's nickname
-            article = await createResponseArticleObject(article, req.userRole);
+            article = await this.createResponseArticleObject(article, req.userRole);
 
             // Set response and determine the response validation schema based on user role
             let responseValidationSchema;
@@ -206,7 +206,7 @@ class ArticleController {
             let articles = await Article.find({ author: userId }, { _id: 1, title: 1, content: 1, author: 1, createdAt: 1, updatedAt: 1 });
 
             // Add author's nickname and id for each article
-            articles = await Promise.all(articles.map(article => createResponseArticleObject(article, req.userRole)));
+            articles = await Promise.all(articles.map(article => this.createResponseArticleObject(article, req.userRole)));
 
             // Set response and determine the response validation schema based on user role
             let responseValidationSchema;
@@ -292,7 +292,7 @@ class ArticleController {
             }, {});
 
             // Add author's id and nickname for the article if admin, if not just add the author's nickname
-            article = await createResponseArticleObject(article, req.userRole);
+            article = await this.createResponseArticleObject(article, req.userRole);
 
             // Set response and determine the response validation schema based on user role
             let responseValidationSchema;
