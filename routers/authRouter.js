@@ -6,16 +6,22 @@
 /*============ IMPORT USED MODULES ============*/
 const express = require('express');
 
+// Controller
 const AuthController = require('../controllers/authController');
 
-const allowedCurrentMethodCheck = require('../middleware/allowedCurrentMethodCheck');
-const { validationResult } = require('express-validator');
-const userValidationRules = require('../_validation/validators/userValidator');
+// Middleware
+const AllowedCurrentMethodCheck = require('../middleware/allowedCurrentMethodCheck');
 
+// Validation
+const { validationResult } = require('express-validator');
+const UserValidationRules = require('../_validation/validators/userValidator');
+
+// Errors
 const InternalServerError = require('../_errors/internalServerError');
 const InvalidRequestError = require('../_errors/invalidRequestError');
 const ValidationError = require('../_errors/validationError');
 
+// Logs
 const { authLogs } = require('../_logs/auth/authLogger');
 
 
@@ -30,10 +36,11 @@ class AuthRouter {
         authRouter.use(authLogs);
 
         authRouter.route('/')
-            .all(allowedCurrentMethodCheck(['POST']))
+            .all(AllowedCurrentMethodCheck(['POST']))
             .post([
-                userValidationRules,
+                UserValidationRules,
                 AuthRouter.#validateRequest,
+                // Successful validation, proceed
                 AuthController.login
             ]);
 
