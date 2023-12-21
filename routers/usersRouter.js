@@ -36,7 +36,7 @@ class UsersRouter {
     static init() {
         // Express router
         const usersRouter = express.Router();
-        // Middleware auth requests logs
+        // Middleware users requests logs
         usersRouter.use(usersLogs);
 
         /*=== REGISTER ===*/
