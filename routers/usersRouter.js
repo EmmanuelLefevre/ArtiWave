@@ -42,84 +42,94 @@ class UsersRouter {
         /*=== REGISTER ===*/
         usersRouter.route('/register')
             .all(AllowedCurrentMethodCheck(['POST']))
-            .post((req, res) => {
-                try {
-                    UserValidationRules,
-                    UsersRouter.#validateRegister,
-                    RegisterLimiter,
-                    // Successful validation, proceed
-                    UsersController.register(req, res);
+            .post(
+                UserValidationRules,
+                UsersRouter.#validateRegister,
+                RegisterLimiter,
+                (req, res) => {
+                    try {
+                        // Successful validation, proceed
+                        UsersController.register(req, res);
+                    }
+                    catch (err) {
+                        throw new InternalServerError();
+                    }
                 }
-                catch (err) {
-                    throw new InternalServerError();
-                }
-        });
+        );
 
         /*=== GET ALL USERS ===*/
         usersRouter.route('/')
             .all(AllowedCurrentMethodCheck(['GET']))
-            .get((req, res) => {
-                try {
-                    JwtCheck,
-                    PremiumCheck,
-                    // Successful validation, proceed
-                    UsersController.getAllUsers(req, res);
+            .get(
+                JwtCheck,
+                PremiumCheck,
+                (req, res) => {
+                    try {
+                        // Successful validation, proceed
+                        UsersController.getAllUsers(req, res);
+                    }
+                    catch (err) {
+                        throw new InternalServerError();
+                    }
                 }
-                catch (err) {
-                    throw new InternalServerError();
-                }
-        });
+        );
 
         /*=== GET SINGLE USER ===*/
         usersRouter.route('/:id')
             .all(AllowedCurrentMethodCheck(['GET']))
-            .get((req, res) => {
-                try {
-                    AccountCheck,
-                    JwtCheck,
-                    ValidateURIParam('id'),
-                    UsersRouter.#validateURIParam,
-                    // Successful validation, proceed
-                    UsersController.getUser(req, res);
+            .get(
+                AccountCheck,
+                JwtCheck,
+                ValidateURIParam('id'),
+                UsersRouter.#validateURIParam,
+                (req, res) => {
+                    try {
+                        // Successful validation, proceed
+                        UsersController.getUser(req, res);
+                    }
+                    catch (err) {
+                        throw new InternalServerError();
+                    }
                 }
-                catch (err) {
-                    throw new InternalServerError();
-                }
-        });
+        );
 
         /*=== UPDATE USER ===*/
         usersRouter.route('/:id')
             .all(AllowedCurrentMethodCheck(['PATCH']))
-            .patch((req, res) => {
-                try {
-                    JwtCheck,
-                    ValidateURIParam('id'),
-                    UsersRouter.#validateURIParam,
-                    UsersRouter.#validateUpdateUser,
-                    UserValidationRules,
-                    // Successful validation, proceed
-                    UsersController.updateUser(req, res);
+            .patch(
+                JwtCheck,
+                ValidateURIParam('id'),
+                UsersRouter.#validateURIParam,
+                UsersRouter.#validateUpdateUser,
+                UserValidationRules,
+                (req, res) => {
+                    try {
+                        // Successful validation, proceed
+                        UsersController.updateUser(req, res);
+                    }
+                    catch (err) {
+                        throw new InternalServerError();
+                    }
                 }
-                catch (err) {
-                    throw new InternalServerError();
-                }
-        });
+        );
 
         /*=== DELETE USER ===*/
         usersRouter.route('/:id')
             .all(AllowedCurrentMethodCheck(['DELETE']))
-            .delete((req, res) => {
-                try {
-                    JwtCheck,
-                    ValidateURIParam('id'),
-                    UsersRouter.#validateURIParam,
-                    // Successful validation, proceed
-                    UsersController.deleteUser(req, res);
+            .delete(
+                JwtCheck,
+                ValidateURIParam('id'),
+                UsersRouter.#validateURIParam,
+                (req, res) => {
+                    try {
+                        // Successful validation, proceed
+                        UsersController.deleteUser(req, res);
+                    }
+                    catch (err) {
+                        throw new InternalServerError();
+                    }
                 }
-                catch (err) {
-                    throw new InternalServerError();
-                }
-        });
+        );
 
         return usersRouter;
     }
