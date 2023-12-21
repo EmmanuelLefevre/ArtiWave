@@ -5,8 +5,10 @@
 
 /*============ IMPORT USED MODULES ============*/
 const AccountCheckError = require('../_errors/accountCheckError');
+const ArticleAlreadyExistsError = require('../_errors/articleAlreadyExistsError');
 const ArticleNotFoundError = require('../_errors/articleNotFoundError');
 const BadCredentialsError = require('../_errors/badCredentialsError');
+const CreationResponseObjectError = require('../_errors/creationResponseObjectError');
 const InternalServerError = require('../_errors/internalServerError');
 const InvalidRequestError = require('../_errors/invalidRequestError');
 const LoginLimiterError = require('../_errors/loginLimiterError');
@@ -28,8 +30,10 @@ function GlobalErrorHandler(err, _req, res, _next) {
     const statusCode = err.statusCode;
 
     if (err instanceof AccountCheckError ||
+        err instanceof ArticleAlreadyExistsError ||
         err instanceof ArticleNotFoundError ||
         err instanceof BadCredentialsError ||
+        err instanceof CreationResponseObjectError ||
         err instanceof InternalServerError ||
         err instanceof InvalidRequestError ||
         err instanceof LoginLimiterError ||
