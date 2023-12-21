@@ -11,7 +11,7 @@ const capitalizeEachWord = require('../../_utils/capitalizeEachWord');
 
 
 /*============ USER VALIDATION ============*/
-const userValidationRules = [
+const UserValidationRules = [
     body('email')
         .optional({ nullable: true }).bail()
         .isString().withMessage('Email must be a string!').bail()
@@ -39,4 +39,4 @@ const userValidationRules = [
 ];
 
 /*============ EXPORT MODULE ============*/
-module.exports = userValidationRules;
+module.exports = UserValidationRules;
