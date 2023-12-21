@@ -40,7 +40,7 @@ class ArticlesRouter {
         articlesRouter.use(articlesLogs);
 
         /*=== CREATE ARTICLE ===*/
-        articlesRouter.route('/register')
+        articlesRouter.route('/create')
             .all(AllowedCurrentMethodCheck(['POST']))
             .post(
                 JwtCheck,
@@ -113,7 +113,7 @@ class ArticlesRouter {
         );
 
         /*=== UPDATE ARTICLE ===*/
-        articlesRouter.route('/:id')
+        articlesRouter.route('/update/:id')
             .all(AllowedCurrentMethodCheck(['PATCH']))
             .patch(
                 JwtCheck,
@@ -133,7 +133,7 @@ class ArticlesRouter {
         );
 
         /*=== DELETE ARTICLE ===*/
-        articlesRouter.route('/:id')
+        articlesRouter.route('/delete/:id')
             .all(AllowedCurrentMethodCheck(['DELETE']))
             .delete(
                 JwtCheck,

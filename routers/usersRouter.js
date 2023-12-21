@@ -94,7 +94,7 @@ class UsersRouter {
         );
 
         /*=== UPDATE USER ===*/
-        usersRouter.route('/:id')
+        usersRouter.route('/update/:id')
             .all(AllowedCurrentMethodCheck(['PATCH']))
             .patch(
                 JwtCheck,
@@ -114,7 +114,7 @@ class UsersRouter {
         );
 
         /*=== DELETE USER ===*/
-        usersRouter.route('/:id')
+        usersRouter.route('/delete/:id')
             .all(AllowedCurrentMethodCheck(['DELETE']))
             .delete(
                 JwtCheck,
