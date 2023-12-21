@@ -4,23 +4,21 @@
 
 
 /*============ IMPORT USED MODULES ============*/
-const Article = require('../models/IArticle');
-const User = require('../models/IUser');
-const ErrorHandler = require('../_errors/errorHandler');
-
 // Repositories
 const ArticleRepository = require('../repositories/articleRepository');
 const UserRepository = require('../repositories/userRepository');
 
 // Response validation
-const { articleResponseValidationRoleAdmin,
-        articleResponseValidationBase,
-        articlesResponseValidationRoleAdmin,
-        articlesResponseValidationBase,
-        articleUpdatedResponseValidationRoleAdmin,
-        articleUpdatedResponseValidationBase } = require('../_validation/responses/articleResponseValidation');
+const { ArticleResponseValidationRoleAdmin,
+        ArticleResponseValidationBase,
+        ArticlesResponseValidationRoleAdmin,
+        ArticlesResponseValidationBase,
+        ArticleUpdatedResponseValidationRoleAdmin,
+        ArticleUpdatedResponseValidationBase } =
+    require('../_validation/responses/articleResponseValidation');
 
 // Errors
+const ErrorHandler = require('../_errors/errorHandler');
 
 
 /*============ ARTICLES ============*/
