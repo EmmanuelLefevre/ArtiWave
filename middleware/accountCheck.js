@@ -1,8 +1,17 @@
+/*=========================================*/
+/*============ accountCheck.js ============*/
+/*=========================================*/
+
+
+/*============ IMPORT USED MODULES ============*/
+const AccountCheckError = require('../_errors/accountCheckError');
+
+
 /*============ CHECK IF REQUEST HAS AUTHORIZATION ============*/
 // Check user own an account
-const accountCheck = (req, res, next) => {
+const accountCheck = (req, _res, next) => {
     if (!req.headers.authorization) {
-        return res.status(401).json({ message: 'This feature is reserved for users who own an account!' });
+        throw new AccountCheckError();
     }
 
     next();

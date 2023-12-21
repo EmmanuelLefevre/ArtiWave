@@ -14,6 +14,7 @@ const ErrorHandler = require('../_errors/errorHandler');
 const ValidationErrorHandler = require('../_validation/validationErrorHandler');
 const validateURIParam = require('../_validation/URI/validateURIParam');
 const userValidationRule = require('../_validation/validators/userValidator');
+const expressSanitizer = require('express-sanitizer');
 
 const { usersLogs } = require('../_logs/users/usersLogger');
 
@@ -32,6 +33,14 @@ router.use(usersLogs);
 router.route('/register')
     .all(allowedCurrentMethodCheck(['POST']))
     .post([
+        expressSanitizer(),
+        (req, _res, next) => {
+            // Sanitize individual fields
+            req.body.email = req.sanitize(req.body.email);
+            req.body.nickname = req.sanitize(req.body.nickname);
+            req.body.password = req.sanitize(req.body.password);
+            next();
+        },
         userValidationRule,
         (req, res, next) => {
             try {
@@ -67,6 +76,9 @@ router.route('/register')
         registerLimiter,
         async (req, res) => {
             try {
+
+                console.log(req.body);
+
                 // Validation successful, proceed with registration
                 await usersController.register(req, res);
             }

@@ -6,7 +6,7 @@
 /*============ VALIDATION ERROR ============*/
 class ValidationError extends Error {
     constructor(errors = [], statusCode = 422) {
-        super('Validation Error!');
+        super('Validation error!');
         this.statusCode = statusCode;
         this.errors = errors;
         this.name = 'ValidationError';

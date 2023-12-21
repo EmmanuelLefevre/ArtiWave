@@ -2,7 +2,8 @@
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
 
-const ErrorHandler = require('../_errors/errorHandler');
+const InternalServerError = require('../_errors/internalServerError');
+const PermissionDeniedError = require('../_errors/permissionDeniedError');
 
 
 /*============ EXTRACT TOKEN FROM HEADER ============*/
@@ -45,12 +46,16 @@ const adminCheck = (req, res, next) => {
                 next();
             }
             else {
-                return ErrorHandler.handleUserPermissionDenied(res, err);
+                throw new PermissionDeniedError();
             }
         });
     }
     catch (err) {
-        return ErrorHandler.sendInternalServerError(res, err);
+        if (err instanceof PermissionDeniedError) {
+            return next(err);
+        } else {
+            throw new InternalServerError();
+        }
     }
 }
 

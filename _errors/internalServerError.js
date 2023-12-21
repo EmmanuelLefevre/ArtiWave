@@ -1,11 +1,11 @@
-/*============================================*/
+/*================================================*/
 /*============ internalServerError.js ============*/
-/*============================================*/
+/*================================================*/
 
 
 /*============ INTERNAL SERVER ERROR ============*/
 class InternalServerError extends Error {
-    constructor(message = 'Internal Server Error!', statusCode = 500) {
+    constructor(message = 'Internal server error!', statusCode = 500) {
         super(message);
         this.statusCode = statusCode;
         this.name = 'InternalServerError';

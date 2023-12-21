@@ -1,5 +1,10 @@
+/*=============================================*/
+/*============ validateURIParam.js ============*/
+/*=============================================*/
+
+
 /*============ IMPORT USED MODULES ============*/
-const { param, sanitize } = require('express-validator');
+const { param } = require('express-validator');
 
 
 /*============ VALIDATE PARAM MODULE ============*/

@@ -4,12 +4,19 @@
 
 
 /*============ IMPORT USED MODULES ============*/
-const AuthService = require('../services/authServices');
+const argon2 = require('argon2');
+const jwt = require('jsonwebtoken');
+const fs = require('fs');
+
+const UserRepository = require('../repositories/userRepository');
+
+const { UserTokenResponseValidation } = require('../_validation/responses/userResponseValidation');
 
 const BadCredentialsError = require('../_errors/badCredentialsError');
 const InternalServerError = require('../_errors/internalServerError');
 const LoginLimiterError = require('../_errors/loginLimiterError');
 const ResponseValidationError = require('../_errors/responseValidationError');
+const UserNotFoundError = require('../_errors/userNotFoundError');
 
 
 /*============ AUTHENTIFICATION ============*/
@@ -20,56 +27,107 @@ let failedLoginAttempts = 0;
 let lastFailedLoginDate = null;
 
 class AuthController {
-    static login(req, res) {
-        return new Promise(async (resolve, reject) => {
-            try {
-                const { email, password } = req.body;
+    static login(req, res, next) {
+        try {
+            const { email, password } = req.body;
 
-                if (lastFailedLoginDate && failedLoginAttempts >= 5) {
-                    const currentTime = new Date();
-                    const timeDiff = currentTime - lastFailedLoginDate;
+            if (lastFailedLoginDate && failedLoginAttempts >= 5) {
+                const currentTime = new Date();
+                const timeDiff = currentTime - lastFailedLoginDate;
 
-                    // Block attempts for one hour
-                    if (timeDiff < 60 * 60 * 1000) {
-                        throw new LoginLimiterError();
-                    }
-                    else {
-                        // Reset counter after one hour
-                        failedLoginAttempts = 0;
-                    }
+                // Block attempts for one hour
+                if (timeDiff < 60 * 60 * 1000) {
+                    throw new LoginLimiterError();
                 }
+                else {
+                    // Reset counter after one hour
+                    failedLoginAttempts = 0;
+                }
+            }
 
-                await AuthService.login(email, password)
-                    .then(response => {
-                        // Reset counter when login is successful
-                        failedLoginAttempts = 0;
+            UserRepository.findUserByEmail(email)
+            .then(async user => {
+                // Password check
+                const timeCost = parseInt(process.env.ARGON2_TIME_COST);
+                const memoryCost = parseInt(process.env.ARGON2_MEMORY_COST);
 
-                        // Send response
-                        resolve(res.status(200).json(response));
-                    })
-                    .catch(err => {
+                try {
+                    const passwordMatch = await argon2.verify(user.password, password, {
+                        timeCost: timeCost,
+                        memoryCost: memoryCost
+                    });
+
+                    if (!passwordMatch) {
+                        // Increment counter
                         failedLoginAttempts++;
                         lastFailedLoginDate = new Date();
 
-                        if (err instanceof BadCredentialsError ||
-                            err instanceof ResponseValidationError ||
-                            err instanceof InternalServerError) {
-                            reject(res.status(err.statusCode).json({ message: err.message }));
-                        }
-                        else {
-                            reject(InternalServerError());
-                        }
-                    });
-            }
-            catch (err) {
-                if (err instanceof LoginLimiterError) {
-                    reject(res.status(err.statusCode).json({ message: err.message }));
+                        throw new BadCredentialsError();
+                    }
+
+                    // JWT generation
+                    const privateKeyPath = process.env.PRIVATE_KEY_PATH;
+                    const privateKey = fs.readFileSync(privateKeyPath);
+                    const token = jwt.sign({
+                        id: user.id,
+                        roles: user.roles,
+                        nickname: user.nickname,
+                        registeredAt: user.registeredAt
+                    }, privateKey, { expiresIn: process.env.JWT_TTL, algorithm: 'RS256' });
+
+                    // Set response
+                    const response = {
+                        access_token: token,
+                        nickname: user.nickname
+                    };
+
+                    // Validate response format
+                    try {
+                        await UserTokenResponseValidation.validate(response, { abortEarly: false });
+                    }
+                    catch (ValidationError) {
+                        throw new ResponseValidationError();
+                    }
+
+                    // Reset counter
+                    failedLoginAttempts = 0;
+
+                    return res.status(200).json(response);
+                }
+                catch (err) {
+                    if (err instanceof BadCredentialsError ||
+                        err instanceof ResponseValidationError) {
+                        return next(err);
+                    }
+                    else {
+                        throw new InternalServerError();
+                    }
+                }
+            })
+
+            .catch(err => {
+                if (err instanceof UserNotFoundError) {
+                    // Increment counter
+                    failedLoginAttempts++;
+                    lastFailedLoginDate = new Date();
+
+                    next(new BadCredentialsError());
                 }
                 else {
-                    reject(InternalServerError());
+                    next(new InternalServerError());
                 }
+            });
+        }
+        catch (err) {
+            if (err instanceof BadCredentialsError ||
+                err instanceof LoginLimiterError ||
+                err instanceof InternalServerError) {
+                return next(err);
             }
-        })
+            else {
+                throw new InternalServerError();
+            }
+        }
     }
 }
 

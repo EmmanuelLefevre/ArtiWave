@@ -9,11 +9,13 @@ const cors = require('cors');
 const helmet = require('helmet');
 const sassMiddleware = require('node-sass-middleware');
 
-const { requestsLimiter } = require('./middleware/rateLimiter');
-const adminCheck = require('./middleware/adminCheck');
 const connectDB = require('./db.config');
 
-const ErrorHandler = require('./_errors/errorHandler');
+const { requestsLimiter } = require('./middleware/rateLimiter');
+const adminCheck = require('./middleware/adminCheck');
+const GlobalErrorHandler = require('./middleware/globalErrorHandler');
+const NotAllowedMethodError = require('./_errors/notAllowedMethodError');
+const NotFoundError = require('./_errors/notFoundError');
 
 const swaggerSpec = require('./swagger');
 const swaggerUi = require('swagger-ui-express');
@@ -39,19 +41,20 @@ app.use((_req, res, next) => {
 /*=== CORS ===*/
 app.use((req, res, next) => {
 	if (req.method === 'OPTIONS' || req.method === 'HEAD') {
-		return ErrorHandler.sendCurrentMethodNotAllowedError(res);
+		throw new NotAllowedMethodError();
 	}
 	else {
 		cors({
 			origin: "http://localhost:9000",
 			methods: ['GET', 'POST', 'PATCH', 'DELETE'],
 			allowedHeaders: "Origin, X-Requested-With, x-access-token, role, Content, Accept, Content-Type, Authorization"
-		})(req, res, next);
+		})
+		(req, res, next);
 	}
 });
 
 /*=== SWAGGER ===*/
-app.use('/swagger-doc', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/api/swagger-doc', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 /*=== OTHERS ===*/
 app.use(express.json());
@@ -63,10 +66,10 @@ app.use(requestsLimiter);
 
 
 /*============ IMPORT ROUTER MODULES ============*/
-const auth_router = require('./routers/authRouter');
-const users_router = require('./routers/usersRouter');
-const articles_router = require('./routers/articlesRouter');
-const admins_router = require('./routers/adminsRouter');
+const AuthRouter = require('./routers/authRouter');
+const UsersRouter = require('./routers/usersRouter');
+const ArticlesRouter = require('./routers/articlesRouter');
+const AdminRouter = require('./routers/adminRouter');
 
 
 /*============ DATABASE SINGLETON CONNEXION ============*/
@@ -92,22 +95,28 @@ app.use(express.static(path.join(__dirname, 'public')));
 /*============ MAIN ROUTER PARAMETERS ============*/
 
 /*=== HOME ===*/
-app.get('/', (_req, res) => res.send(`Application is online!`))
+app.get('/api', (_req, res) => res.send(`Application is online!`))
 
 /*=== AUTH ===*/
-app.use('/login', auth_router);
+app.use('/api/login', AuthRouter);
 
 /*=== USERS ===*/
-app.use('/users', users_router);
+app.use('/api/users', UsersRouter);
 
 /*=== ARTICLES ===*/
-app.use('/articles', articles_router);
+app.use('/api/articles', ArticlesRouter);
 
 /*=== ADMINS ===*/
-app.use('/admins', adminCheck, admins_router);
+app.use('/api/admins', adminCheck, AdminRouter);
 
 /*=== 404 ===*/
-app.get('*', (_req, res) => res.status(404).send('What the hell are you doing!!?'));
+app.get('*', (_req, _res) => {
+	throw new NotFoundError();
+});
+
+
+/*============ GLOBAL ERROR HANDLER MIDDLEWARE ============*/
+app.use(GlobalErrorHandler);
 
 
 /*============ EXPORT MODULE ============*/

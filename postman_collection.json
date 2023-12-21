@@ -23,7 +23,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:9000/login"
+						"url": "http://localhost:9000/api/login"
 					},
 					"response": []
 				}
@@ -39,14 +39,14 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"email\": \"test@yahoo.fr\",\r\n  \"nickname\": \"test\",\r\n  \"password\": \"Xxggxx!1\"\r\n}",
+							"raw": "{\r\n  \"email\": \"test@yahoo.fr\",\r\n  \"nickname\": \"<script>alert(\\\"Hello, I am a script!\\\");</script>\",\r\n  \"password\": \"Xxggxx!1\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": "http://localhost:9000/users/register"
+						"url": "http://localhost:9000/api/users/register"
 					},
 					"response": []
 				},
@@ -68,7 +68,7 @@
 								"disabled": true
 							}
 						],
-						"url": "http://localhost:9000/users/6572f39b4bf59dcf946d676f"
+						"url": "http://localhost:9000/api/users/6572f39b4bf59dcf946d676f"
 					},
 					"response": []
 				},
@@ -90,7 +90,7 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "http://localhost:9000/users"
+						"url": "http://localhost:9000/api/users"
 					},
 					"response": []
 				},
@@ -108,7 +108,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:9000/users/6573590a850ceaea01cebb99"
+						"url": "http://localhost:9000/api/users/6573590a850ceaea01cebb99"
 					},
 					"response": []
 				},
@@ -117,7 +117,7 @@
 					"request": {
 						"method": "DELETE",
 						"header": [],
-						"url": "http://localhost:9000/users/6573616a164bfde75b5b5b94"
+						"url": "http://localhost:9000/api/users/6573616a164bfde75b5b5b94"
 					},
 					"response": []
 				}
@@ -146,7 +146,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:9000/articles"
+						"url": "http://localhost:9000/api/articles"
 					},
 					"response": []
 				},
@@ -161,7 +161,7 @@
 						},
 						"method": "GET",
 						"header": [],
-						"url": "http://localhost:9000/articles/657d01ae5a1a907372d49616"
+						"url": "http://localhost:9000/api/articles/657d01ae5a1a907372d49616"
 					},
 					"response": []
 				},
@@ -176,7 +176,7 @@
 						},
 						"method": "GET",
 						"header": [],
-						"url": "http://localhost:9000/articles"
+						"url": "http://localhost:9000/api/articles"
 					},
 					"response": []
 				},
@@ -185,7 +185,7 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "http://localhost:9000/articles/user/657301380f4c1c74c6bcb366"
+						"url": "http://localhost:9000/api/articles/user/657301380f4c1c74c6bcb366"
 					},
 					"response": []
 				},
@@ -203,7 +203,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:9000/articles/657cc7f4e10089b492f3f95e"
+						"url": "http://localhost:9000/api/articles/657cc7f4e10089b492f3f95e"
 					},
 					"response": []
 				},
@@ -212,7 +212,7 @@
 					"request": {
 						"method": "DELETE",
 						"header": [],
-						"url": "http://localhost:9000/articles/6573249ac1b2b4136b5df93c"
+						"url": "http://localhost:9000/api/articles/6573249ac1b2b4136b5df93c"
 					},
 					"response": []
 				}
@@ -232,7 +232,7 @@
 						},
 						"method": "PATCH",
 						"header": [],
-						"url": "http://localhost:9000/admins/invert_user_role/657d01ad5a1a907372d49603"
+						"url": "http://localhost:9000/api/admins/invert_user_role/657d01ad5a1a907372d49603"
 					},
 					"response": []
 				},
@@ -247,7 +247,7 @@
 						},
 						"method": "DELETE",
 						"header": [],
-						"url": "http://localhost:9000/admins/delete_all_articles"
+						"url": "http://localhost:9000/api/admins/delete_all_articles"
 					},
 					"response": []
 				},
@@ -262,7 +262,7 @@
 						},
 						"method": "DELETE",
 						"header": [],
-						"url": "http://localhost:9000/admins/delete_all_users"
+						"url": "http://localhost:9000/api/admins/delete_all_users"
 					},
 					"response": []
 				},
@@ -272,12 +272,12 @@
 						"auth": {
 							"type": "bearer",
 							"bearer": {
-								"token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1N2Y2MjNlZWJjODRhYmI4ZWJmN2IxZiIsInJvbGVzIjoiYWRtaW4iLCJuaWNrbmFtZSI6IkVtbWFudWVsIiwicmVnaXN0ZXJlZEF0IjoiMjAyMy0xMS0yOVQxMTo0MDo0Ni4wOTRaIiwiaWF0IjoxNzAyODQ3MDQzLCJleHAiOjE3MDMwMTk4NDN9.KWyGIDohjjIji-uQFTGuFjDzyiTjrpYmWIVrBXw6uyQmWthl64n7_uhazbMUY7E2XSvb-utMF70bDexGViZnuUrXoYvCfPfSRH_hUPhTMiWbmU2rEFFBpQgKzVRvTL0kNnReCUI2_96Lj0CvAUrWd5-hg_PR6SmmCJhbEZH04IzNWWouaHQUGAhzpUDomOYKW2DE3h9pMIwYFp1oGEq2F-emNNa_66TgMHRcE_FsgY5bsXQ3LlnzifPfktJiwYry71CppvialRHWt2VJZFPCWCe3Nt2zXplZBctFadajCbWcywG-WIvMlkbDOeJY07If9i4vL4pcCL1Y_6Y7XnMBLsmpWjzKUSHSBa7zhyorITudzM2g_6QJ8W5LvOdvMno145Sm0ifj4V3i5wfWkSiJpKIYfeAAdKSZJ4-29NiLINE8TI8eLKlzLySHVaK9wAZ1ptYNoFkdwzomzPkLIrc5aD8Fh9uMtYIjisbHdzdMGKU_SHcDPIiUBehpbGrnwxeFp5qtDAuuBOehLyNO0SpyryldTGggk9exeF4JQ6zMg437YGHoRgGwaiZpMmxN9-3eKPro5g2LvU1qO_O2e3Xqid33srxjUw5vN23SEbbh-MG-kqr_jhVrDMnNcwXEvvpZfbbwM-X_FmoJOsLsGE9VDDwSdQm7KgWm9RQZzjk1PCU"
+								"token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ODAyM2ZkNGJkNTViODFiYWI2MjNiYiIsInJvbGVzIjoiYWRtaW4iLCJuaWNrbmFtZSI6IkVtbWFudWVsIiwicmVnaXN0ZXJlZEF0IjoiMjAyMy0xMS0yNFQxMjowNDozNi4wMzNaIiwiaWF0IjoxNzAzMTYzMTEwLCJleHAiOjE3MDMzMzU5MTB9.s-Whae2JD81S3kaNVufpUJHxUAcwMBPBY6Yhl9AAMRACGgYLmy6sdM-57CHec3EkbzwW4592rXhSDWavNt1j5ein41doMABOpCwxrti7gVyt7_Sx0FkwMzzjX4dJXDTR5_Jl5HnWVLtyqApSMFWb_tMW0_yuWGuS9FPXUJ3sfCbuSKKkw0cioZg9UhifW9CMMNfxBa1sp4HzZbZIxQjYVV9MWqSVcdKrqBur1OLZGXKEnipu19WSYcJ-Z8Z9GQoHFPKzuW9LvgM0lsBUqUdbTDu5-b7XVtNOitwbjNsSC3HBauky9etNHmlXlPESqod8N4c5fWJNagHncWTvI1zsXjAI1TeBoulWxIThxAUuWwssiJOkTeIQY4dlwh-8d5XJ-l6mF6EPJ343yWV1IK4G2UFZ-AVt_md_G0yxlu33ORu1BPoDS2mEfdVTGAE21PiyaxA1uWO6yT_yLLXdwdwMoQUe8qGWkIgL2A7c_OmvpPINJoU-gy9njf6NMFLMNoezXCjjbhgSyVvFC3pgJTIYBCGD_DVT2YM3XDfDVUDhwImzYyubV84sr4srHjgzUJTzfQ2i5D66nXdFntHtjyQcntRozlcWkMoz1VMcQzSy8k9dRqoBSeaNBUODQh98-lCDXuPU8Ofb6IEgZ-89_grQuRYingHqNvILBFqPHf7CAhM"
 							}
 						},
 						"method": "DELETE",
 						"header": [],
-						"url": "http://localhost:9000/admins/delete_all_articles/657f623eebc84abb8ebf7b1f"
+						"url": "http://localhost:9000/api/admins/delete_all_articles/658023fd4bd55b81bab623bc"
 					},
 					"response": []
 				}

@@ -15,13 +15,13 @@ const options = {
     apis: ['./routers/authRouter.js',
             './routers/usersRouter.js',
             './routers/articlesRouter.js',
-            './routers/adminsRouter.js'],
+            './routers/adminRouter.js'],
 };
 
 const swaggerSpec = swaggerJSDoc(options);
 
 /*============ AUTH ============*/
-swaggerSpec.paths['/login'] = {
+swaggerSpec.paths['/api/login'] = {
     post: {
         summary: 'Login user account',
         tags: ['Auth'],
@@ -104,7 +104,7 @@ swaggerSpec.paths['/login'] = {
 /*============ USERS ============*/
 
 /*=== REGISTER ===*/
-swaggerSpec.paths['/users/register'] = {
+swaggerSpec.paths['/api/users/register'] = {
     post: {
         summary: 'Create user account',
         description: 'Registers a new user with an email, password, and nickname.',
@@ -189,7 +189,7 @@ swaggerSpec.paths['/users/register'] = {
 };
 
 /*=== GET ALL USERS ===*/
-swaggerSpec.paths['/users'] = {
+swaggerSpec.paths['/api/users'] = {
     get: {
         summary: 'Get all users',
         description: 'Retrieve a list of all users.',
@@ -289,7 +289,7 @@ swaggerSpec.paths['/users'] = {
 };
 
 /*=== GET SINGLE USER ===*/
-swaggerSpec.paths['/users/{id}'] = {
+swaggerSpec.paths['/api/users/{id}'] = {
     get: {
         summary: 'Get user by Id',
         description: 'Retrieve a user by their Id.',
@@ -394,7 +394,7 @@ swaggerSpec.paths['/users/{id}'] = {
 };
 
 /*=== UPDATE USER ===*/
-swaggerSpec.paths['/users/{id}'].patch = {
+swaggerSpec.paths['/api/users/{id}'].patch = {
     summary: 'Update user by Id',
     description: 'Update user details by their Id.',
     tags: ['Users'],
@@ -569,7 +569,7 @@ swaggerSpec.paths['/users/{id}'].patch = {
 
 
 /*=== DELETE USER ===*/
-swaggerSpec.paths['/users/{id}'].delete = {
+swaggerSpec.paths['/api/users/{id}'].delete = {
     summary: 'Delete user by Id',
     description: 'Delete a user by their Id.',
     tags: ['Users'],
@@ -639,7 +639,7 @@ swaggerSpec.paths['/users/{id}'].delete = {
 /*============ ARTICLES ============*/
 
 /*=== CREATE ARTICLE ===*/
-swaggerSpec.paths['/articles'] = {
+swaggerSpec.paths['/api/articles'] = {
     post: {
         summary: 'Create an article',
         description: 'Create an article with a title, content, and author.',
@@ -790,7 +790,7 @@ swaggerSpec.paths['/articles'] = {
 };
 
 /*=== GET ALL ARTICLES ===*/
-swaggerSpec.paths['/articles'].get = {
+swaggerSpec.paths['/api/articles'].get = {
     summary: 'Get all articles',
     description: 'Retrieve a list of all articles.',
     tags: ['Articles'],
@@ -908,7 +908,7 @@ swaggerSpec.paths['/articles'].get = {
 };
 
 /*=== GET ARTICLE ===*/
-swaggerSpec.paths['/articles/{id}'] = {
+swaggerSpec.paths['/api/articles/{id}'] = {
     get: {
         summary: 'Get article by Id',
         description: 'Retrieve an article by its Id.',
@@ -1029,7 +1029,7 @@ swaggerSpec.paths['/articles/{id}'] = {
 };
 
 /*=== GET ARTICLES BY USER ===*/
-swaggerSpec.paths['/articles/user/{userId}'] = {
+swaggerSpec.paths['/api/articles/user/{userId}'] = {
     get: {
         summary: 'Get articles by user',
         description: 'Retrieve articles for a specific user.',
@@ -1176,7 +1176,7 @@ swaggerSpec.paths['/articles/user/{userId}'] = {
 };
 
 /*=== UPDATE ARTICLE ===*/
-swaggerSpec.paths['/articles/{id}'].patch = {
+swaggerSpec.paths['/api/articles/{id}'].patch = {
     summary: 'Update article by Id',
     description: 'Update article details by their ID.',
     tags: ['Articles'],
@@ -1377,7 +1377,7 @@ swaggerSpec.paths['/articles/{id}'].patch = {
 };
 
 /*=== DELETE ARTICLE ===*/
-swaggerSpec.paths['/articles/{id}'].delete = {
+swaggerSpec.paths['/api/articles/{id}'].delete = {
     summary: 'Delete article by Id',
     description: 'Delete a article by their Id.',
     tags: ['Articles'],
@@ -1456,12 +1456,12 @@ swaggerSpec.paths['/articles/{id}'].delete = {
 
 /*============ ADMIN ============*/
 
-/*=== DELETE ALL USERS ===*/
-swaggerSpec.paths['/admins/delete_all_users'] = {
+/*=== DELETE NON ADMIN USERS AND THEIR OWNED ARTICLES ===*/
+swaggerSpec.paths['/api/admins/delete_all_users'] = {
     delete: {
         summary: 'Delete all users except admin and all articles except those owned by admin',
         description: 'Delete all users except the admin and all articles except those owned by admin.',
-        tags: ['Admins'],
+        tags: ['Admin'],
         security: [
             {
                 bearerAuth: [],
@@ -1507,12 +1507,12 @@ swaggerSpec.paths['/admins/delete_all_users'] = {
     },
 };
 
-/*=== DELETE ALL ARTICLES ===*/
-swaggerSpec.paths['/admins/delete_all_articles'] = {
+/*=== DELETE ALL ARTICLES EXCEPT THOSE OWNED BY ADMIN ===*/
+swaggerSpec.paths['/api/admins/delete_all_articles'] = {
     delete: {
         summary: 'Delete all articles except those owned by admin',
         description: 'Delete all articles except those owned by admin.',
-        tags: ['Admins'],
+        tags: ['Admin'],
         security: [
             {
                 bearerAuth: [],
@@ -1559,11 +1559,11 @@ swaggerSpec.paths['/admins/delete_all_articles'] = {
 };
 
 /*=== DELETE ALL ARTICLES BY USER ===*/
-swaggerSpec.paths['/admins/delete_all_articles/{id}'] = {
+swaggerSpec.paths['/api/admins/delete_all_articles/{id}'] = {
     delete: {
         summary: 'Delete all articles owned by a single user',
         description: 'Delete all articles owned by a single user.',
-        tags: ['Admins'],
+        tags: ['Admin'],
         security: [
             {
                 bearerAuth: [],
@@ -1634,11 +1634,11 @@ swaggerSpec.paths['/admins/delete_all_articles/{id}'] = {
 };
 
 /*=== INVERT USER ROLE ===*/
-swaggerSpec.paths['admins/invert_user_role/:id'] = {
+swaggerSpec.paths['/api/admins/invert_user_role/:id'] = {
     patch: {
         summary: 'Invert user role.',
         description: 'Invert the user\'s role "certified" to "user" or "user" to "certified".',
-        tags: ['Admins'],
+        tags: ['Admin'],
         security: [
             {
                 bearerAuth: [],

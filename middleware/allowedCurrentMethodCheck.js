@@ -1,11 +1,20 @@
+/*======================================================*/
+/*============ allowedCurrentMethodCheck.js ============*/
+/*======================================================*/
+
+
+/*============ IMPORT USED MODULES ============*/
+const NotAllowedMethodError = require('../_errors/notAllowedMethodError');
+
+
 /*============ CHECK IF REQUEST CURRENT METHOD IS ALLOWED ============*/
 // Check method verb
 const allowedCurrentMethodCheck = (allowedMethods) => {
-    return (req, res, next) => {
+    return (req, _res, next) => {
         const currentMethod = req.method;
 
         if (!allowedMethods.includes(currentMethod)) {
-            return res.status(405).json({ message: 'Method Not Allowed!' });
+            throw new NotAllowedMethodError();
         }
         next();
     };

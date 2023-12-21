@@ -6,42 +6,41 @@
 /*============ IMPORT USED MODULES ============*/
 const express = require('express');
 
-const allowedCurrentMethodCheck = require('../middleware/allowedCurrentMethodCheck');
+const AuthController = require('../controllers/authController');
 
-const authController = require('../controllers/authController');
+const allowedCurrentMethodCheck = require('../middleware/allowedCurrentMethodCheck');
+const { validationResult } = require('express-validator');
+const userValidationRules = require('../_validation/validators/userValidator');
 
 const InternalServerError = require('../_errors/internalServerError');
 const InvalidRequestError = require('../_errors/invalidRequestError');
 const ValidationError = require('../_errors/validationError');
 
-const { validationResult } = require('express-validator');
-const userValidationRule = require('../_validation/validators/userValidator');
-
 const { authLogs } = require('../_logs/auth/authLogger');
 
 
-/*============ ROUTE FOR AUTHENTIFICATION ============*/
+/*============ EXPRESS ROUTE FOR AUTHENTIFICATION ============*/
 
 /*=== LOGIN ===*/
-class AuthRouterHandler {
+class AuthRouter {
     static init() {
         // Express router
-        const AuthRouter = express.Router();
-        // Middleware request logs
-        AuthRouter.use(authLogs);
+        const authRouter = express.Router();
+        // Middleware auth requests logs
+        authRouter.use(authLogs);
 
-        AuthRouter.route('/')
+        authRouter.route('/')
             .all(allowedCurrentMethodCheck(['POST']))
             .post([
-                userValidationRule,
-                AuthRouterHandler.validateRequest,
-                AuthRouterHandler.loginHandler
+                userValidationRules,
+                AuthRouter.#validateRequest,
+                AuthController.login
             ]);
 
-        return AuthRouter;
+        return authRouter;
     }
 
-    static validateRequest(req, res, next) {
+    static #validateRequest(req, _res, next) {
         try {
             const { email, password } = req.body;
 
@@ -57,28 +56,12 @@ class AuthRouterHandler {
             next();
         }
         catch (err) {
-            if (err instanceof InvalidRequestError) {
-                return res.status(err.statusCode).json({ message: err.message });
-            }
-            else if (err instanceof ValidationError) {
-                return res.status(err.statusCode).json(err.getErrorResponse());
+            if (err instanceof InvalidRequestError ||
+                err instanceof ValidationError) {
+                return next(err);
             }
             else {
                 throw new InternalServerError();
-            }
-        }
-    }
-
-    static async loginHandler(req, res) {
-        try {
-            await authController.login(req, res);
-        }
-        catch (err) {
-            if (err instanceof InternalServerError) {
-                return res.status(err.statusCode).json({ message: err.message });
-            }
-            else {
-                return new InternalServerError();
             }
         }
     }
@@ -86,4 +69,4 @@ class AuthRouterHandler {
 
 
 /*============ EXPORT MODULE ============*/
-module.exports = AuthRouterHandler.init();
+module.exports = AuthRouter.init();

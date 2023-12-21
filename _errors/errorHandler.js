@@ -28,11 +28,6 @@ class ErrorHandler {
         return res.status(404).json({ message: 'Error retrieving user\'s info!' });
     }
 
-    // 405 errors
-    static sendCurrentMethodNotAllowedError(res) {
-        return res.status(405).json({ message: 'Method Not Allowed!' });
-    }
-
     // 500 errors
     static sendInternalServerError(res, error) {
         if (error) {
@@ -55,12 +50,6 @@ class ErrorHandler {
     static sendCreationResponseObjectError(res, error) {
         if (error) {
             return res.status(500).json({ message: 'Creation Response Object Error!', error: error.message });
-        }
-    }
-
-    static sendServiceError(res, error) {
-        if (error) {
-            return res.status(500).json({ message: 'Service Error!', error: error.message });
         }
     }
 

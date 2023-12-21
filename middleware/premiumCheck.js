@@ -1,8 +1,17 @@
+/*=========================================*/
+/*============ premiumCheck.js ============*/
+/*=========================================*/
+
+
+/*============ IMPORT USED MODULES ============*/
+const PremiumCheckError = require('../_errors/premiumCheckError');
+
+
 /*============ CHECK IF REQUEST HAS ROLE ADMIN OR CERTIFIED ============*/
 // Check if user has required role (admin or certified)
-const premiumCheck = (req, res, next) => {
+const premiumCheck = (req, _res, next) => {
     if (!(req.isAdmin || req.isCertified)) {
-        return res.status(403).json({ message: 'Premium functionality!' });
+        throw new PremiumCheckError();
     }
 
     next();
