@@ -86,7 +86,7 @@ class AdminRouter {
                 (req, res) => {
                     try {
                         // Successful validation, proceed
-                        AdminController.invertUserRole(req, res)
+                        AdminController.invertUserRole(req, res);
                     }
                     catch (err) {
                         throw new InternalServerError();
