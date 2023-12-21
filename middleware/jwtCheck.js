@@ -23,7 +23,7 @@ const extractBearer = authorization => {
 
 
 /*============ CHECK IF TOKEN IS PRESENT AND CHECK IT ============*/
-const jwtCheck = (req, res, next) => {
+const JwtCheck = (req, res, next) => {
     try {
         const token = req.headers.authorization && extractBearer(req.headers.authorization);
 
@@ -62,4 +62,4 @@ const jwtCheck = (req, res, next) => {
 
 
 /*============ EXPORT MODULE ============*/
-module.exports = jwtCheck;
+module.exports = JwtCheck;
