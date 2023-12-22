@@ -52,8 +52,7 @@ class UsersRouter {
                         UsersController.register(req, res, next);
                     }
                     catch (err) {
-                        // next(new InternalServerError());
-                        throw new InternalServerError();
+                        next(new InternalServerError());
                     }
                 }
         );
@@ -70,8 +69,7 @@ class UsersRouter {
                         UsersController.getAllUsers(req, res, next);
                     }
                     catch (err) {
-                        // next(new InternalServerError());
-                        throw new InternalServerError();
+                        next(new InternalServerError());
                     }
                 }
         );
@@ -90,8 +88,7 @@ class UsersRouter {
                         UsersController.getUser(req, res, next);
                     }
                     catch (err) {
-                        // next(new InternalServerError());
-                        throw new InternalServerError();
+                        next(new InternalServerError());
                     }
                 }
         );
@@ -111,8 +108,7 @@ class UsersRouter {
                         UsersController.updateUser(req, res, next);
                     }
                     catch (err) {
-                        // next(new InternalServerError());
-                        throw new InternalServerError();
+                        next(new InternalServerError());
                     }
                 }
         );
@@ -130,8 +126,7 @@ class UsersRouter {
                         UsersController.deleteUser(req, res, next);
                     }
                     catch (err) {
-                        // next(new InternalServerError());
-                        throw new InternalServerError();
+                        next(new InternalServerError());
                     }
                 }
         );
@@ -153,7 +148,7 @@ class UsersRouter {
             if (err instanceof ValidationError) {
                 return next(err);
             }
-            throw new InternalServerError();
+            next(new InternalServerError());
         }
     }
 
@@ -178,7 +173,7 @@ class UsersRouter {
                 err instanceof ValidationError) {
                 return next(err);
             }
-            throw new InternalServerError();
+            next(new InternalServerError());
         }
     }
 
@@ -209,7 +204,7 @@ class UsersRouter {
             if (err instanceof InvalidRequestError) {
                 return next(err);
             }
-            throw new InternalServerError();
+            next(new InternalServerError());
         }
     }
 }
