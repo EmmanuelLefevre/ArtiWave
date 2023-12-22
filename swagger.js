@@ -89,7 +89,6 @@ swaggerSpec.paths['/api/login'] = {
                         schema: {
                             oneOf: [
                                 { $ref: '#/components/schemas/InternalServerError' },
-                                { $ref: '#/components/schemas/DatabaseError' },
                                 { $ref: '#/components/schemas/ValidationResponseError' },
                             ],
                         },
@@ -177,7 +176,6 @@ swaggerSpec.paths['/api/users/register'] = {
                         schema: {
                             oneOf: [
                                 { $ref: '#/components/schemas/InternalServerError' },
-                                { $ref: '#/components/schemas/DatabaseError' },
                                 { $ref: '#/components/schemas/ValidationResponseError' },
                             ],
                         },
@@ -276,7 +274,6 @@ swaggerSpec.paths['/api/users'] = {
                         schema: {
                             oneOf: [
                                 { $ref: '#/components/schemas/InternalServerError' },
-                                { $ref: '#/components/schemas/DatabaseError' },
                                 { $ref: '#/components/schemas/ValidationResponseError' },
                                 { $ref: '#/components/schemas/CreationResponseObjectError' },
                             ],
@@ -381,7 +378,6 @@ swaggerSpec.paths['/api/users/{id}'] = {
                         schema: {
                             oneOf: [
                                 { $ref: '#/components/schemas/InternalServerError' },
-                                { $ref: '#/components/schemas/DatabaseError' },
                                 { $ref: '#/components/schemas/ValidationResponseError' },
                                 { $ref: '#/components/schemas/CreationResponseObjectError' },
                             ],
@@ -557,7 +553,6 @@ swaggerSpec.paths['/api/users/update/{id}'] = {
                         schema: {
                             oneOf: [
                                 { $ref: '#/components/schemas/InternalServerError' },
-                                { $ref: '#/components/schemas/DatabaseError' },
                                 { $ref: '#/components/schemas/ValidationResponseError' },
                                 { $ref: '#/components/schemas/CreationResponseObjectError' },
                             ],
@@ -628,7 +623,6 @@ swaggerSpec.paths['/api/users/{id}'] = {
                         schema: {
                             oneOf: [
                                 { $ref: '#/components/schemas/InternalServerError' },
-                                { $ref: '#/components/schemas/DatabaseError' },
                                 { $ref: '#/components/schemas/ValidationResponseError' },
                             ],
                         },
@@ -781,7 +775,6 @@ swaggerSpec.paths['/api/articles/create'] = {
                         schema: {
                             oneOf: [
                                 { $ref: '#/components/schemas/InternalServerError' },
-                                { $ref: '#/components/schemas/DatabaseError' },
                                 { $ref: '#/components/schemas/ValidationResponseError' },
                                 { $ref: '#/components/schemas/CreationResponseObjectError' },
                             ],
@@ -901,7 +894,6 @@ swaggerSpec.paths['/api/articles'] = {
                         schema: {
                             oneOf: [
                                 { $ref: '#/components/schemas/InternalServerError' },
-                                { $ref: '#/components/schemas/DatabaseError' },
                                 { $ref: '#/components/schemas/ValidationResponseError' },
                                 { $ref: '#/components/schemas/CreationResponseObjectError' },
                             ],
@@ -1022,7 +1014,6 @@ swaggerSpec.paths['/api/articles/{id}'] = {
                         schema: {
                             oneOf: [
                                 { $ref: '#/components/schemas/InternalServerError' },
-                                { $ref: '#/components/schemas/DatabaseError' },
                                 { $ref: '#/components/schemas/ValidationResponseError' },
                                 { $ref: '#/components/schemas/CreationResponseObjectError' },
                             ],
@@ -1169,7 +1160,6 @@ swaggerSpec.paths['/api/articles/user/{userId}'] = {
                         schema: {
                             oneOf: [
                                 { $ref: '#/components/schemas/InternalServerError' },
-                                { $ref: '#/components/schemas/DatabaseError' },
                                 { $ref: '#/components/schemas/ValidationResponseError' },
                                 { $ref: '#/components/schemas/CreationResponseObjectError' },
                             ],
@@ -1372,7 +1362,6 @@ swaggerSpec.paths['/api/articles/update/{id}'] = {
                         schema: {
                             oneOf: [
                                 { $ref: '#/components/schemas/InternalServerError' },
-                                { $ref: '#/components/schemas/DatabaseError' },
                                 { $ref: '#/components/schemas/ValidationResponseError' },
                                 { $ref: '#/components/schemas/CreationResponseObjectError' },
                             ],
@@ -1452,7 +1441,6 @@ swaggerSpec.paths['/api/articles/delete/{id}'] = {
                         schema: {
                             oneOf: [
                                 { $ref: '#/components/schemas/InternalServerError' },
-                                { $ref: '#/components/schemas/DatabaseError' },
                                 { $ref: '#/components/schemas/ValidationResponseError' },
                             ],
                         },
@@ -1501,17 +1489,7 @@ swaggerSpec.paths['/api/admins/delete_all_users'] = {
                 description: 'Method not allowed.',
             },
             '500': {
-                description: 'Server errors.',
-                content: {
-                    'application/json': {
-                        schema: {
-                            oneOf: [
-                                { $ref: '#/components/schemas/InternalServerError' },
-                                { $ref: '#/components/schemas/DatabaseError' },
-                            ],
-                        },
-                    },
-                },
+                description: 'Internal server error.',
             },
         },
     },
@@ -1552,17 +1530,7 @@ swaggerSpec.paths['/api/admins/delete_all_articles'] = {
                 description: 'Method not allowed.',
             },
             '500': {
-                description: 'Server errors.',
-                content: {
-                    'application/json': {
-                        schema: {
-                            oneOf: [
-                                { $ref: '#/components/schemas/InternalServerError' },
-                                { $ref: '#/components/schemas/DatabaseError' },
-                            ],
-                        },
-                    },
-                },
+                description: 'Internal server error.',
             },
         },
     },
@@ -1627,17 +1595,7 @@ swaggerSpec.paths['/api/admins/delete_all_articles/{id}'] = {
                 description: 'Invalid URI format.',
             },
             '500': {
-                description: 'Server errors.',
-                content: {
-                    'application/json': {
-                        schema: {
-                            oneOf: [
-                                { $ref: '#/components/schemas/InternalServerError' },
-                                { $ref: '#/components/schemas/DatabaseError' },
-                            ],
-                        },
-                    },
-                },
+                description: 'Internal server error.',
             },
         },
     },
@@ -1715,9 +1673,9 @@ swaggerSpec.paths['/api/admins/invert_user_role/:id'] = {
                         schema: {
                             oneOf: [
                                 { $ref: '#/components/schemas/InternalServerError' },
-                                { $ref: '#/components/schemas/DatabaseError' },
                                 { $ref: '#/components/schemas/ValidationResponseError' },
                                 { $ref: '#/components/schemas/CreationResponseObjectError' },
+                                { $ref: '#/components/schemas/DeletionFailedError' },
                             ],
                         },
                     },
@@ -1956,12 +1914,12 @@ swaggerSpec.components = {
                 },
             },
         },
-        DatabaseError: {
+        DeletionFailedError: {
             type: 'object',
             properties: {
                 error: {
                     type: 'string',
-                    example: 'Database Error.',
+                    example: 'Deletion Failed Error.',
                 },
             },
         },
