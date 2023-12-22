@@ -36,9 +36,9 @@ class AdminRouter {
         adminRouter.route('/delete_all_users')
             .all(AllowedCurrentMethodCheck(['DELETE']))
             .delete(
-                (req, res) => {
+                (req, res, next) => {
                     try {
-                        AdminController.deleteAllUsers(req, res);
+                        AdminController.deleteAllUsers(req, res, next);
                     }
                     catch (err) {
                         throw new InternalServerError();
@@ -50,9 +50,9 @@ class AdminRouter {
         adminRouter.route('/delete_all_articles')
             .all(AllowedCurrentMethodCheck(['DELETE']))
             .delete(
-                (req, res) => {
+                (req, res, next) => {
                     try {
-                        AdminController.deleteAllArticles(req, res);
+                        AdminController.deleteAllArticles(req, res, next);
                     }
                     catch (err) {
                         throw new InternalServerError();
@@ -66,10 +66,10 @@ class AdminRouter {
             .delete(
                 ValidateURIParam('id'),
                 AdminRouter.#validateURIParam,
-                (req, res) => {
+                (req, res, next) => {
                     try {
                         // Successful validation, proceed
-                        AdminController.deleteAllArticlesByUser(req, res);
+                        AdminController.deleteAllArticlesByUser(req, res, next);
                     }
                     catch (err) {
                         throw new InternalServerError();
@@ -83,10 +83,10 @@ class AdminRouter {
             .patch(
                 ValidateURIParam('id'),
                 AdminRouter.#validateURIParam,
-                (req, res) => {
+                (req, res, next) => {
                     try {
                         // Successful validation, proceed
-                        AdminController.invertUserRole(req, res);
+                        AdminController.invertUserRole(req, res, next);
                     }
                     catch (err) {
                         throw new InternalServerError();
@@ -111,9 +111,7 @@ class AdminRouter {
             if (err instanceof ValidationError) {
                 return next(err);
             }
-            else {
-                throw new InternalServerError();
-            }
+            throw new InternalServerError();
         }
     }
 }
