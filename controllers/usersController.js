@@ -7,7 +7,6 @@
 const argon2 = require('argon2');
 
 // Repositories
-const ArticleRepository = require('../repositories/articleRepository');
 const UserRepository = require('../repositories/userRepository');
 
 // Response validation
