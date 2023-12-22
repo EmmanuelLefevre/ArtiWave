@@ -40,9 +40,7 @@ class AdminController {
                 err instanceof UserNotFoundError) {
                 return next(err);
             }
-            else {
-                throw new InternalServerError();
-            }
+            throw new InternalServerError();
         }
     }
 
@@ -69,9 +67,7 @@ class AdminController {
             if (err instanceof InternalServerError) {
                 return next(err);
             }
-            else {
-                throw new InternalServerError();
-            }
+            throw new InternalServerError();
         }
     }
 
@@ -86,9 +82,7 @@ class AdminController {
         //     if (err instanceof InternalServerError) {
         //         return next(err);
         //     }
-        //     else {
-        //         throw new InternalServerError();
-        //     }
+        //     throw new InternalServerError();
         // }
     }
 
@@ -103,9 +97,7 @@ class AdminController {
         //     if (err instanceof InternalServerError) {
         //         return next(err);
         //     }
-        //     else {
-        //         throw new InternalServerError();
-        //     }
+        //     throw new InternalServerError();
         // }
     }
 }
@@ -113,8 +105,3 @@ class AdminController {
 
 /*============ EXPORT MODULE ============*/
 module.exports = AdminController;
-
-
-// const { invertRoleResponseValidation } = require('../_validation/responses/invertRoleResponseValidation');
-
-
