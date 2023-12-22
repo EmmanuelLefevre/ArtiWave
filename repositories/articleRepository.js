@@ -69,6 +69,21 @@ class ArticleRepository {
         }
     }
 
+    /*=== UPDATE ARTICLE ===*/
+    static async updateArticleById(articleId, updatedData) {
+        try {
+            const updatedArticle = await Article.findByIdAndUpdate(
+                articleId,
+                { $set: updatedData },
+                { new: true }
+            );
+            return updatedArticle;
+        }
+        catch (err) {
+            next(new InternalServerError());
+        }
+    }
+
     /*=== DELETE ARTICLE ===*/
     static async deleteArticleById(articleId, next) {
         try {
