@@ -48,10 +48,10 @@ class ArticlesRouter {
                 ArticleValidationRules,
                 ArticlesRouter.#validateCreateArticle,
                 CreateArticleLimiter,
-                (req, res) => {
+                (req, res, next) => {
                     try {
                         // Successful validation, proceed
-                        ArticlesController.createArticle(req, res);
+                        ArticlesController.createArticle(req, res, next);
                     }
                     catch (err) {
                         throw new InternalServerError();
@@ -64,10 +64,10 @@ class ArticlesRouter {
             .all(AllowedCurrentMethodCheck(['GET']))
             .get(
                 JwtCheck,
-                (req, res) => {
+                (req, res, next) => {
                     try {
                         // Successful validation, proceed
-                        ArticlesController.getAllArticles(req, res);
+                        ArticlesController.getAllArticles(req, res, next);
                     }
                     catch (err) {
                         throw new InternalServerError();
@@ -82,10 +82,10 @@ class ArticlesRouter {
                 JwtCheck,
                 ValidateURIParam('id'),
                 ArticlesRouter.#validateURIParam,
-                (req, res) => {
+                (req, res, next) => {
                     try {
                         // Successful validation, proceed
-                        ArticlesController.getArticle(req, res);
+                        ArticlesController.getArticle(req, res, next);
                     }
                     catch (err) {
                         throw new InternalServerError();
@@ -101,10 +101,10 @@ class ArticlesRouter {
                 JwtCheck,
                 ValidateURIParam('userId'),
                 ArticlesRouter.#validateURIParam,
-                (req, res) => {
+                (req, res, next) => {
                     try {
                         // Successful validation, proceed
-                        ArticlesController.getArticlesByUser(req, res);
+                        ArticlesController.getArticlesByUser(req, res, next);
                     }
                     catch (err) {
                         throw new InternalServerError();
@@ -121,10 +121,10 @@ class ArticlesRouter {
                 ArticlesRouter.#validateURIParam,
                 ArticlesRouter.#validateUpdateArticle,
                 ArticleValidationRules,
-                (req, res) => {
+                (req, res, next) => {
                     try {
                         // Successful validation, proceed
-                        ArticlesController.updateArticle(req, res);
+                        ArticlesController.updateArticle(req, res, next);
                     }
                     catch (err) {
                         throw new InternalServerError();
@@ -139,10 +139,10 @@ class ArticlesRouter {
                 JwtCheck,
                 ValidateURIParam('id'),
                 ArticlesRouter.#validateURIParam,
-                (req, res) => {
+                (req, res, next) => {
                     try {
                         // Successful validation, proceed
-                        ArticlesController.deleteArticle(req, res);
+                        ArticlesController.deleteArticle(req, res, next);
                     }
                     catch (err) {
                         throw new InternalServerError();
@@ -167,9 +167,7 @@ class ArticlesRouter {
             if (err instanceof ValidationError) {
                 return next(err);
             }
-            else {
-                throw new InternalServerError();
-            }
+            throw new InternalServerError();
         }
     }
 
@@ -194,9 +192,7 @@ class ArticlesRouter {
                 err instanceof ValidationError) {
                 return next(err);
             }
-            else {
-                throw new InternalServerError();
-            }
+            throw new InternalServerError();
         }
     }
 
@@ -227,9 +223,7 @@ class ArticlesRouter {
             if (err instanceof InvalidRequestError) {
                 return next(err);
             }
-            else {
-                throw new InternalServerError();
-            }
+            throw new InternalServerError();
         }
     }
 }
