@@ -41,7 +41,7 @@ class AdminRouter {
                         AdminController.deleteAllUsers(req, res, next);
                     }
                     catch (err) {
-                        throw new InternalServerError();
+                        next(new InternalServerError());
                     }
                 }
         );
@@ -55,7 +55,7 @@ class AdminRouter {
                         AdminController.deleteAllArticles(req, res, next);
                     }
                     catch (err) {
-                        throw new InternalServerError();
+                        next(new InternalServerError());
                     }
                 }
         );
@@ -72,7 +72,7 @@ class AdminRouter {
                         AdminController.deleteAllArticlesByUser(req, res, next);
                     }
                     catch (err) {
-                        throw new InternalServerError();
+                        next(new InternalServerError());
                     }
                 }
         );
@@ -89,7 +89,7 @@ class AdminRouter {
                         AdminController.invertUserRole(req, res, next);
                     }
                     catch (err) {
-                        throw new InternalServerError();
+                        next(new InternalServerError());
                     }
                 }
         );
@@ -111,7 +111,7 @@ class AdminRouter {
             if (err instanceof ValidationError) {
                 return next(err);
             }
-            throw new InternalServerError();
+            next(new InternalServerError());
         }
     }
 }
