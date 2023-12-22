@@ -179,7 +179,6 @@ class ArticleController {
 
         try {
             let article = await ArticleRepository.getArticleById(articleId);
-
             if (!article) {
                 throw new ArticleNotFoundError();
             }
@@ -304,8 +303,7 @@ class ArticleController {
         const articleId = req.params.id;
 
         try {
-            let article = await Article.findById(articleId);
-
+            let article = await ArticleRepository.getArticleById(articleId);
             if (!article) {
                 throw new ArticleNotFoundError();
             }
@@ -316,12 +314,14 @@ class ArticleController {
             // Set updatedAt to the current date
             req.body.updatedAt = new Date();
 
+            let updatedArticle;
+
             // Check if the author's article matches the userId making the request
             if (article.author.toString() !== req.userId) {
                 // Check if the user is an admin
                 if (req.isAdmin) {
                     // Allow admin to update the article of any user
-                    await Article.updateOne({ _id: articleId }, req.body);
+                    updatedArticle = await ArticleRepository.updateArticleById(articleId, req.body);
                 }
                 else if (req.isUser) {
                     return res.status(403).json({ message: 'Only certified members are allowed to update an article!' });
@@ -330,12 +330,9 @@ class ArticleController {
                     return res.status(403).json({ message: 'You are not allowed to update an article that does not belong to you!' });
                 }
             } else {
-                // If the author matches, save the article
-                await Article.updateOne({ _id: articleId }, req.body);
+                // If the author matches, update article
+                updatedArticle = await ArticleRepository.updateArticleById(articleId, req.body);
             }
-
-            // Fetch the updated article by its ID
-            const updatedArticle = await Article.findById(articleId);
 
             // Identify modified properties from req.body
             const modifiedProperties = Object.keys(req.body).reduce((acc, key) => {
