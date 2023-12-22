@@ -37,7 +37,7 @@ class UserRepository {
             return await User.find({}, 'id email nickname roles registeredAt updatedAt');
         }
         catch (err) {
-            throw new InternalServerError();
+            next(new InternalServerError());
         }
     }
 
@@ -47,7 +47,7 @@ class UserRepository {
             return await User.find({}, 'id email nickname roles registeredAt updatedAt');
         }
         catch (err) {
-            throw new InternalServerError();
+            next(new InternalServerError());
         }
     }
 }
