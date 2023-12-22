@@ -26,7 +26,7 @@ const ValidationError = require('../_errors/validationError');
 
 
 /*============ GLOBAL ERROR HANDLER ============*/
-function GlobalErrorHandler(err, req, res, next) {
+function GlobalErrorHandler(err, _req, res, _next) {
 
     const errorMessage = err.message;
     const statusCode = err.statusCode;
