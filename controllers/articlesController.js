@@ -95,14 +95,14 @@ class ArticleController {
                     err instanceof ResponseValidationError) {
                     return next(err);
             }
-            throw new InternalServerError();
+            next(new InternalServerError());
         }
     }
 
     /*=== GET ALL ARTICLES ===*/
     static async getAllArticles(req, res, next) {
         try {
-            let articles = await Article.find({}, 'id title content author createdAt updatedAt');
+            let articles = await ArticleRepository.getAllArticles();
 
             if (articles.length === 0) {
                 throw new ArticleNotFoundError();
@@ -151,7 +151,7 @@ class ArticleController {
                 err instanceof ResponseValidationError) {
                 return next(err);
             }
-            throw new InternalServerError();
+            next(new InternalServerError());
         }
     }
 
@@ -160,7 +160,7 @@ class ArticleController {
         const articleId = req.params.id;
 
         try {
-            let article = await Article.findById(articleId, { _id: 1, title: 1, content: 1, author: 1, createdAt: 1, updatedAt: 1 });
+            let article = await ArticleRepository.getArticleById(articleId);
 
             if (!article) {
                 throw new ArticleNotFoundError();
@@ -199,7 +199,7 @@ class ArticleController {
                 err instanceof ResponseValidationError) {
                 return next(err);
             }
-            throw new InternalServerError();
+            next(new InternalServerError());
         }
     }
 
@@ -209,22 +209,23 @@ class ArticleController {
 
         try {
             // Check if user exists
-            const existingUser = await User.findById(userId);
+            const existingUser = await UserRepository.userExists(userId);
 
             if (!existingUser) {
-                throw new ArticleNotFoundError();
+                throw new UserNotFoundError();
             }
 
             // Count articles for the user
-            const articleCount = await Article.countDocuments({ author: userId });
+            const articleCount = await ArticleRepository.getArticleCountByUser(userId);
             if (articleCount === 0) {
-                return ErrorHandler.handleArticleNotFound(res);
+                throw new ArticleNotFoundError();
             }
 
-            let articles = await Article.find({ author: userId }, { _id: 1, title: 1, content: 1, author: 1, createdAt: 1, updatedAt: 1 });
+            // Get articles
+            const articles = await ArticleRepository.getAllArticlesByUserId(userId);
 
             // Add author's nickname and id for each article
-            articles = await Promise.all(articles.map(article => this.#createResponseArticleObject(article, req.userRole)));
+            const processedArticles  = await Promise.all(articles.map(article => this.#createResponseArticleObject(article, req.userRole)));
 
             // Set response and determine the response validation schema based on user role
             let responseValidationSchema;
@@ -234,13 +235,13 @@ class ArticleController {
                 case 'admin':
                     responseValidationSchema = ArticlesResponseValidationRoleAdmin;
                     responseObject = {
-                        data: articles
+                        data: processedArticles
                     };
                     break;
                 default:
                     responseValidationSchema = ArticlesResponseValidationBase;
                     responseObject = {
-                        data: articles
+                        data: processedArticles
                     };
             }
 
@@ -260,10 +261,11 @@ class ArticleController {
         }
         catch (err) {
             if (err instanceof ArticleNotFoundError ||
+                err instanceof UserNotFoundError ||
                 err instanceof ResponseValidationError) {
                 return next(err);
             }
-            throw new InternalServerError();
+            next(new InternalServerError());
         }
     }
 
@@ -356,7 +358,7 @@ class ArticleController {
                 err instanceof ResponseValidationError) {
                 return next(err);
             }
-            throw new InternalServerError();
+            next(new InternalServerError());
         }
     }
 
@@ -397,7 +399,7 @@ class ArticleController {
             if (err instanceof ArticleNotFoundError) {
                 return next(err);
             }
-            throw new InternalServerError();
+            next(new InternalServerError());
         }
     }
 
@@ -411,7 +413,7 @@ class ArticleController {
             return user ? { nickname: user.nickname, roles: user.roles } : null;
         }
         catch (err) {
-            throw new UserInfoNotFoundError();
+            next(new UserInfoNotFoundError());
         }
     }
 
@@ -450,7 +452,7 @@ class ArticleController {
             if (err instanceof UnknownUserRoleError) {
                 return next(err);
             }
-            throw new CreationResponseObjectError();
+            next(new CreationResponseObjectError());
         }
     }
 }

@@ -5,31 +5,68 @@
 
 /*============ IMPORT USED MODULES ============*/
 // Models
-const User = require('../models/IUser');
 const Article = require('../models/IArticle');
 
+// Repositories
+const UserRepository = require('../repositories/userRepository');
+
 // Errors
-const ArticleNotFoundError = require('../_errors/articleNotFoundError');
 const InternalServerError = require('../_errors/internalServerError');
-const UserNotFoundError = require('../_errors/userNotFoundError');
 
 
 /*============ ARTICLE REPOSITORY ============*/
 class ArticleRepository {
 
     /*=== CREATE ARTICLE ===*/
-    static createArticle() {
-        
+    // static createArticle(next) {
+    //     try {
+
+    //     }
+    //     catch (err) {
+    //         next(new InternalServerError());
+    //     }
+    // }
+
+    /*=== GET ALL ARTICLES ===*/
+    static async getAllArticles(next) {
+        try {
+            return await Article.find({}, 'id title content author createdAt updatedAt');
+        }
+        catch (err) {
+            next(new InternalServerError());
+        }
     }
 
-    /*=== FIND ALL ARTICLE ===*/
-    static findAllArticle() {
-        
+    /*=== GET SINGLE ARTICLE ===*/
+    static async getArticleById(articleId, next) {
+        try {
+            return await Article.findById(articleId, { _id: 1, title: 1, content: 1, author: 1, createdAt: 1, updatedAt: 1 });
+        }
+        catch (err) {
+            next(new InternalServerError());
+        }
     }
 
-    /*=== FIND ARTICLE BY ID ===*/
-    static findArticleById() {
-        
+    /*=== GET ARTICLES BY USER ===*/
+    static async getAllArticlesByUserId(userId, next) {
+        try {
+            const articles = await Article.find({ author: userId }, { _id: 1, title: 1, content: 1, author: 1, createdAt: 1, updatedAt: 1 });
+            return articles;
+        }
+        catch (err) {
+            next(new InternalServerError());
+        }
+    }
+
+    /*=== GET ARTICLES COUNT BY USER ===*/
+    static async getArticleCountByUser(userId, next) {
+        try {
+            const articleCount = await Article.countDocuments({ author: userId });
+            return articleCount;
+        }
+        catch (err) {
+            next(new InternalServerError());
+        }
     }
 }
 
