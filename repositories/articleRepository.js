@@ -8,6 +8,7 @@
 const Article = require('../models/IArticle');
 
 // Errors
+const ArticleAlreadyExistsError = require('../_errors/articleAlreadyExistsError');
 const InternalServerError = require('../_errors/internalServerError');
 
 
@@ -67,7 +68,7 @@ class ArticleRepository {
     }
 
     /*=== UPDATE ARTICLE ===*/
-    static async updateArticleById(articleId, updatedData) {
+    static async updateArticleById(articleId, updatedData, next) {
         try {
             const updatedArticle = await Article.findByIdAndUpdate(
                 articleId,
@@ -77,7 +78,10 @@ class ArticleRepository {
             return updatedArticle;
         }
         catch (err) {
-            next(new InternalServerError());
+            if (err.code === 11000 && err.keyPattern.title) {
+                throw new ArticleAlreadyExistsError();
+            }
+            return next(new InternalServerError());
         }
     }
 

@@ -329,7 +329,7 @@ class ArticleController {
                     }
 
                     // Allow admin to update the article of any user
-                    updatedArticle = await ArticleRepository.updateArticleById(articleId, req.body);
+                    updatedArticle = await ArticleRepository.updateArticleById(articleId, req.body, next);
                 }
                 else if (req.isUser) {
                     return res.status(403).json({ message: 'Only certified members are allowed to update an article!' });
@@ -344,7 +344,7 @@ class ArticleController {
                 }
 
                 // If the author matches, update article
-                updatedArticle = await ArticleRepository.updateArticleById(articleId, req.body);
+                updatedArticle = await ArticleRepository.updateArticleById(articleId, req.body, next);
             }
 
             // Identify modified properties from req.body
@@ -397,13 +397,11 @@ class ArticleController {
 
         }
         catch (err) {
-            if (err.code === 11000 && err.keyPattern.title) {
-                return next(new ArticleAlreadyExistsError());
-            }
-            else if (err instanceof ArticleNotFoundError ||
-                    err instanceof NoPropertiesModifiedError ||
-                    err instanceof UpdateFailedError ||
-                    err instanceof ResponseValidationError) {
+            if (err instanceof ArticleAlreadyExistsError ||
+                err instanceof ArticleNotFoundError ||
+                err instanceof NoPropertiesModifiedError ||
+                err instanceof UpdateFailedError ||
+                err instanceof ResponseValidationError) {
                 return next(err);
             }
             next(new InternalServerError());
