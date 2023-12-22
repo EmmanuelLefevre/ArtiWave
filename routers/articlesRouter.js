@@ -54,7 +54,7 @@ class ArticlesRouter {
                         ArticlesController.createArticle(req, res, next);
                     }
                     catch (err) {
-                        throw new InternalServerError();
+                        next(new InternalServerError());
                     }
                 }
         );
@@ -70,7 +70,7 @@ class ArticlesRouter {
                         ArticlesController.getAllArticles(req, res, next);
                     }
                     catch (err) {
-                        throw new InternalServerError();
+                        next(new InternalServerError());
                     }
                 }
         );
@@ -88,7 +88,7 @@ class ArticlesRouter {
                         ArticlesController.getArticle(req, res, next);
                     }
                     catch (err) {
-                        throw new InternalServerError();
+                        next(new InternalServerError());
                     }
                 }
         );
@@ -107,7 +107,7 @@ class ArticlesRouter {
                         ArticlesController.getArticlesByUser(req, res, next);
                     }
                     catch (err) {
-                        throw new InternalServerError();
+                        next(new InternalServerError());
                     }
                 }
         );
@@ -127,7 +127,7 @@ class ArticlesRouter {
                         ArticlesController.updateArticle(req, res, next);
                     }
                     catch (err) {
-                        throw new InternalServerError();
+                        next(new InternalServerError());
                     }
                 }
         );
@@ -145,7 +145,7 @@ class ArticlesRouter {
                         ArticlesController.deleteArticle(req, res, next);
                     }
                     catch (err) {
-                        throw new InternalServerError();
+                        next(new InternalServerError());
                     }
                 }
         );
@@ -167,7 +167,7 @@ class ArticlesRouter {
             if (err instanceof ValidationError) {
                 return next(err);
             }
-            throw new InternalServerError();
+            next(new InternalServerError());
         }
     }
 
@@ -192,7 +192,7 @@ class ArticlesRouter {
                 err instanceof ValidationError) {
                 return next(err);
             }
-            throw new InternalServerError();
+            next(new InternalServerError());
         }
     }
 
@@ -223,7 +223,7 @@ class ArticlesRouter {
             if (err instanceof InvalidRequestError) {
                 return next(err);
             }
-            throw new InternalServerError();
+            next(new InternalServerError());
         }
     }
 }
