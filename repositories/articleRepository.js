@@ -68,6 +68,17 @@ class ArticleRepository {
             next(new InternalServerError());
         }
     }
+
+    /*=== DELETE ARTICLE ===*/
+    static async deleteArticleById(articleId, next) {
+        try {
+            const result = await Article.deleteOne({ _id: articleId });
+            return result.deletedCount;
+        }
+        catch (err) {
+            next(new InternalServerError());
+        }
+    }
 }
 
 

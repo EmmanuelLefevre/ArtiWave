@@ -21,6 +21,7 @@ const { ArticleResponseValidationRoleAdmin,
 const ArticleAlreadyExistsError = require('../_errors/articleAlreadyExistsError');
 const ArticleNotFoundError = require('../_errors/articleNotFoundError');
 const CreationResponseObjectError = require('../_errors/creationResponseObjectError');
+const DeletionFailedError = require('../_errors/deletionFailedError');
 const InternalServerError = require('../_errors/internalServerError');
 const ResponseValidationError = require('../_errors/responseValidationError');
 const UnknownUserRoleError = require('../_errors/unknownUserRoleError');
@@ -367,8 +368,7 @@ class ArticleController {
         const articleId = req.params.id;
 
         try {
-            let article = await Article.findById(articleId);
-
+            let article = await ArticleRepository.getArticleById(articleId);
             if (!article) {
                 throw new ArticleNotFoundError();
             }
@@ -378,9 +378,14 @@ class ArticleController {
                 // Check if the user is an admin
                 if (req.isAdmin) {
                     // Allow admin to delete articles of any user
-                    await Article.deleteOne({ _id: articleId });
+                    const deletedCount = await ArticleRepository.deleteArticleById(articleId);
 
-                    return res.sendStatus(204);
+                    if (deletedCount > 0) {
+                        return res.sendStatus(204);
+                    }
+                    else {
+                        throw new DeletionFailedError();
+                    }
                 }
                 else if (req.isUser) {
                     return res.status(403).json({ message: 'Only certified members are allowed to delete an article!' });
@@ -391,12 +396,18 @@ class ArticleController {
             }
 
             // If the author matches, delete the article
-            await Article.deleteOne({ _id: articleId });
+            const deletedCount = await ArticleRepository.deleteArticleById(articleId);
 
-            return res.sendStatus(204);
+            if (deletedCount > 0) {
+                return res.sendStatus(204);
+            }
+            else {
+                throw new DeletionFailedError();
+            }
         }
         catch (err) {
-            if (err instanceof ArticleNotFoundError) {
+            if (err instanceof ArticleNotFoundError ||
+                err instanceof DeletionFailedError) {
                 return next(err);
             }
             next(new InternalServerError());
