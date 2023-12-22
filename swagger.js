@@ -777,6 +777,7 @@ swaggerSpec.paths['/api/articles/create'] = {
                                 { $ref: '#/components/schemas/InternalServerError' },
                                 { $ref: '#/components/schemas/ValidationResponseError' },
                                 { $ref: '#/components/schemas/CreationResponseObjectError' },
+                                { $ref: '#/components/schemas/CreationFailedError' },
                             ],
                         },
                     },
@@ -896,6 +897,7 @@ swaggerSpec.paths['/api/articles'] = {
                                 { $ref: '#/components/schemas/InternalServerError' },
                                 { $ref: '#/components/schemas/ValidationResponseError' },
                                 { $ref: '#/components/schemas/CreationResponseObjectError' },
+                                { $ref: '#/components/schemas/RecoveryFailedError' },
                             ],
                         },
                     },
@@ -1016,6 +1018,7 @@ swaggerSpec.paths['/api/articles/{id}'] = {
                                 { $ref: '#/components/schemas/InternalServerError' },
                                 { $ref: '#/components/schemas/ValidationResponseError' },
                                 { $ref: '#/components/schemas/CreationResponseObjectError' },
+                                { $ref: '#/components/schemas/RecoveryFailedError' },
                             ],
                         },
                     },
@@ -1162,6 +1165,7 @@ swaggerSpec.paths['/api/articles/user/{userId}'] = {
                                 { $ref: '#/components/schemas/InternalServerError' },
                                 { $ref: '#/components/schemas/ValidationResponseError' },
                                 { $ref: '#/components/schemas/CreationResponseObjectError' },
+                                { $ref: '#/components/schemas/RecoveryFailedError' },
                             ],
                         },
                     },
@@ -1364,6 +1368,7 @@ swaggerSpec.paths['/api/articles/update/{id}'] = {
                                 { $ref: '#/components/schemas/InternalServerError' },
                                 { $ref: '#/components/schemas/ValidationResponseError' },
                                 { $ref: '#/components/schemas/CreationResponseObjectError' },
+                                { $ref: '#/components/schemas/UpdateFailedError' },
                             ],
                         },
                     },
@@ -1920,6 +1925,33 @@ swaggerSpec.components = {
                 error: {
                     type: 'string',
                     example: 'Deletion Failed Error.',
+                },
+            },
+        },
+        CreationFailedError: {
+            type: 'object',
+            properties: {
+                error: {
+                    type: 'string',
+                    example: 'Creation Failed Error.',
+                },
+            },
+        },
+        UpdateFailedError: {
+            type: 'object',
+            properties: {
+                error: {
+                    type: 'string',
+                    example: 'Update Failed Error.',
+                },
+            },
+        },
+        RecoveryFailedError: {
+            type: 'object',
+            properties: {
+                error: {
+                    type: 'string',
+                    example: 'Recovery Failed Error.',
                 },
             },
         },
