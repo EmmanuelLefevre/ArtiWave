@@ -26,12 +26,12 @@ const ValidationError = require('../_errors/validationError');
 
 
 /*============ GLOBAL ERROR HANDLER ============*/
-function GlobalErrorHandler(err, _req, res, _next) {
+function GlobalErrorHandler(err, req, res, next) {
 
     const errorMessage = err.message;
     const statusCode = err.statusCode;
 
-    if (err instanceof AccountAlreadyExistsError |
+    if (err instanceof AccountAlreadyExistsError ||
         err instanceof AccountCheckError ||
         err instanceof ArticleAlreadyExistsError ||
         err instanceof ArticleNotFoundError ||
