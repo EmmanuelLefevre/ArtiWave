@@ -40,7 +40,7 @@ class AdminController {
                 err instanceof UserNotFoundError) {
                 return next(err);
             }
-            throw new InternalServerError();
+            next(new InternalServerError());;
         }
     }
 
@@ -67,7 +67,7 @@ class AdminController {
             if (err instanceof InternalServerError) {
                 return next(err);
             }
-            throw new InternalServerError();
+            next(new InternalServerError());;
         }
     }
 
@@ -82,7 +82,7 @@ class AdminController {
         //     if (err instanceof InternalServerError) {
         //         return next(err);
         //     }
-        //     throw new InternalServerError();
+        //     next(new InternalServerError());;
         // }
     }
 
@@ -97,7 +97,7 @@ class AdminController {
         //     if (err instanceof InternalServerError) {
         //         return next(err);
         //     }
-        //     throw new InternalServerError();
+        //     next(new InternalServerError());;
         // }
     }
 }
