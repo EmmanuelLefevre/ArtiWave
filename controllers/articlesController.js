@@ -20,11 +20,14 @@ const { ArticleResponseValidationRoleAdmin,
 // Errors
 const ArticleAlreadyExistsError = require('../_errors/articleAlreadyExistsError');
 const ArticleNotFoundError = require('../_errors/articleNotFoundError');
+const CreationFailedError = require('../_errors/creationFailedError');
 const CreationResponseObjectError = require('../_errors/creationResponseObjectError');
 const DeletionFailedError = require('../_errors/deletionFailedError');
 const InternalServerError = require('../_errors/internalServerError');
+const RecoveryFailedError = require('../_errors/recoveryFailedError');
 const ResponseValidationError = require('../_errors/responseValidationError');
 const UnknownUserRoleError = require('../_errors/unknownUserRoleError');
+const UpdateFailedError = require('../_errors/updateFailedError');
 const UserInfoNotFoundError = require('../_errors/userInfoNotFoundError');
 const UserNotFoundError = require('../_errors/userNotFoundError');
 
@@ -87,14 +90,21 @@ class ArticleController {
                 throw new ResponseValidationError();
             }
 
-            // Return the created article
-            return res.status(201).json(responseObject);
+            // Return created article
+            if (createdArticle) {
+                return res.status(201).json(responseObject);
+            }
+            else {
+                throw new CreationFailedError();
+            }
+
         }
         catch (err) {
             if (err.code === 11000 && err.keyPattern.title) {
                 next(new ArticleAlreadyExistsError());
             }
-            else if (err instanceof UserNotFoundError ||
+            else if (err instanceof CreationFailedError ||
+                    err instanceof UserNotFoundError ||
                     err instanceof ResponseValidationError) {
                     return next(err);
             }
@@ -106,7 +116,6 @@ class ArticleController {
     static async getAllArticles(req, res, next) {
         try {
             let articles = await ArticleRepository.getAllArticles();
-
             if (articles.length === 0) {
                 throw new ArticleNotFoundError();
             }
@@ -147,7 +156,13 @@ class ArticleController {
             }
 
             // Return all articles
-            return res.status(200).json(responseObject);
+            if (articlesCount > 0) {
+                return res.status(200).json(responseObject);
+            }
+            else {
+                throw new RecoveryFailedError();
+            }
+
         }
         catch (err) {
             if (err instanceof ArticleNotFoundError ||
@@ -195,10 +210,17 @@ class ArticleController {
             }
 
             // Return single article
-            return res.status(200).json(responseObject);
+            if (article) {
+                return res.status(200).json(responseObject);
+            }
+            else {
+                throw new RecoveryFailedError();
+            }
+
         }
         catch (err) {
             if (err instanceof ArticleNotFoundError ||
+                err instanceof RecoveryFailedError ||
                 err instanceof ResponseValidationError) {
                 return next(err);
             }
@@ -258,11 +280,17 @@ class ArticleController {
                 throw new ResponseValidationError();
             }
 
-            // Return all articles owned by a single user
-            return res.status(200).json(responseObject);
+            if (processedArticles.length > 0) {
+                return res.status(200).json(responseObject);
+            }
+            else {
+                throw new RecoveryFailedError();
+            }
+
         }
         catch (err) {
             if (err instanceof ArticleNotFoundError ||
+                err instanceof RecoveryFailedError ||
                 err instanceof UserNotFoundError ||
                 err instanceof ResponseValidationError) {
                 return next(err);
@@ -349,15 +377,22 @@ class ArticleController {
                 throw new ResponseValidationError();
             }
 
-            // Return the updated article
-            return res.status(200).json(responseObject);
+            // Return updated article
+            if (article) {
+                return res.status(200).json(responseObject);
+            }
+            else {
+                throw new UpdateFailedError();
+            }
+
         }
         catch (err) {
             if (err.code === 11000 && err.keyPattern.title) {
                 next(new ArticleAlreadyExistsError());
             }
             else if (err instanceof ArticleNotFoundError ||
-                err instanceof ResponseValidationError) {
+                    err instanceof UpdateFailedError ||
+                    err instanceof ResponseValidationError) {
                 return next(err);
             }
             next(new InternalServerError());
@@ -381,6 +416,7 @@ class ArticleController {
                     // Allow admin to delete articles of any user
                     const deletedCount = await ArticleRepository.deleteArticleById(articleId);
 
+                    // Delete article
                     if (deletedCount > 0) {
                         return res.sendStatus(204);
                     }
@@ -399,6 +435,7 @@ class ArticleController {
             // If the author matches, delete the article
             const deletedCount = await ArticleRepository.deleteArticleById(articleId);
 
+            // Delete article
             if (deletedCount > 0) {
                 return res.sendStatus(204);
             }
