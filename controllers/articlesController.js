@@ -24,6 +24,7 @@ const CreationFailedError = require('../_errors/creationFailedError');
 const CreationResponseObjectError = require('../_errors/creationResponseObjectError');
 const DeletionFailedError = require('../_errors/deletionFailedError');
 const InternalServerError = require('../_errors/internalServerError');
+const NoPropertiesModifiedError = require('../_errors/noPropertiesModifiedError');
 const RecoveryFailedError = require('../_errors/recoveryFailedError');
 const ResponseValidationError = require('../_errors/responseValidationError');
 const UnknownUserRoleError = require('../_errors/unknownUserRoleError');
@@ -316,10 +317,17 @@ class ArticleController {
 
             let updatedArticle;
 
+            // Check if property have been modified
+            const checkIfPropertiesModified = ArticleController.#checkIfPropertiesModified(originalArticleData, req.body);
+
             // Check if the author's article matches the userId making the request
             if (article.author.toString() !== req.userId) {
                 // Check if the user is an admin
                 if (req.isAdmin) {
+                    if (!checkIfPropertiesModified) {
+                        throw new NoPropertiesModifiedError();
+                    }
+
                     // Allow admin to update the article of any user
                     updatedArticle = await ArticleRepository.updateArticleById(articleId, req.body);
                 }
@@ -329,7 +337,12 @@ class ArticleController {
                 else {
                     return res.status(403).json({ message: 'You are not allowed to update an article that does not belong to you!' });
                 }
-            } else {
+            }
+            else {
+                if (!checkIfPropertiesModified) {
+                    throw new NoPropertiesModifiedError();
+                }
+
                 // If the author matches, update article
                 updatedArticle = await ArticleRepository.updateArticleById(articleId, req.body);
             }
@@ -388,6 +401,7 @@ class ArticleController {
                 next(new ArticleAlreadyExistsError());
             }
             else if (err instanceof ArticleNotFoundError ||
+                    err instanceof NoPropertiesModifiedError ||
                     err instanceof UpdateFailedError ||
                     err instanceof ResponseValidationError) {
                 return next(err);
@@ -500,6 +514,18 @@ class ArticleController {
             }
             next(new CreationResponseObjectError());
         }
+    }
+
+    /*=== CHECK IF PROPERTIES HAVE BEEN MODIFIED ===*/
+    static #checkIfPropertiesModified(originalArticleData, reqBody) {
+        for (const key of Object.keys(reqBody)) {
+            // Check if the property is identical to the current value in the database
+            if (originalArticleData[key] === reqBody[key]) {
+                return false; // Une propriété a été modifiée
+            }
+        }
+
+        return true; // Aucune propriété n'a été modifiée
     }
 }
 
