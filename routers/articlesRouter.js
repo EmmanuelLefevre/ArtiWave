@@ -45,6 +45,7 @@ class ArticlesRouter {
             .post(
                 JwtCheck,
                 PremiumCheck,
+                ArticlesRouter.#checkBodyParamPresence,
                 ArticleValidationRules,
                 ArticlesRouter.#validateCreateArticle,
                 CreateArticleLimiter,
@@ -171,15 +172,26 @@ class ArticlesRouter {
         }
     }
 
-    static #validateCreateArticle(req, _res, next) {
+    static #checkBodyParamPresence(req, _res, next) {
         try {
-            // Check presence of data title && content
             const { title, content } = req.body;
 
-            if (!title || !content ) {
+            if (!title || !content) {
                 throw new InvalidRequestError();
             }
 
+            next();
+        }
+        catch (err) {
+            if (err instanceof InvalidRequestError) {
+                return next(err);
+            }
+            next(new InternalServerError());
+        }
+    }
+
+    static #validateCreateArticle(req, _res, next) {
+        try {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 throw new ValidationError(errors.array());
@@ -188,8 +200,7 @@ class ArticlesRouter {
             next();
         }
         catch (err) {
-            if (err instanceof InvalidRequestError ||
-                err instanceof ValidationError) {
+            if (err instanceof ValidationError) {
                 return next(err);
             }
             next(new InternalServerError());
