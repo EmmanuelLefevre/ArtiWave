@@ -10,6 +10,7 @@ const ArticleAlreadyExistsError = require('../_errors/articleAlreadyExistsError'
 const ArticleNotFoundError = require('../_errors/articleNotFoundError');
 const BadCredentialsError = require('../_errors/badCredentialsError');
 const CreationResponseObjectError = require('../_errors/creationResponseObjectError');
+const DatabaseError = require('../_errors/databaseError');
 const InternalServerError = require('../_errors/internalServerError');
 const InvalidRequestError = require('../_errors/invalidRequestError');
 const LoginLimiterError = require('../_errors/loginLimiterError');
@@ -37,6 +38,7 @@ function GlobalErrorHandler(err, _req, res, _next) {
         err instanceof ArticleNotFoundError ||
         err instanceof BadCredentialsError ||
         err instanceof CreationResponseObjectError ||
+        err instanceof DatabaseError ||
         err instanceof InternalServerError ||
         err instanceof InvalidRequestError ||
         err instanceof LoginLimiterError ||
