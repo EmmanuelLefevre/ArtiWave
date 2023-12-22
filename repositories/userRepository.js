@@ -30,6 +30,26 @@ class UserRepository {
                 });
         });
     }
+
+    /*=== GET ALL USERS ===*/
+    static async getAllUsers() {
+        try {
+            return await User.find({}, 'id email nickname roles registeredAt updatedAt');
+        }
+        catch (err) {
+            throw new InternalServerError();
+        }
+    }
+
+    /*=== GET SINGLE USER ===*/
+    static async getUser() {
+        try {
+            return await User.find({}, 'id email nickname roles registeredAt updatedAt');
+        }
+        catch (err) {
+            throw new InternalServerError();
+        }
+    }
 }
 
 
