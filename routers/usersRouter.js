@@ -46,10 +46,10 @@ class UsersRouter {
                 UserValidationRules,
                 UsersRouter.#validateRegister,
                 RegisterLimiter,
-                (req, res) => {
+                (req, res, next) => {
                     try {
                         // Successful validation, proceed
-                        UsersController.register(req, res);
+                        UsersController.register(req, res, next);
                     }
                     catch (err) {
                         throw new InternalServerError();
@@ -63,10 +63,10 @@ class UsersRouter {
             .get(
                 JwtCheck,
                 PremiumCheck,
-                (req, res) => {
+                (req, res, next) => {
                     try {
                         // Successful validation, proceed
-                        UsersController.getAllUsers(req, res);
+                        UsersController.getAllUsers(req, res, next);
                     }
                     catch (err) {
                         throw new InternalServerError();
@@ -82,10 +82,10 @@ class UsersRouter {
                 JwtCheck,
                 ValidateURIParam('id'),
                 UsersRouter.#validateURIParam,
-                (req, res) => {
+                (req, res, next) => {
                     try {
                         // Successful validation, proceed
-                        UsersController.getUser(req, res);
+                        UsersController.getUser(req, res, next);
                     }
                     catch (err) {
                         throw new InternalServerError();
@@ -102,10 +102,10 @@ class UsersRouter {
                 UsersRouter.#validateURIParam,
                 UsersRouter.#validateUpdateUser,
                 UserValidationRules,
-                (req, res) => {
+                (req, res, next) => {
                     try {
                         // Successful validation, proceed
-                        UsersController.updateUser(req, res);
+                        UsersController.updateUser(req, res, next);
                     }
                     catch (err) {
                         throw new InternalServerError();
@@ -120,10 +120,10 @@ class UsersRouter {
                 JwtCheck,
                 ValidateURIParam('id'),
                 UsersRouter.#validateURIParam,
-                (req, res) => {
+                (req, res, next) => {
                     try {
                         // Successful validation, proceed
-                        UsersController.deleteUser(req, res);
+                        UsersController.deleteUser(req, res, next);
                     }
                     catch (err) {
                         throw new InternalServerError();
@@ -148,9 +148,7 @@ class UsersRouter {
             if (err instanceof ValidationError) {
                 return next(err);
             }
-            else {
-                throw new InternalServerError();
-            }
+            throw new InternalServerError();
         }
     }
 
@@ -175,9 +173,7 @@ class UsersRouter {
                 err instanceof ValidationError) {
                 return next(err);
             }
-            else {
-                throw new InternalServerError();
-            }
+            throw new InternalServerError();
         }
     }
 
@@ -208,9 +204,7 @@ class UsersRouter {
             if (err instanceof InvalidRequestError) {
                 return next(err);
             }
-            else {
-                throw new InternalServerError();
-            }
+            throw new InternalServerError();
         }
     }
 }
