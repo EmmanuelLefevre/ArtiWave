@@ -4,6 +4,7 @@
 
 
 /*============ IMPORT USED MODULES ============*/
+const AccountAlreadyExistsError = require('../_errors/accountAlreadyExistsError');
 const AccountCheckError = require('../_errors/accountCheckError');
 const ArticleAlreadyExistsError = require('../_errors/articleAlreadyExistsError');
 const ArticleNotFoundError = require('../_errors/articleNotFoundError');
@@ -12,6 +13,7 @@ const CreationResponseObjectError = require('../_errors/creationResponseObjectEr
 const InternalServerError = require('../_errors/internalServerError');
 const InvalidRequestError = require('../_errors/invalidRequestError');
 const LoginLimiterError = require('../_errors/loginLimiterError');
+const NicknameAlreadyUsedError = require('../_errors/nicknameAlreadyUsedError');
 const NotFoundError = require('../_errors/notFoundError');
 const NotAllowedMethodError = require('../_errors/notAllowedMethodError');
 const PermissionDeniedError = require('../_errors/permissionDeniedError');
@@ -29,7 +31,8 @@ function GlobalErrorHandler(err, _req, res, _next) {
     const errorMessage = err.message;
     const statusCode = err.statusCode;
 
-    if (err instanceof AccountCheckError ||
+    if (err instanceof AccountAlreadyExistsError |
+        err instanceof AccountCheckError ||
         err instanceof ArticleAlreadyExistsError ||
         err instanceof ArticleNotFoundError ||
         err instanceof BadCredentialsError ||
@@ -37,6 +40,7 @@ function GlobalErrorHandler(err, _req, res, _next) {
         err instanceof InternalServerError ||
         err instanceof InvalidRequestError ||
         err instanceof LoginLimiterError ||
+        err instanceof NicknameAlreadyUsedError ||
         err instanceof NotAllowedMethodError ||
         err instanceof PermissionDeniedError ||
         err instanceof PremiumCheckError ||
