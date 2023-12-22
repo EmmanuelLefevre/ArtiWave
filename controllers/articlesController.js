@@ -37,7 +37,7 @@ const User = require('../models/IUser');
 class ArticleController {
 
     /*=== CREATE ARTICLE ===*/
-    static async createArticle(req, res) {
+    static async createArticle(req, res, next) {
         // Extract title && content properties from request
         const { title, content } = req.body;
 
@@ -91,14 +91,16 @@ class ArticleController {
             if (err.code === 11000 && err.keyPattern.title) {
                 throw new ArticleAlreadyExistsError();
             }
-            else {
-                throw new InternalServerError();
+            else if (err instanceof UserNotFoundError ||
+                    err instanceof ResponseValidationError) {
+                    return next(err);
             }
+            throw new InternalServerError();
         }
     }
 
     /*=== GET ALL ARTICLES ===*/
-    static async getAllArticles(req, res) {
+    static async getAllArticles(req, res, next) {
         try {
             let articles = await Article.find({}, 'id title content author createdAt updatedAt');
 
@@ -145,12 +147,16 @@ class ArticleController {
             return res.status(200).json(responseObject);
         }
         catch (err) {
+            if (err instanceof ArticleNotFoundError ||
+                err instanceof ResponseValidationError) {
+                return next(err);
+            }
             throw new InternalServerError();
         }
     }
 
     /*=== GET SINGLE ARTICLE ===*/
-    static async getArticle(req, res) {
+    static async getArticle(req, res, next) {
         const articleId = req.params.id;
 
         try {
@@ -189,12 +195,16 @@ class ArticleController {
             return res.status(200).json(responseObject);
         }
         catch (err) {
+            if (err instanceof ArticleNotFoundError ||
+                err instanceof ResponseValidationError) {
+                return next(err);
+            }
             throw new InternalServerError();
         }
     }
 
     /*=== GET ARTICLES BY USER ===*/
-    static async getArticlesByUser(req, res) {
+    static async getArticlesByUser(req, res, next) {
         const userId = req.params.userId;
 
         try {
@@ -249,12 +259,16 @@ class ArticleController {
             return res.status(200).json(responseObject);
         }
         catch (err) {
+            if (err instanceof ArticleNotFoundError ||
+                err instanceof ResponseValidationError) {
+                return next(err);
+            }
             throw new InternalServerError();
         }
     }
 
     /*=== UPDATE ARTICLE ===*/
-    static async updateArticle(req, res) {
+    static async updateArticle(req, res, next) {
         const articleId = req.params.id;
 
         try {
@@ -338,15 +352,16 @@ class ArticleController {
             if (err.code === 11000 && err.keyPattern.title) {
                 throw new ArticleAlreadyExistsError();
             }
-            else {
-                throw new InternalServerError();
+            else if (err instanceof ArticleNotFoundError ||
+                err instanceof ResponseValidationError) {
+                return next(err);
             }
-
+            throw new InternalServerError();
         }
     }
 
     /*=== DELETE ARTICLE ===*/
-    static async deleteArticle(req, res) {
+    static async deleteArticle(req, res, next) {
         const articleId = req.params.id;
 
         try {
@@ -379,6 +394,9 @@ class ArticleController {
             return res.sendStatus(204);
         }
         catch (err) {
+            if (err instanceof ArticleNotFoundError) {
+                return next(err);
+            }
             throw new InternalServerError();
         }
     }
@@ -387,7 +405,7 @@ class ArticleController {
     /*============ FUNCTIONS ============*/
 
     /*=== GET INFO ===*/
-    static async #getUserInfo(userId, res) {
+    static async #getUserInfo(userId, _res) {
         try {
             let user = await User.findById(userId, 'nickname roles');
             return user ? { nickname: user.nickname, roles: user.roles } : null;
@@ -398,9 +416,9 @@ class ArticleController {
     }
 
     /*=== CREATE RESPONSE ARTICLE OBJECT BASED ON ROLE ===*/
-    static async #createResponseArticleObject(article, userRole, res) {
+    static async #createResponseArticleObject(article, userRole, res, next) {
         try {
-            const authorInfo = await this.#getUserInfo(article.author, res);
+            const authorInfo = await this.#getUserInfo(article.author, res, next);
 
             const commonFields = {
                 title: article.title,
@@ -429,6 +447,9 @@ class ArticleController {
             }
         }
         catch (err) {
+            if (err instanceof UnknownUserRoleError) {
+                return next(err);
+            }
             throw new CreationResponseObjectError();
         }
     }
