@@ -8,7 +8,6 @@
 const Article = require('../models/IArticle');
 
 // Errors
-const ArticleAlreadyExistsError = require('../_errors/articleAlreadyExistsError');
 const InternalServerError = require('../_errors/internalServerError');
 
 
