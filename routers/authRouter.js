@@ -67,9 +67,7 @@ class AuthRouter {
                 err instanceof ValidationError) {
                 return next(err);
             }
-            else {
-                throw new InternalServerError();
-            }
+            throw new InternalServerError();
         }
     }
 }
