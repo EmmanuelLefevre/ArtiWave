@@ -18,14 +18,14 @@ const InternalServerError = require('../_errors/internalServerError');
 class ArticleRepository {
 
     /*=== CREATE ARTICLE ===*/
-    // static createArticle(next) {
-    //     try {
-
-    //     }
-    //     catch (err) {
-    //         next(new InternalServerError());
-    //     }
-    // }
+    static createArticle(newArticle, next) {
+        try {
+            return newArticle.save();
+        }
+        catch (err) {
+            next(new InternalServerError());
+        }
+    }
 
     /*=== GET ALL ARTICLES ===*/
     static async getAllArticles(next) {

@@ -41,10 +41,12 @@ class ArticleController {
     static async createArticle(req, res, next) {
         // Extract title && content properties from request
         const { title, content } = req.body;
+        // Get userId
+        const userId = req.userId;
 
         try {
             // Check if user exists
-            const existingUser = await User.findById(req.userId);
+            const existingUser = await UserRepository.userExists(userId);
             if (!existingUser) {
                 throw new UserNotFoundError();
             }
@@ -58,10 +60,10 @@ class ArticleController {
             });
 
             // Save article in the database
-            await newArticle.save();
+            const savedArticle = await ArticleRepository.createArticle(newArticle);
 
             // Add author's id and nickname for the article if admin, if not just add author's nickname
-            const createdArticle = await this.#createResponseArticleObject(newArticle, req.userRole);
+            const createdArticle = await this.#createResponseArticleObject(savedArticle, req.userRole);
 
             // Set response and determine the response validation schema based on user role
             let responseValidationSchema;
@@ -90,7 +92,7 @@ class ArticleController {
         }
         catch (err) {
             if (err.code === 11000 && err.keyPattern.title) {
-                throw new ArticleAlreadyExistsError();
+                next(new ArticleAlreadyExistsError());
             }
             else if (err instanceof UserNotFoundError ||
                     err instanceof ResponseValidationError) {
@@ -211,7 +213,6 @@ class ArticleController {
         try {
             // Check if user exists
             const existingUser = await UserRepository.userExists(userId);
-
             if (!existingUser) {
                 throw new UserNotFoundError();
             }
@@ -353,7 +354,7 @@ class ArticleController {
         }
         catch (err) {
             if (err.code === 11000 && err.keyPattern.title) {
-                throw new ArticleAlreadyExistsError();
+                next(new ArticleAlreadyExistsError());
             }
             else if (err instanceof ArticleNotFoundError ||
                 err instanceof ResponseValidationError) {
