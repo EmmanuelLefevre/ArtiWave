@@ -52,6 +52,7 @@ class UsersRouter {
                         UsersController.register(req, res, next);
                     }
                     catch (err) {
+                        // next(new InternalServerError());
                         throw new InternalServerError();
                     }
                 }
@@ -69,6 +70,7 @@ class UsersRouter {
                         UsersController.getAllUsers(req, res, next);
                     }
                     catch (err) {
+                        // next(new InternalServerError());
                         throw new InternalServerError();
                     }
                 }
@@ -88,6 +90,7 @@ class UsersRouter {
                         UsersController.getUser(req, res, next);
                     }
                     catch (err) {
+                        // next(new InternalServerError());
                         throw new InternalServerError();
                     }
                 }
@@ -108,6 +111,7 @@ class UsersRouter {
                         UsersController.updateUser(req, res, next);
                     }
                     catch (err) {
+                        // next(new InternalServerError());
                         throw new InternalServerError();
                     }
                 }
@@ -126,6 +130,7 @@ class UsersRouter {
                         UsersController.deleteUser(req, res, next);
                     }
                     catch (err) {
+                        // next(new InternalServerError());
                         throw new InternalServerError();
                     }
                 }
