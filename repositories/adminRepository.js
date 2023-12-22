@@ -18,7 +18,7 @@ const UserNotFoundError = require('../_errors/userNotFoundError');
 class AdminRepository {
 
     /*=== DELETE NON ADMIN USERS AND THEIR OWNED ARTICLES ===*/
-    static async deleteNonAdminsUsersAndTheirOwnedArticles() {
+    static async deleteNonAdminsUsersAndTheirOwnedArticles(next) {
         try {
             const usersToDelete = await User.find({
                 roles: { $ne: 'admin' }
@@ -34,7 +34,7 @@ class AdminRepository {
                 Article.deleteMany({ author: { $in: usersIdsToDelete } })
             ]);
         } catch (_err) {
-            throw new InternalServerError();
+            next(new InternalServerError());
         }
     }
 
