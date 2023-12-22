@@ -17,8 +17,7 @@ const { UserResponseValidationRoleAdmin,
         UsersResponseValidationRoleCertified,
         UserUpdatedResponseValidationRoleAdmin,
         UserUpdatedResponseValidationBase,
-        UserRegisterResponseValidation } =
-    require('../_validation/responses/userResponseValidation');
+        UserRegisterResponseValidation } = require('../_validation/responses/userResponseValidation');
 
 // Errors
 const AccountAlreadyExistsError = require('../_errors/accountAlreadyExistsError');
@@ -39,7 +38,7 @@ const Article = require('../models/IArticle');
 class UserController {
 
     /*=== REGISTER ===*/
-    static async register(req, res) {
+    static async register(req, res, next) {
         // Argon2
         const timeCost = parseInt(process.env.ARGON2_TIME_COST);
         const memoryCost = parseInt(process.env.ARGON2_MEMORY_COST);
@@ -88,21 +87,24 @@ class UserController {
             if (err.code === 11000) {
                 if (err.keyPattern.email) {
                     throw new AccountAlreadyExistsError();
-                } else if (err.keyPattern.nickname) {
+                }
+                else if (err.keyPattern.nickname) {
                     throw new NicknameAlreadyUsedError();
                 }
             }
-
+            else if (err instanceof ResponseValidationError) {
+                return next(err);
+            }
             throw new InternalServerError();
         }
     }
 
     /*=== GET ALL USERS ===*/
-    static async getAllUsers(req, res) {
+    static async getAllUsers(req, res, next) {
         try {
-            let users = await User.find({}, 'id email nickname roles registeredAt updatedAt');
+            let users = await UserRepository.getAllUsers();
 
-            if (users === 0) {
+            if (users.length === 0) {
                 throw new UserNotFoundError();
             }
 
@@ -117,7 +119,7 @@ class UserController {
                 case 'admin':
                     responseValidationSchema = UsersResponseValidationRoleAdmin;
                     responseObject = {
-                        data: users.map(user => this.#createResponseUserObject(user, req.userRole))
+                        data: users.map(user => this.#createResponseUserObject(user, req.userRole)),
                     };
                     break;
                 case 'certified':
@@ -143,12 +145,16 @@ class UserController {
             return res.status(200).json(responseObject);
         }
         catch (err) {
+            if (err instanceof ResponseValidationError ||
+                err instanceof UserNotFoundError) {
+                    return next(err);
+            }
             throw new InternalServerError();
         }
     }
 
     /*=== GET SINGLE USER ===*/
-    static async getUser(req, res) {
+    static async getUser(req, res, next) {
         const userId = req.params.id;
 
         try {
@@ -193,19 +199,23 @@ class UserController {
             return res.status(200).json(responseObject);
         }
         catch (err) {
+            if (err instanceof UserNotFoundError ||
+                err instanceof ResponseValidationError) {
+                return next(err);
+            }
             throw new InternalServerError();
         }
     }
 
     /*=== UPDATE USER ===*/
-    static async updateUser(req, res) {
+    static async updateUser(req, res, next) {
         const userId = req.params.id;
 
         try {
             let user = await User.findById(userId);
 
             if (!user) {
-                throw new UserController();
+                throw new UserNotFoundError();
             }
 
             // Save original user data
@@ -294,13 +304,16 @@ class UserController {
             if (err.code === 11000 && err.keyPattern.nickname) {
                 throw new NicknameAlreadyUsedError();
             }
-
+            else if (err instanceof UserNotFoundError ||
+                    err instanceof ResponseValidationError) {
+                    return next(err);
+            }
             throw new InternalServerError();
         }
     }
 
     /*=== DELETE USER ===*/
-    static async deleteUser(req, res) {
+    static async deleteUser(req, res, next) {
         const userId = req.params.id;
 
         try {
@@ -333,6 +346,10 @@ class UserController {
             return res.sendStatus(204);
         }
         catch (err) {
+            if (err instanceof UserNotFoundError ||
+                err instanceof ResponseValidationError) {
+                return next(err);
+            }
             throw new InternalServerError();
         }
     }
@@ -366,6 +383,9 @@ class UserController {
             }
         }
         catch (err) {
+            if (err instanceof UnknownUserRoleError) {
+                return next(err);
+            }
             throw new CreationResponseObjectError();
         }
     }
