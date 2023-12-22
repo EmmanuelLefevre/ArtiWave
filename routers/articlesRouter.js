@@ -120,8 +120,8 @@ class ArticlesRouter {
                 JwtCheck,
                 ValidateURIParam('id'),
                 ArticlesRouter.#validateURIParam,
-                ArticlesRouter.#validateUpdateArticle,
                 ArticleValidationRules,
+                ArticlesRouter.#validateCreateArticle,
                 (req, res, next) => {
                     try {
                         // Successful validation, proceed
