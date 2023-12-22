@@ -9,6 +9,7 @@ const AccountCheckError = require('../_errors/accountCheckError');
 const ArticleAlreadyExistsError = require('../_errors/articleAlreadyExistsError');
 const ArticleNotFoundError = require('../_errors/articleNotFoundError');
 const BadCredentialsError = require('../_errors/badCredentialsError');
+const CreationFailedError = require('../_errors/creationFailedError');
 const CreationResponseObjectError = require('../_errors/creationResponseObjectError');
 const DeletionFailedError = require('../_errors/deletionFailedError');
 const InternalServerError = require('../_errors/internalServerError');
@@ -19,8 +20,10 @@ const NotFoundError = require('../_errors/notFoundError');
 const NotAllowedMethodError = require('../_errors/notAllowedMethodError');
 const PermissionDeniedError = require('../_errors/permissionDeniedError');
 const PremiumCheckError = require('../_errors/premiumCheckError');
+const RecoveryFailedError = require('../_errors/recoveryFailedError');
 const ResponseValidationError = require('../_errors/responseValidationError');
 const UnknownUserRoleError = require('../_errors/unknownUserRoleError');
+const UpdateFailedError = require('../_errors/updateFailedError');
 const UserInfoNotFoundError = require('../_errors/userInfoNotFoundError');
 const UserNotFoundError = require('../_errors/userNotFoundError');
 const ValidationError = require('../_errors/validationError');
@@ -37,6 +40,7 @@ function GlobalErrorHandler(err, _req, res, _next) {
         err instanceof ArticleAlreadyExistsError ||
         err instanceof ArticleNotFoundError ||
         err instanceof BadCredentialsError ||
+        err instanceof CreationFailedError ||
         err instanceof CreationResponseObjectError ||
         err instanceof DeletionFailedError ||
         err instanceof InternalServerError ||
@@ -46,8 +50,10 @@ function GlobalErrorHandler(err, _req, res, _next) {
         err instanceof NotAllowedMethodError ||
         err instanceof PermissionDeniedError ||
         err instanceof PremiumCheckError ||
+        err instanceof RecoveryFailedError ||
         err instanceof ResponseValidationError ||
         err instanceof UnknownUserRoleError ||
+        err instanceof UpdateFailedError ||
         err instanceof UserInfoNotFoundError ||
         err instanceof UserNotFoundError) {
 
