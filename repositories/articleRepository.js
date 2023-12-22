@@ -7,10 +7,8 @@
 // Models
 const Article = require('../models/IArticle');
 
-// Repositories
-const UserRepository = require('../repositories/userRepository');
-
 // Errors
+const ArticleAlreadyExistsError = require('../_errors/articleAlreadyExistsError');
 const InternalServerError = require('../_errors/internalServerError');
 
 
