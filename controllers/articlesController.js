@@ -102,7 +102,7 @@ class ArticleController {
         }
         catch (err) {
             if (err.code === 11000 && err.keyPattern.title) {
-                next(new ArticleAlreadyExistsError());
+                return next(new ArticleAlreadyExistsError());
             }
             else if (err instanceof CreationFailedError ||
                     err instanceof UserNotFoundError ||
@@ -398,7 +398,7 @@ class ArticleController {
         }
         catch (err) {
             if (err.code === 11000 && err.keyPattern.title) {
-                next(new ArticleAlreadyExistsError());
+                return next(new ArticleAlreadyExistsError());
             }
             else if (err instanceof ArticleNotFoundError ||
                     err instanceof NoPropertiesModifiedError ||
