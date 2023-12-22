@@ -16,6 +16,7 @@ const InternalServerError = require('../_errors/internalServerError');
 const InvalidRequestError = require('../_errors/invalidRequestError');
 const LoginLimiterError = require('../_errors/loginLimiterError');
 const NicknameAlreadyUsedError = require('../_errors/nicknameAlreadyUsedError');
+const NoPropertiesModifiedError = require('../_errors/noPropertiesModifiedError');
 const NotFoundError = require('../_errors/notFoundError');
 const NotAllowedMethodError = require('../_errors/notAllowedMethodError');
 const PermissionDeniedError = require('../_errors/permissionDeniedError');
@@ -47,6 +48,7 @@ function GlobalErrorHandler(err, _req, res, _next) {
         err instanceof InvalidRequestError ||
         err instanceof LoginLimiterError ||
         err instanceof NicknameAlreadyUsedError ||
+        err instanceof NoPropertiesModifiedError ||
         err instanceof NotAllowedMethodError ||
         err instanceof PermissionDeniedError ||
         err instanceof PremiumCheckError ||
