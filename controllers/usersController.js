@@ -94,7 +94,7 @@ class UserController {
             else if (err instanceof ResponseValidationError) {
                 return next(err);
             }
-            throw new InternalServerError();
+            next(new InternalServerError());
         }
     }
 
@@ -148,7 +148,7 @@ class UserController {
                 err instanceof UserNotFoundError) {
                     return next(err);
             }
-            throw new InternalServerError();
+            next(new InternalServerError());
         }
     }
 
@@ -202,7 +202,7 @@ class UserController {
                 err instanceof ResponseValidationError) {
                 return next(err);
             }
-            throw new InternalServerError();
+            next(new InternalServerError());
         }
     }
 
@@ -307,7 +307,7 @@ class UserController {
                     err instanceof ResponseValidationError) {
                     return next(err);
             }
-            throw new InternalServerError();
+            next(new InternalServerError());
         }
     }
 
@@ -349,7 +349,7 @@ class UserController {
                 err instanceof ResponseValidationError) {
                 return next(err);
             }
-            throw new InternalServerError();
+            next(new InternalServerError());
         }
     }
 
@@ -385,7 +385,7 @@ class UserController {
             if (err instanceof UnknownUserRoleError) {
                 return next(err);
             }
-            throw new CreationResponseObjectError();
+            next(new CreationResponseObjectError());
         }
     }
 
