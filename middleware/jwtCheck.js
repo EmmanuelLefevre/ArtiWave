@@ -7,7 +7,7 @@
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
 
-const ErrorHandler = require('../_errors/errorHandler');
+const InternalServerError = require('../_errors/internalServerError');
 
 
 /*============ EXTRACT TOKEN FROM HEADER ============*/
@@ -56,7 +56,7 @@ const JwtCheck = (req, res, next) => {
         });
     }
     catch (err) {
-        return ErrorHandler.sendInternalServerError(res, err);
+        throw new InternalServerError();
     }
 }
 
