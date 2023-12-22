@@ -42,14 +42,14 @@ class UserRepository {
     }
 
     /*=== GET SINGLE USER ===*/
-    static async getUser() {
-        try {
-            return await User.find({}, 'id email nickname roles registeredAt updatedAt');
-        }
-        catch (err) {
-            next(new InternalServerError());
-        }
-    }
+//     static async getUser() {
+//         try {
+//             return await User.find({}, 'id email nickname roles registeredAt updatedAt');
+//         }
+//         catch (err) {
+//             next(new InternalServerError());
+//         }
+//     }
 }
 
 
