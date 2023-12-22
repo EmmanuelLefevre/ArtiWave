@@ -47,6 +47,17 @@ class ArticleRepository {
         }
     }
 
+    /*=== ARTICLE EXISTS ===*/
+    static async articleExists(articleId, next) {
+        try {
+            const existingArticle = await Article.findById(articleId);
+            return !!existingArticle;
+        }
+        catch (err) {
+            next(new InternalServerError());
+        }
+    }
+
     /*=== GET ARTICLES BY USER ===*/
     static async getAllArticlesByUserId(userId, next) {
         try {
