@@ -21,8 +21,10 @@ const { UserResponseValidationRoleAdmin,
     require('../_validation/responses/userResponseValidation');
 
 // Errors
+const AccountAlreadyExistsError = require('../_errors/accountAlreadyExistsError');
 const CreationResponseObjectError = require('../_errors/creationResponseObjectError');
 const InternalServerError = require('../_errors/internalServerError');
+const NicknameAlreadyUsedError = require('../_errors/nicknameAlreadyUsedError');
 const ResponseValidationError = require('../_errors/responseValidationError');
 const UnknownUserRoleError = require('../_errors/unknownUserRoleError');
 const UserNotFoundError = require('../_errors/userNotFoundError');
@@ -76,7 +78,7 @@ class UserController {
                 await UserRegisterResponseValidation.validate(response, { abortEarly: false });
             }
             catch (validationError) {
-                return ErrorHandler.sendValidationResponseError(res, validationError);
+                throw new ResponseValidationError();
             }
 
             // Return created user
@@ -85,13 +87,13 @@ class UserController {
         catch (err) {
             if (err.code === 11000) {
                 if (err.keyPattern.email) {
-                    return res.status(409).json({ message: 'Account already exists!' });
+                    throw new AccountAlreadyExistsError();
                 } else if (err.keyPattern.nickname) {
-                    return res.status(409).json({ message: 'Nickname is already used!' });
+                    throw new NicknameAlreadyUsedError();
                 }
             }
 
-            return ErrorHandler.sendDatabaseError(res, err);
+            throw new InternalServerError();
         }
     }
 
@@ -101,7 +103,7 @@ class UserController {
             let users = await User.find({}, 'id email nickname roles registeredAt updatedAt');
 
             if (users === 0) {
-                return ErrorHandler.handleUserNotFound(res);
+                throw new UserNotFoundError();
             }
 
             // Count users
@@ -134,14 +136,14 @@ class UserController {
                 await responseValidationSchema.validate(responseObject, { abortEarly: false });
             }
             catch (validationError) {
-                return ErrorHandler.sendValidationResponseError(res, validationError);
+                throw new ResponseValidationError();
             }
 
             // Return all users
             return res.status(200).json(responseObject);
         }
         catch (err) {
-            return ErrorHandler.sendDatabaseError(res, err);
+            throw new InternalServerError();
         }
     }
 
@@ -153,7 +155,7 @@ class UserController {
             let user = await User.findById(userId);
 
             if (!user) {
-                return ErrorHandler.handleUserNotFound(res);
+                throw new UserNotFoundError();
             }
 
             // Set response and determine the response validation schema based on user role
@@ -184,14 +186,14 @@ class UserController {
                 await responseValidationSchema.validate(responseObject, { abortEarly: false });
             }
             catch (validationError) {
-                return ErrorHandler.sendValidationResponseError(res, validationError);
+                throw new ResponseValidationError();
             }
 
             // Return single user
             return res.status(200).json(responseObject);
         }
         catch (err) {
-            return ErrorHandler.sendDatabaseError(res, err);
+            throw new InternalServerError();
         }
     }
 
@@ -203,7 +205,7 @@ class UserController {
             let user = await User.findById(userId);
 
             if (!user) {
-                return ErrorHandler.handleUserNotFound(res);
+                throw new UserController();
             }
 
             // Save original user data
@@ -282,7 +284,7 @@ class UserController {
                 await responseValidationSchema.validate(responseObject, { abortEarly: false });
             }
             catch (validationError) {
-                return ErrorHandler.sendValidationResponseError(res, validationError);
+                throw new ResponseValidationError();
             }
 
             // Return updated user
@@ -290,10 +292,10 @@ class UserController {
         }
         catch (err) {
             if (err.code === 11000 && err.keyPattern.nickname) {
-                return res.status(409).json({ message: 'Nickname is already used!' });
+                throw new NicknameAlreadyUsedError();
             }
 
-            return ErrorHandler.sendDatabaseError(res, err);
+            throw new InternalServerError();
         }
     }
 
@@ -305,7 +307,7 @@ class UserController {
             let user = await User.findById(userId);
 
             if (!user) {
-                return ErrorHandler.handleUserNotFound(res);
+                throw new UserNotFoundError();
             }
 
             // Check if user matches userId making request
@@ -331,7 +333,7 @@ class UserController {
             return res.sendStatus(204);
         }
         catch (err) {
-            return ErrorHandler.sendDatabaseError(res, err);
+            throw new InternalServerError();
         }
     }
 
@@ -360,11 +362,11 @@ class UserController {
                 case 'user':
                     return commonFields;
                 default:
-                    return ErrorHandler.handleUserUnknownRole(res, err);
+                    throw new UnknownUserRoleError();
             }
         }
         catch (err) {
-            return ErrorHandler.sendCreationResponseObjectError(res, err);
+            throw new CreationResponseObjectError();
         }
     }
 
