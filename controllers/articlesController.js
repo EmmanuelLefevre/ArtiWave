@@ -101,12 +101,10 @@ class ArticleController {
 
         }
         catch (err) {
-            if (err.code === 11000 && err.keyPattern.title) {
-                return next(new ArticleAlreadyExistsError());
-            }
-            else if (err instanceof CreationFailedError ||
-                    err instanceof UserNotFoundError ||
-                    err instanceof ResponseValidationError) {
+            if (err instanceof ArticleAlreadyExistsError ||
+                err instanceof CreationFailedError ||
+                err instanceof UserNotFoundError ||
+                err instanceof ResponseValidationError) {
                 return next(err);
             }
             next(new InternalServerError());

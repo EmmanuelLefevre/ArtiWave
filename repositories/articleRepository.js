@@ -16,11 +16,14 @@ const InternalServerError = require('../_errors/internalServerError');
 class ArticleRepository {
 
     /*=== CREATE ARTICLE ===*/
-    static createArticle(newArticle, next) {
+    static async createArticle(newArticle, next) {
         try {
-            return newArticle.save();
+            return await newArticle.save();
         }
         catch (err) {
+            if (err.code === 11000 && err.keyPattern.title) {
+                throw new ArticleAlreadyExistsError();
+            }
             next(new InternalServerError());
         }
     }
