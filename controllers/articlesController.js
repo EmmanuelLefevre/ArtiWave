@@ -515,13 +515,13 @@ class ArticleController {
     /*=== CHECK IF PROPERTIES HAVE BEEN MODIFIED ===*/
     static #checkIfPropertiesModified(originalArticleData, reqBody) {
         for (const key of Object.keys(reqBody)) {
-            // Check if the property is identical to the current value in the database
+            // Check if property is same to current value in database
             if (originalArticleData[key] === reqBody[key]) {
-                return false; // Une propriété a été modifiée
+                return false;
             }
         }
 
-        return true; // Aucune propriété n'a été modifiée
+        return true;
     }
 }
 
