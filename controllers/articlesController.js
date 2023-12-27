@@ -107,7 +107,7 @@ class ArticleController {
             else if (err instanceof CreationFailedError ||
                     err instanceof UserNotFoundError ||
                     err instanceof ResponseValidationError) {
-                    return next(err);
+                return next(err);
             }
             next(new InternalServerError());
         }
