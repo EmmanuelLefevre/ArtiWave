@@ -81,7 +81,7 @@ class ArticleRepository {
             if (err.code === 11000 && err.keyPattern.title) {
                 throw new ArticleAlreadyExistsError();
             }
-            return next(new InternalServerError());
+            next(new InternalServerError());
         }
     }
 
