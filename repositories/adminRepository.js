@@ -16,25 +16,31 @@ const UserNotFoundError = require('../_errors/userNotFoundError');
 /*============ ADMIN REPOSITORY ============*/
 class AdminRepository {
 
-    /*=== DELETE NON ADMIN USERS AND THEIR OWNED ARTICLES ===*/
-    static async deleteNonAdminsUsersAndTheirOwnedArticles() {
+    /*=== GET NON ADMIN USERS ===*/
+    static async getNonAdminUsers() {
         try {
             // Get non-admin users to delete
             const usersToDelete = await User.find({ roles: { $ne: 'admin' } });
+            return usersToDelete;
+        }
+        catch (err) {
+            throw err;
+        }
+    }
 
-            // No users to delete
-            if (usersToDelete.length === 0) {
-                throw new UserNotFoundError();
-            }
-
+    /*=== DELETE NON ADMIN USERS AND THEIR OWNED ARTICLES ===*/
+    static async deleteNonAdminsUsersAndTheirOwnedArticles(usersToDelete) {
+        try {
             // Extract users IDs from usersToDelete
             const usersIdsToDelete = usersToDelete.map(user => user._id);
 
             // Delete all users except admin
-            await User.deleteMany({ _id: { $in: usersIdsToDelete } });
+            const deletionResult = await User.deleteMany({ _id: { $in: usersIdsToDelete } });
 
             // Cascade delete articles except those owned by admin
             await Article.deleteMany({ author: { $in: usersIdsToDelete } });
+
+            return deletionResult;
         }
         catch (err) {
             throw err;
