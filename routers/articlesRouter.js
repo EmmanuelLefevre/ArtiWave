@@ -121,7 +121,7 @@ class ArticlesRouter {
                 ValidateURIParam('id'),
                 ArticlesRouter.#validateURIParam,
                 ArticleValidationRules,
-                ArticlesRouter.#validateCreateArticle,
+                ArticlesRouter.#validateUpdateArticle,
                 (req, res, next) => {
                     try {
                         // Successful validation, proceed
