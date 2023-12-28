@@ -40,7 +40,7 @@ class AdminRepository {
             // Cascade delete articles except those owned by admin
             await Article.deleteMany({ author: { $in: usersIdsToDelete } });
 
-            return deletionResult;
+            return deletionResult.deletedCount;
         }
         catch (err) {
             throw err;
