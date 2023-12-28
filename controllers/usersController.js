@@ -20,23 +20,24 @@ const { UserResponseValidationRoleAdmin,
 
 // Errors
 const AccountAlreadyExistsError = require('../_errors/accountAlreadyExistsError');
+const CreationFailedError = require('../_errors/creationFailedError');
 const CreationResponseObjectError = require('../_errors/creationResponseObjectError');
+const DeletionFailedError = require('../_errors/deletionFailedError');
 const InternalServerError = require('../_errors/internalServerError');
 const NicknameAlreadyUsedError = require('../_errors/nicknameAlreadyUsedError');
+const NoPropertiesModifiedError = require('../_errors/noPropertiesModifiedError');
+const RecoveryFailedError = require('../_errors/recoveryFailedError');
 const ResponseValidationError = require('../_errors/responseValidationError');
+const UpdateFailedError = require('../_errors/updateFailedError');
 const UnknownUserRoleError = require('../_errors/unknownUserRoleError');
 const UserNotFoundError = require('../_errors/userNotFoundError');
-
-// Models
-const User = require('../models/IUser');
-const Article = require('../models/IArticle');
 
 
 /*============ USERS ============*/
 
 class UserController {
 
-    /*=== REGISTER ===*/
+    /*=== REGISTER USER ===*/
     static async register(req, res, next) {
         // Argon2
         const timeCost = parseInt(process.env.ARGON2_TIME_COST);
@@ -62,36 +63,30 @@ class UserController {
             });
 
             // Save user in database
-            let user = await newUser.save();
-
-            // Set response
-            const response = {
-                email: user.email,
-                nickname: user.nickname,
-                registeredAt: user.registeredAt
-            }
+            const registeredUser = await UserRepository.registerUser(newUser);
 
             // Validate response format
             try {
-                await UserRegisterResponseValidation.validate(response, { abortEarly: false });
+                await UserRegisterResponseValidation.validate(registeredUser, { abortEarly: false });
             }
             catch (validationError) {
                 throw new ResponseValidationError();
             }
 
             // Return created user
-            return res.status(201).json(response);
+            if (registeredUser) {
+                return res.status(201).json(registeredUser);
+            }
+            else {
+                throw new CreationFailedError();
+            }
         }
         catch (err) {
-            if (err.code === 11000) {
-                if (err.keyPattern.email) {
-                    throw new AccountAlreadyExistsError();
-                }
-                else if (err.keyPattern.nickname) {
-                    throw new NicknameAlreadyUsedError();
-                }
-            }
-            else if (err instanceof ResponseValidationError) {
+            if (err instanceof CreationResponseObjectError ||
+                err instanceof CreationFailedError ||
+                err instanceof ResponseValidationError ||
+                err instanceof AccountAlreadyExistsError ||
+                err instanceof NicknameAlreadyUsedError) {
                 return next(err);
             }
             next(new InternalServerError());
@@ -102,10 +97,12 @@ class UserController {
     static async getAllUsers(req, res, next) {
         try {
             let users = await UserRepository.getAllUsers();
-
             if (users.length === 0) {
                 throw new UserNotFoundError();
             }
+
+            // Create response
+            users = await Promise.all(users.map(user => this.#createResponseUserObject(user, req.userRole)));
 
             // Count users
             const usersCount = users.length;
@@ -118,13 +115,13 @@ class UserController {
                 case 'admin':
                     responseValidationSchema = UsersResponseValidationRoleAdmin;
                     responseObject = {
-                        data: users.map(user => this.#createResponseUserObject(user, req.userRole)),
+                        data: users
                     };
                     break;
                 case 'certified':
                     responseValidationSchema = UsersResponseValidationRoleCertified;
                     responseObject = {
-                        data: users.map(user => this.#createResponseUserObject(user, req.userRole))
+                        data: users
                     };
                     break;
             }
@@ -141,12 +138,19 @@ class UserController {
             }
 
             // Return all users
-            return res.status(200).json(responseObject);
+            if (usersCount > 0) {
+                return res.status(200).json(responseObject);
+            }
+            else {
+                throw new RecoveryFailedError();
+            }
         }
         catch (err) {
-            if (err instanceof ResponseValidationError ||
+            if (err instanceof CreationResponseObjectError ||
+                err instanceof RecoveryFailedError ||
+                err instanceof ResponseValidationError ||
                 err instanceof UserNotFoundError) {
-                    return next(err);
+                return next(err);
             }
             next(new InternalServerError());
         }
@@ -157,11 +161,13 @@ class UserController {
         const userId = req.params.id;
 
         try {
-            let user = await User.findById(userId);
-
+            let user = await UserRepository.getUserById(userId);
             if (!user) {
                 throw new UserNotFoundError();
             }
+
+            // Create response
+            user = await this.#createResponseUserObject(user, req.userRole, req.userId);
 
             // Set response and determine the response validation schema based on user role
             let responseValidationSchema;
@@ -170,20 +176,12 @@ class UserController {
             switch (req.userRole) {
                 case 'admin':
                     responseValidationSchema = UserResponseValidationRoleAdmin;
-                    responseObject = this.#createResponseUserObject(user, req.userRole);
+                    responseObject = user
                     break;
                 default:
                     responseValidationSchema = UserResponseValidationBase;
-                    responseObject = this.#createResponseUserObject(user, req.userRole);
+                    responseObject = user
                     break;
-            }
-
-            // Check if userId in JWT matches userId in URL
-            if (req.userId === userId) {
-                if (req.userRole !== "admin") {
-                    // Add user email to the responseObject
-                    responseObject.email = user.email;
-                }
             }
 
             // Validate response format
@@ -195,10 +193,17 @@ class UserController {
             }
 
             // Return single user
-            return res.status(200).json(responseObject);
+            if (user) {
+                return res.status(200).json(responseObject);
+            }
+            else {
+                throw new RecoveryFailedError();
+            }
         }
         catch (err) {
-            if (err instanceof UserNotFoundError ||
+            if (err instanceof CreationResponseObjectError ||
+                err instanceof RecoveryFailedError ||
+                err instanceof UserNotFoundError ||
                 err instanceof ResponseValidationError) {
                 return next(err);
             }
@@ -208,11 +213,14 @@ class UserController {
 
     /*=== UPDATE USER ===*/
     static async updateUser(req, res, next) {
+        // Argon2
+        const timeCost = parseInt(process.env.ARGON2_TIME_COST);
+        const memoryCost = parseInt(process.env.ARGON2_MEMORY_COST);
+
         const userId = req.params.id;
 
         try {
-            let user = await User.findById(userId);
-
+            let user = await UserRepository.getUserById(userId);
             if (!user) {
                 throw new UserNotFoundError();
             }
@@ -232,24 +240,34 @@ class UserController {
             // Set updatedAt to the current date
             req.body.updatedAt = new Date();
 
+            let updatedUser;
+
+            // Check if property have been modified
+            const checkIfPropertiesModified = UserController.#checkIfPropertiesModified(originalUserData, req.body);
+
             // Check if user matches userId making request
             if (user._id.toString() !== req.userId) {
                 // Check if user is admin
                 if (req.isAdmin) {
+                    if (!checkIfPropertiesModified) {
+                        throw new NoPropertiesModifiedError();
+                    }
+
                     // Allow admin to update any user
-                    await User.updateOne({ _id: userId }, req.body);
+                    updatedUser = await UserRepository.updateUserById({ _id: userId }, req.body);
                 }
                 else {
                     return res.status(403).json({ message: 'You are not allowed to update a user other than yourself!' });
                 }
             }
             else {
-                // If user matches, save user
-                await User.updateOne({ _id: userId }, req.body);
-            }
+                if (!checkIfPropertiesModified) {
+                    throw new NoPropertiesModifiedError();
+                }
 
-            // Fetch the updated user by its ID
-            const updatedUser = await User.findById(userId);
+                // If user matches, save user
+                updatedUser = await UserRepository.updateUserById({ _id: userId }, req.body);
+            }
 
             // Identify modified properties from req.body
             const modifiedProperties = Object.keys(req.body).reduce((acc, key) => {
@@ -257,8 +275,17 @@ class UserController {
                 if (key !== 'password' && originalUserData[key] !== updatedUser[key]) {
                     acc[key] = updatedUser[key];
                 }
+
+                // Check if the password has been modified
+                if (key === 'password' && originalUserData[key] !== updatedUser[key]) {
+                    acc[key] = 'Password successfully modified!';
+                }
+
                 return acc;
             }, {});
+
+            // Create response
+            user = await this.#createResponseUserObject(user, req.userRole, req.userId);
 
             // Set response and determine the response validation schema based on user role
             let responseValidationSchema;
@@ -268,21 +295,15 @@ class UserController {
                 case 'admin':
                     responseValidationSchema = UserUpdatedResponseValidationRoleAdmin;
                     responseObject = {
-                        data: [this.#createResponseUserObject(user, req.userRole)]
+                        data: user
                     };
                     break;
                 default:
                     responseValidationSchema = UserUpdatedResponseValidationBase;
                     responseObject = {
-                        data: [this.#createResponseUserObject(user, req.userRole)]
+                        data: user
                     };
                     break;
-            }
-
-            // Role user and certified
-            if (req.userRole !== "admin") {
-                // Add user email to the responseObject
-                responseObject.data[0].email = user.email;
             }
 
             // Add modified property to the responseObject
@@ -297,15 +318,22 @@ class UserController {
             }
 
             // Return updated user
-            return res.status(200).json(responseObject);
+            if (user) {
+                return res.status(200).json(responseObject);
+            }
+            else {
+                throw new UpdateFailedError();
+            }
         }
         catch (err) {
-            if (err.code === 11000 && err.keyPattern.nickname) {
-                throw new NicknameAlreadyUsedError();
-            }
-            else if (err instanceof UserNotFoundError ||
-                    err instanceof ResponseValidationError) {
-                    return next(err);
+            if (err instanceof UserNotFoundError ||
+                err instanceof CreationResponseObjectError ||
+                err instanceof UpdateFailedError ||
+                err instanceof ResponseValidationError ||
+                err instanceof NoPropertiesModifiedError ||
+                err instanceof AccountAlreadyExistsError ||
+                err instanceof NicknameAlreadyUsedError) {
+                return next(err);
             }
             next(new InternalServerError());
         }
@@ -316,8 +344,7 @@ class UserController {
         const userId = req.params.id;
 
         try {
-            let user = await User.findById(userId);
-
+            let user = await UserRepository.getUserById(userId);
             if (!user) {
                 throw new UserNotFoundError();
             }
@@ -327,9 +354,15 @@ class UserController {
                 // Check if user is admin
                 if (req.isAdmin) {
                     // Allow admin to delete any user
-                    await User.deleteOne({ _id: userId });
+                    const deletedCount = await UserRepository.deleteUserById(userId);
 
-                    return res.sendStatus(204);
+                    // Delete article
+                    if (deletedCount > 0) {
+                        return res.sendStatus(204);
+                    }
+                    else {
+                        throw new DeletionFailedError();
+                    }
                 }
                 else {
                     return res.status(403).json({ message: 'You are not allowed to delete a user other than yourself!' });
@@ -337,16 +370,19 @@ class UserController {
             }
 
             // If user matches delete user
-            await User.deleteOne({ _id: userId });
+            const deletedCount = await UserRepository.deleteUserById(userId);
 
-            // Cascade delete articles owned by user
-            await Article.deleteMany({ author: userId });
-
-            return res.sendStatus(204);
+            // Delete article
+            if (deletedCount > 0) {
+                return res.sendStatus(204);
+            }
+            else {
+                throw new DeletionFailedError();
+            }
         }
         catch (err) {
             if (err instanceof UserNotFoundError ||
-                err instanceof ResponseValidationError) {
+                err instanceof DeletionFailedError) {
                 return next(err);
             }
             next(new InternalServerError());
@@ -356,9 +392,11 @@ class UserController {
     /*============ FUNCTIONS ============*/
 
     /*=== CREATE RESPONSE USER OBJECT BASED ON ROLE ===*/
-    static async #createResponseUserObject(user, userRole) {
+    static async #createResponseUserObject(user, userRole, reqUserId) {
         try {
             const commonFields = {
+                // If requested user is the one making request, add email to response
+                email: reqUserId === user._id.toString() ? user.email : undefined,
                 nickname: user.nickname,
                 registeredAt: user.registeredAt,
                 updatedAt: user.updatedAt
@@ -385,10 +423,21 @@ class UserController {
             if (err instanceof UnknownUserRoleError) {
                 return next(err);
             }
-            next(new CreationResponseObjectError());
+            throw new CreationResponseObjectError();
         }
     }
 
+    /*=== CHECK IF PROPERTIES HAVE BEEN MODIFIED ===*/
+    static #checkIfPropertiesModified(originalUserData, reqBody) {
+        for (const key of Object.keys(reqBody)) {
+            // Check if property is same to current value in database
+            if (originalUserData[key] === reqBody[key]) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
 
 
