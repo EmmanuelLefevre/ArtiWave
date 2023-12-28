@@ -39,7 +39,7 @@ class UsersRouter {
         // Middleware users requests logs
         usersRouter.use(usersLogs);
 
-        /*=== REGISTER USER ===*/
+        /*=== REGISTER ===*/
         usersRouter.route('/register')
             .all(AllowedCurrentMethodCheck(['POST']))
             .post(
@@ -97,11 +97,11 @@ class UsersRouter {
         usersRouter.route('/update/:id')
             .all(AllowedCurrentMethodCheck(['PATCH']))
             .patch(
+                UserValidationRules,
                 JwtCheck,
                 ValidateURIParam('id'),
                 UsersRouter.#validateURIParam,
                 UsersRouter.#validateUpdateUser,
-                UserValidationRules,
                 (req, res, next) => {
                     try {
                         // Successful validation, proceed
