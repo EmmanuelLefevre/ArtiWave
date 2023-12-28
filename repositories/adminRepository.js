@@ -10,7 +10,6 @@ const Article = require('../models/IArticle');
 
 // Articles
 const ArticleNotFoundError = require('../_errors/articleNotFoundError');
-const InternalServerError = require('../_errors/internalServerError');
 const UserNotFoundError = require('../_errors/userNotFoundError');
 
 
