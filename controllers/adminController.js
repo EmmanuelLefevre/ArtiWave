@@ -77,7 +77,7 @@ class AdminController {
             const result = await AdminRepository.invertUserRole(userId);
 
             // Set message on new role
-            const message = (result.newRole === 'certified') ? "User upgraded to certified role!" : "User downgraded to user role!";
+            const message = (result.newRole === 'certified') ? `User upgraded to "certified" role!` : `User downgraded to "user" role!`;
 
             // Set response and determine the response validation schema
             const responseObject = {
