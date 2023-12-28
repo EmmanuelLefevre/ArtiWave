@@ -101,7 +101,8 @@ class ArticleController {
 
         }
         catch (err) {
-            if (err instanceof ArticleAlreadyExistsError ||
+            if (err instanceof CreationResponseObjectError ||
+                err instanceof ArticleAlreadyExistsError ||
                 err instanceof CreationFailedError ||
                 err instanceof UserNotFoundError ||
                 err instanceof ResponseValidationError) {
@@ -164,7 +165,8 @@ class ArticleController {
 
         }
         catch (err) {
-            if (err instanceof ArticleNotFoundError ||
+            if (err instanceof CreationResponseObjectError ||
+                err instanceof ArticleNotFoundError ||
                 err instanceof ResponseValidationError) {
                 return next(err);
             }
@@ -217,7 +219,8 @@ class ArticleController {
 
         }
         catch (err) {
-            if (err instanceof ArticleNotFoundError ||
+            if (err instanceof CreationResponseObjectError ||
+                err instanceof ArticleNotFoundError ||
                 err instanceof RecoveryFailedError ||
                 err instanceof ResponseValidationError) {
                 return next(err);
@@ -287,7 +290,8 @@ class ArticleController {
 
         }
         catch (err) {
-            if (err instanceof ArticleNotFoundError ||
+            if (err instanceof CreationResponseObjectError ||
+                err instanceof ArticleNotFoundError ||
                 err instanceof RecoveryFailedError ||
                 err instanceof UserNotFoundError ||
                 err instanceof ResponseValidationError) {
@@ -395,7 +399,8 @@ class ArticleController {
 
         }
         catch (err) {
-            if (err instanceof ArticleAlreadyExistsError ||
+            if (err instanceof CreationResponseObjectError ||
+                err instanceof ArticleAlreadyExistsError ||
                 err instanceof ArticleNotFoundError ||
                 err instanceof NoPropertiesModifiedError ||
                 err instanceof UpdateFailedError ||
@@ -508,7 +513,7 @@ class ArticleController {
             if (err instanceof UnknownUserRoleError) {
                 return next(err);
             }
-            next(new CreationResponseObjectError());
+            throw new CreationResponseObjectError();
         }
     }
 
