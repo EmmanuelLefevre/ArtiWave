@@ -117,10 +117,10 @@ class ArticlesRouter {
         articlesRouter.route('/update/:id')
             .all(AllowedCurrentMethodCheck(['PATCH']))
             .patch(
+                ArticleValidationRules,
                 JwtCheck,
                 ValidateURIParam('id'),
                 ArticlesRouter.#validateURIParam,
-                ArticleValidationRules,
                 ArticlesRouter.#validateUpdateArticle,
                 (req, res, next) => {
                     try {
