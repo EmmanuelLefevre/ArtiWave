@@ -13,6 +13,7 @@ const { InvertRoleResponseValidation } = require('../_validation/responses/inver
 // Errors
 const ArticleNotFoundError = require('../_errors/articleNotFoundError');
 const InternalServerError = require('../_errors/internalServerError');
+const ResponseValidationError = require('../_errors/responseValidationError');
 const UserNotFoundError = require('../_errors/userNotFoundError');
 
 
@@ -20,85 +21,94 @@ const UserNotFoundError = require('../_errors/userNotFoundError');
 
 class AdminController {
     /*=== DELETE NON ADMIN USERS AND THEIR OWNED ARTICLES ===*/
-    static deleteAllUsers(_req, res, next) {
+    static async deleteAllUsers(_req, res, next) {
         try {
-            AdminRepository.deleteNonAdminsUsersAndTheirOwnedArticles()
-            .then(() => {
-                return res.sendStatus(204);
-            })
-            .catch(err => {
-                if (err instanceof UserNotFoundError) {
-                    next(err);
-                }
-                else {
-                    next(new InternalServerError());
-                }
-            });
+            await AdminRepository.deleteNonAdminsUsersAndTheirOwnedArticles();
+
+            return res.sendStatus(204);
         }
         catch (err) {
-            if (err instanceof InternalServerError ||
-                err instanceof UserNotFoundError) {
+            if (err instanceof UserNotFoundError) {
                 return next(err);
             }
-            next(new InternalServerError());;
+            next(new InternalServerError());
         }
     }
 
     /*=== DELETE ALL ARTICLES EXCEPT THOSE OWNED BY ADMIN ===*/
-    static deleteAllArticles(req, res, next) {
+    static async deleteAllArticles(req, res, next) {
         try {
-            const adminId = req.user.id;
-            console.log(adminId);
-            AdminRepository.deleteAllArticles(adminId)
-            .then((articlesToDelete)  => {
-                console.log(articlesToDelete);
-                return res.sendStatus(204);
-            })
-            .catch(err => {
-                if (err instanceof ArticleNotFoundError) {
-                    throw new ArticleNotFoundError();
-                }
-                else {
-                    next(new InternalServerError());
-                }
-            });
+            await AdminRepository.deleteAllArticlesExceptThoseOwnedByAdmin(req.userId);
+
+            return res.sendStatus(204);
         }
         catch (err) {
-            if (err instanceof InternalServerError) {
+            if (err instanceof ArticleNotFoundError) {
                 return next(err);
             }
-            next(new InternalServerError());;
+            next(new InternalServerError());
         }
     }
 
     /*=== DELETE ALL ARTICLES BY USER ===*/
-    static deleteAllArticlesByUser(req, res, next) {
-        // try {
-        //     const userId = req.params.id;
+    static async deleteAllArticlesByUser(req, res, next) {
+        const userId = req.params.id;
 
-        //     AdminRepository.findUserByEmail(email)
-        // }
-        // catch (err) {
-        //     if (err instanceof InternalServerError) {
-        //         return next(err);
-        //     }
-        //     next(new InternalServerError());;
-        // }
+        try {
+            await AdminRepository.deleteAllArticlesByUser(userId);
+
+            return res.sendStatus(204);
+        }
+        catch (err) {
+            if (err instanceof ArticleNotFoundError ||
+                err instanceof UserNotFoundError) {
+                return next(err);
+            }
+            next(new InternalServerError());
+        }
     }
 
     /*=== INVERT USER ROLE ===*/
-    static invertUserRole(req, res, next) {
-        // try {
-        //     const userId = req.params.id;
+    static async invertUserRole(req, res, next) {
+        const userId = req.params.id;
 
-        //     AdminRepository.findUserByEmail(email)
-        // }
-        // catch (err) {
-        //     if (err instanceof InternalServerError) {
-        //         return next(err);
-        //     }
-        //     next(new InternalServerError());;
-        // }
+        try {
+            // Update user role
+            const result = await AdminRepository.invertUserRole(userId);
+
+            // Set message on new role
+            const message = (result.newRole === 'certified') ? "User upgraded to certified role!" : "User downgraded to user role!";
+
+            // Set response and determine the response validation schema
+            const responseObject = {
+                data: [
+                    {
+                        _id: result.userId,
+                        nickname: result.nickname,
+                        roles: result.newRole
+                    }
+                ],
+                message: message
+            };
+
+            // Validate response format
+            try {
+                await InvertRoleResponseValidation.validate(responseObject, { abortEarly: false });
+            }
+            catch (validationError) {
+                throw new ResponseValidationError();
+            }
+
+            // Return updated user
+            return res.status(200).json(responseObject);
+        }
+        catch (err) {
+            if (err instanceof ResponseValidationError ||
+                err instanceof UserNotFoundError) {
+                return next(err);
+            }
+            next(new InternalServerError());
+        }
     }
 }
 
