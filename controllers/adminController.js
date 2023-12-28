@@ -36,7 +36,7 @@ class AdminController {
             const deletionResult = await AdminRepository.deleteNonAdminsUsersAndTheirOwnedArticles(usersToDelete);
 
             // Delete users
-            if (deletionResult.deletedCount > 0) {
+            if (deletionResult > 0) {
                 return res.sendStatus(204);
             }
             else {
