@@ -74,13 +74,13 @@ const UsersResponseValidationRoleCertified = object({
 
 /*----- ADMIN USER UPDATED RESPONSE VALIDATION -----*/
 const UserUpdatedResponseValidationRoleAdmin = object({
-    data: array().of(UserResponseValidationRoleAdmin).required(),
+    data: UserResponseValidationRoleAdmin.required(),
     modifiedProperties: object().required()
 });
 
 /*----- BASE USER UPDATED RESPONSE VALIDATION -----*/
 const UserUpdatedResponseValidationBase = object({
-    data: array().of(UserResponseValidationBase).required(),
+    data: UserResponseValidationBase.required(),
     modifiedProperties: object().required()
 });
 
