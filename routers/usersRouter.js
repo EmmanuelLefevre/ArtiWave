@@ -39,7 +39,7 @@ class UsersRouter {
         // Middleware users requests logs
         usersRouter.use(usersLogs);
 
-        /*=== REGISTER ===*/
+        /*=== REGISTER USER ===*/
         usersRouter.route('/register')
             .all(AllowedCurrentMethodCheck(['POST']))
             .post(
