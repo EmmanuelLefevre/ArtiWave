@@ -12,6 +12,7 @@ const { InvertRoleResponseValidation } = require('../_validation/responses/inver
 
 // Errors
 const ArticleNotFoundError = require('../_errors/articleNotFoundError');
+const DeletionFailedError = require('../_errors/deletionFailedError');
 const InternalServerError = require('../_errors/internalServerError');
 const ResponseValidationError = require('../_errors/responseValidationError');
 const UserNotFoundError = require('../_errors/userNotFoundError');
@@ -23,12 +24,28 @@ class AdminController {
     /*=== DELETE NON ADMIN USERS AND THEIR OWNED ARTICLES ===*/
     static async deleteAllUsers(_req, res, next) {
         try {
-            await AdminRepository.deleteNonAdminsUsersAndTheirOwnedArticles();
+            // Get non-admin users to delete
+            const usersToDelete = await AdminRepository.getNonAdminUsers();
 
-            return res.sendStatus(204);
+            // No users to delete
+            if (usersToDelete.length === 0) {
+                throw new UserNotFoundError();
+            }
+
+            // Delete non-admin users and their owned articles
+            const deletionResult = await AdminRepository.deleteNonAdminsUsersAndTheirOwnedArticles(usersToDelete);
+
+            // Delete users
+            if (deletionResult.deletedCount > 0) {
+                return res.sendStatus(204);
+            }
+            else {
+                throw new DeletionFailedError();
+            }
         }
         catch (err) {
-            if (err instanceof UserNotFoundError) {
+            if (err instanceof DeletionFailedError ||
+                err instanceof UserNotFoundError) {
                 return next(err);
             }
             next(new InternalServerError());
