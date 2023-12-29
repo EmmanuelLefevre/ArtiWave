@@ -392,7 +392,7 @@ class UserController {
         }
     }
 
-    /*============ FUNCTIONS ============*/
+    /*============ PRIVATE METHODS ============*/
 
     /*=== CREATE RESPONSE USER OBJECT BASED ON ROLE ===*/
     static async #createResponseUserObject(user, userRole, reqUserId) {
