@@ -104,7 +104,7 @@ swaggerSpec.paths['/api/login'] = {
 
 /*=== REGISTER ===*/
 swaggerSpec.paths['/api/users/register'] = {
-    post: {
+    put: {
         summary: 'Create user account',
         description: 'Registers a new user with an email, password, and nickname.',
         tags: ['Users'],
@@ -638,7 +638,7 @@ swaggerSpec.paths['/api/users/{id}'] = {
 
 /*=== CREATE ARTICLE ===*/
 swaggerSpec.paths['/api/articles/create'] = {
-    post: {
+    put: {
         summary: 'Create an article',
         description: 'Create an article with a title, content, and author.',
         tags: ['Articles'],
