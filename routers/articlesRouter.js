@@ -41,8 +41,8 @@ class ArticlesRouter {
 
         /*=== CREATE ARTICLE ===*/
         articlesRouter.route('/create')
-            .all(AllowedCurrentMethodCheck(['POST']))
-            .post(
+            .all(AllowedCurrentMethodCheck(['PUT']))
+            .put(
                 JwtCheck,
                 PremiumCheck,
                 ArticlesRouter.#checkBodyParamPresence,
