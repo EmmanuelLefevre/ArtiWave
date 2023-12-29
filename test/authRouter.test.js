@@ -105,5 +105,27 @@ describe('AUTH ROUTER', () => {
             const response = await request(app).post('/api/login/dgetfqtf');
             expect(response.status).toBe(404);
         });
+
+        /*==== Rate limit ====*/
+        // it('Should return 429 after 5 consecutive requests with bad credentials', async () => {
+
+        //     const badCredentials = {
+        //         email: "emmanuel@protonmail.com",
+        //         password: "Xxggxx!2"
+        //     };
+
+        //     for (let i = 0; i < 6; i++) {
+        //         const response = await request(app)
+        //             .post('/api/login')
+        //             .send(badCredentials);
+
+        //         if (i >= 4) {
+        //             expect(response.status).toBe(429);
+        //         }
+        //         else {
+        //             expect(response.status).toBe(401);
+        //         }
+        //     }
+        // });
     })
 })
