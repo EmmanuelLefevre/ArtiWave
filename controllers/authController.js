@@ -23,21 +23,20 @@ const UserNotFoundError = require('../_errors/userNotFoundError');
 
 
 /*============ AUTHENTIFICATION ============*/
-// Counter for login failed
-let failedLoginAttempts = 0;
-// Store timestamp of the last failed login attempt
-let lastFailedLoginDate = null;
-
 class AuthController {
+    // Counter for login failed
+    static failedLoginAttempts = 0;
+    // Store timestamp of the last failed login attempt
+    static lastFailedLoginDate = null;
 
     /*=== LOGIN ===*/
     static login(req, res, next) {
         try {
             const { email, password } = req.body;
 
-            if (lastFailedLoginDate && failedLoginAttempts >= 5) {
+            if (AuthController.lastFailedLoginDate && AuthController.failedLoginAttempts >= 5) {
                 const currentTime = new Date();
-                const timeDiff = currentTime - lastFailedLoginDate;
+                const timeDiff = currentTime - AuthController.lastFailedLoginDate;
 
                 // Block attempts for one hour
                 if (timeDiff < 60 * 60 * 1000) {
@@ -45,7 +44,7 @@ class AuthController {
                 }
                 else {
                     // Reset counter after one hour
-                    AuthController.#resetRateLimit();
+                    AuthController.resetRateLimit();
                 }
             }
 
@@ -63,8 +62,8 @@ class AuthController {
 
                     if (!passwordMatch) {
                         // Increment counter
-                        failedLoginAttempts++;
-                        lastFailedLoginDate = new Date();
+                        AuthController.failedLoginAttempts++;
+                        AuthController.lastFailedLoginDate = new Date();
 
                         throw new BadCredentialsError();
                     }
@@ -94,7 +93,7 @@ class AuthController {
                     }
 
                     // Reset counter
-                    AuthController.#resetRateLimit();
+                    AuthController.resetRateLimit();
 
                     return res.status(200).json(response);
                 }
@@ -112,8 +111,8 @@ class AuthController {
             .catch(err => {
                 if (err instanceof UserNotFoundError) {
                     // Increment counter
-                    failedLoginAttempts++;
-                    lastFailedLoginDate = new Date();
+                    AuthController.failedLoginAttempts++;
+                    AuthController.lastFailedLoginDate = new Date();
 
                     next(new BadCredentialsError());
                 }
@@ -138,9 +137,9 @@ class AuthController {
     /*============ PRIVATE METHOD ============*/
 
     /*=== RESET RATE LIMIT ===*/
-    static #resetRateLimit() {
-        failedLoginAttempts = 0;
-        lastFailedLoginDate = null;
+    static resetRateLimit() {
+        AuthController.failedLoginAttempts = 0;
+        AuthController.lastFailedLoginDate = null;
     }
 }
 
