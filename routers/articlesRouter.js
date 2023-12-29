@@ -154,6 +154,9 @@ class ArticlesRouter {
         return articlesRouter;
     }
 
+
+    /*============ PRIVATE METHODS ============*/
+
     static #validateURIParam(req, _res, next) {
         try {
             const errors = validationResult(req);
