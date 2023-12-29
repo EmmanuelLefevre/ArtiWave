@@ -47,6 +47,9 @@ class AuthRouter {
         return authRouter;
     }
 
+
+    /*============ PRIVATE METHOD ============*/
+
     static #validateRequest(req, _res, next) {
         try {
             const { email, password } = req.body;
