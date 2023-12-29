@@ -465,7 +465,7 @@ class ArticleController {
     }
 
 
-    /*============ FUNCTIONS ============*/
+    /*============ PRIVATE METHODS ============*/
 
     /*=== GET INFO ===*/
     static async #getUserInfo(userId, _res) {
