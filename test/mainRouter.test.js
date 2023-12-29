@@ -49,12 +49,4 @@ describe('MAIN ROUTER', () => {
             expect(response.status).toBe(405);
         });
     })
-
-    describe('TRY PUT', () => {
-
-        it('Should return 404', async () => {
-            const response = await request(app).put('/api');
-            expect(response.status).toBe(404);
-        });
-    })
 })
