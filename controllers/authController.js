@@ -30,12 +30,6 @@ let lastFailedLoginDate = null;
 
 class AuthController {
 
-    /*=== RESET RATE LIMIT ===*/
-    static #resetRateLimit() {
-        failedLoginAttempts = 0;
-        lastFailedLoginDate = null;
-    }
-
     /*=== LOGIN ===*/
     static login(req, res, next) {
         try {
@@ -138,6 +132,15 @@ class AuthController {
                 throw new InternalServerError();
             }
         }
+    }
+
+
+    /*============ PRIVATE METHOD ============*/
+
+    /*=== RESET RATE LIMIT ===*/
+    static #resetRateLimit() {
+        failedLoginAttempts = 0;
+        lastFailedLoginDate = null;
     }
 }
 
