@@ -134,6 +134,9 @@ class UsersRouter {
         return usersRouter;
     }
 
+
+    /*============ PRIVATE METHODS ============*/
+
     static #validateURIParam(req, _res, next) {
         try {
             const errors = validationResult(req);
