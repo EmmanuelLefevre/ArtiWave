@@ -82,7 +82,7 @@ class UserRepository {
     }
 
     /*=== GET SINGLE USER ===*/
-    static async getUserById (userId) {
+    static async getUserById(userId) {
         try {
             return await User.findById(userId, { _id: 1, email: 1, nickname: 1, roles: 1, registeredAt: 1, updatedAt: 1 });
         }
