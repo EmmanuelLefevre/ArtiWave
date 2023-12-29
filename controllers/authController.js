@@ -23,13 +23,18 @@ const UserNotFoundError = require('../_errors/userNotFoundError');
 
 
 /*============ AUTHENTIFICATION ============*/
-
 // Counter for login failed
 let failedLoginAttempts = 0;
 // Store timestamp of the last failed login attempt
 let lastFailedLoginDate = null;
 
 class AuthController {
+
+    /*=== RATE LIMIT ===*/
+    static #resetRateLimit() {
+        failedLoginAttempts = 0;
+        lastFailedLoginDate = null;
+    }
 
     /*=== LOGIN ===*/
     static login(req, res, next) {
@@ -46,7 +51,7 @@ class AuthController {
                 }
                 else {
                     // Reset counter after one hour
-                    failedLoginAttempts = 0;
+                    AuthController.#resetRateLimit();
                 }
             }
 
@@ -95,7 +100,7 @@ class AuthController {
                     }
 
                     // Reset counter
-                    failedLoginAttempts = 0;
+                    AuthController.#resetRateLimit();
 
                     return res.status(200).json(response);
                 }
