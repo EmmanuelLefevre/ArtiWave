@@ -32,6 +32,9 @@ const UpdateFailedError = require('../_errors/updateFailedError');
 const UnknownUserRoleError = require('../_errors/unknownUserRoleError');
 const UserNotFoundError = require('../_errors/userNotFoundError');
 
+// Models
+const User = require('../models/IUser');
+
 
 /*============ USERS ============*/
 
