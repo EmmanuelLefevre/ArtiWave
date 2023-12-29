@@ -30,7 +30,7 @@ let lastFailedLoginDate = null;
 
 class AuthController {
 
-    /*=== RATE LIMIT ===*/
+    /*=== RESET RATE LIMIT ===*/
     static #resetRateLimit() {
         failedLoginAttempts = 0;
         lastFailedLoginDate = null;
