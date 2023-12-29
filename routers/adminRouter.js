@@ -97,6 +97,9 @@ class AdminRouter {
         return adminRouter;
     }
 
+
+    /*============ PRIVATE METHOD ============*/
+
     static #validateURIParam(req, _res, next) {
         try {
             const errors = validationResult(req);
