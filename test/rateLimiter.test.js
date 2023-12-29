@@ -36,6 +36,6 @@ const tooManyRequests = () => {
         setTimeout(async () => {
             const response = await request(app).get('/api');
             resolve(response);
-        }, 1); // 1 milliseconds between each requests
+        }, 1); // 1 millisecond between each requests
     });
 };
