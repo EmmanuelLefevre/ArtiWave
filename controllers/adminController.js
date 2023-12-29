@@ -6,6 +6,7 @@
 /*============ IMPORT USED MODULES ============*/
 // Repositories
 const AdminRepository = require('../repositories/adminRepository');
+const UserRepository = require('../repositories/userRepository');
 
 // Response validation
 const { InvertRoleResponseValidation } = require('../_validation/responses/invertRoleResponseValidation');
@@ -35,7 +36,7 @@ class AdminController {
             // Delete non-admin users and their owned articles
             const deletionResult = await AdminRepository.deleteNonAdminsUsersAndTheirOwnedArticles(usersToDelete);
 
-            // Delete users
+            // Response
             if (deletionResult > 0) {
                 return res.sendStatus(204);
             }
@@ -55,12 +56,27 @@ class AdminController {
     /*=== DELETE ALL ARTICLES EXCEPT THOSE OWNED BY ADMIN ===*/
     static async deleteAllArticles(req, res, next) {
         try {
-            await AdminRepository.deleteAllArticlesExceptThoseOwnedByAdmin(req.userId);
+            // Check if the user exists
+            const user = await UserRepository.getUserById(req.userId);
+            if (!user) {
+                throw new UserNotFoundError();
+            }
 
-            return res.sendStatus(204);
+            // Delete all articles except those owned by admin
+            const deletionResult = await AdminRepository.deleteAllArticlesExceptThoseOwnedByAdmin(req.userId);
+
+            // Response
+            if (deletionResult > 0) {
+                return res.sendStatus(204);
+            }
+            else {
+                throw new DeletionFailedError();
+            }
         }
         catch (err) {
-            if (err instanceof ArticleNotFoundError) {
+            if (err instanceof ArticleNotFoundError ||
+                err instanceof DeletionFailedError ||
+                err instanceof UserNotFoundError) {
                 return next(err);
             }
             next(new InternalServerError());
