@@ -9,7 +9,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const sassMiddleware = require('node-sass-middleware');
 
-const connectDB = require('./db.config');
+const { connectDB } = require('./db.config');
 
 const { RequestsLimiter } = require('./middleware/rateLimiter');
 const AdminCheck = require('./middleware/adminCheck');
