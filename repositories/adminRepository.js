@@ -64,7 +64,9 @@ class AdminRepository {
             const articlesIdsToDelete = articlesToDelete.map(article => article._id);
 
             // Delete all articles except those from admin
-            await Article.deleteMany({ _id: { $in: articlesIdsToDelete } });
+            const deletionResult = await Article.deleteMany({ _id: { $in: articlesIdsToDelete } });
+
+            return deletionResult.deletedCount;
         }
         catch (err) {
             throw err;
@@ -74,12 +76,6 @@ class AdminRepository {
     /*=== DELETE ALL ARTICLES BY USER ===*/
     static async deleteAllArticlesByUser(userId) {
         try {
-            // Check user exists
-            const user = await User.findById(userId);
-            if (!user) {
-                throw new UserNotFoundError();
-            }
-
             // No articles to delete
             const articlesToDelete = await Article.find({ author: userId });
             if (articlesToDelete.length === 0) {
