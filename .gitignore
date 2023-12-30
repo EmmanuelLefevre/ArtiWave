@@ -5,3 +5,4 @@ package-lock.json
 /_logs/users/_usersLogs.txt
 /_logs/admins/_adminsLogs.txt
 /_certs
+/coverage
