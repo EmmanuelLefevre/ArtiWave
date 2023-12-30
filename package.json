@@ -10,10 +10,11 @@
     "start": "node -r dotenv/config server.js",
     "dev": "nodemon -r dotenv/config server.js",
     "fixtures": "node -r dotenv/config _dataFixtures/fixtures.js",
-    "test": "jest --setupFiles dotenv/config"
+    "test": "jest --setupFiles dotenv/config",
+    "test:cov": "jest --setupFiles dotenv/config --coverage"
   },
   "keywords": [],
-  "author": "",
+  "author": "Lefevre Emmanuel",
   "license": "MIT",
   "dependencies": {
     "argon2": "^0.31.2",
