@@ -89,6 +89,14 @@ npm run dev
 ```
 localhost:9000/swagger-doc
 ```
+#### Launch tests
+```shell
+npm run test
+```
+#### Launch tests coverage
+```shell
+npm run test:cov
+```
 
 
 ### 2. Docker
