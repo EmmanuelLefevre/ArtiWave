@@ -6,3 +6,5 @@ package-lock.json
 /_logs/admins/_adminsLogs.txt
 /_certs
 /coverage
+/opt
+/.scannerwork
