@@ -566,7 +566,7 @@ swaggerSpec.paths['/api/users/update/{id}'] = {
 
 
 /*=== DELETE USER ===*/
-swaggerSpec.paths['/api/users/{id}'] = {
+swaggerSpec.paths['/api/users/delete/{id}'] = {
     delete : {
         summary: 'Delete user by Id',
         description: 'Delete a user by their Id.',
