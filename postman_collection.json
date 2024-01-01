@@ -23,7 +23,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:9000/api/login"
+						"url": "http://localhost:9001/api/login"
 					},
 					"response": []
 				}
@@ -46,7 +46,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:9000/api/users/register"
+						"url": "http://localhost:9001/api/users/register"
 					},
 					"response": []
 				},
@@ -68,7 +68,7 @@
 								"disabled": true
 							}
 						],
-						"url": "http://localhost:9000/api/users/6572f39b4bf59dcf946d676f"
+						"url": "http://localhost:9001/api/users/6572f39b4bf59dcf946d676f"
 					},
 					"response": []
 				},
@@ -90,7 +90,7 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "http://localhost:9000/api/users"
+						"url": "http://localhost:9001/api/users"
 					},
 					"response": []
 				},
@@ -108,7 +108,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:9000/api/users/update/6573590a850ceaea01cebb99"
+						"url": "http://localhost:9001/api/users/update/6573590a850ceaea01cebb99"
 					},
 					"response": []
 				},
@@ -117,7 +117,7 @@
 					"request": {
 						"method": "DELETE",
 						"header": [],
-						"url": "http://localhost:9000/api/users/delete/6573616a164bfde75b5b5b94"
+						"url": "http://localhost:9001/api/users/delete/6573616a164bfde75b5b5b94"
 					},
 					"response": []
 				}
@@ -146,7 +146,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:9000/api/articles/create"
+						"url": "http://localhost:9001/api/articles/create"
 					},
 					"response": []
 				},
@@ -161,7 +161,7 @@
 						},
 						"method": "GET",
 						"header": [],
-						"url": "http://localhost:9000/api/articles/657d01ae5a1a907372d49616"
+						"url": "http://localhost:9001/api/articles/657d01ae5a1a907372d49616"
 					},
 					"response": []
 				},
@@ -176,7 +176,7 @@
 						},
 						"method": "GET",
 						"header": [],
-						"url": "http://localhost:9000/api/articles"
+						"url": "http://localhost:9001/api/articles"
 					},
 					"response": []
 				},
@@ -185,7 +185,7 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "http://localhost:9000/api/articles/user/657301380f4c1c74c6bcb366"
+						"url": "http://localhost:9001/api/articles/user/657301380f4c1c74c6bcb366"
 					},
 					"response": []
 				},
@@ -244,7 +244,7 @@
 						},
 						"method": "PATCH",
 						"header": [],
-						"url": "http://localhost:9000/api/admins/invert_user_role/657d01ad5a1a907372d49603"
+						"url": "http://localhost:9001/api/admins/invert_user_role/657d01ad5a1a907372d49603"
 					},
 					"response": []
 				},
@@ -259,7 +259,7 @@
 						},
 						"method": "DELETE",
 						"header": [],
-						"url": "http://localhost:9000/api/admins/delete_all_articles"
+						"url": "http://localhost:9001/api/admins/delete_all_articles"
 					},
 					"response": []
 				},
@@ -274,7 +274,7 @@
 						},
 						"method": "DELETE",
 						"header": [],
-						"url": "http://localhost:9000/api/admins/delete_all_users"
+						"url": "http://localhost:9001/api/admins/delete_all_users"
 					},
 					"response": []
 				},
@@ -289,7 +289,7 @@
 						},
 						"method": "DELETE",
 						"header": [],
-						"url": "http://localhost:9000/api/admins/delete_all_articles/658023fd4bd55b81bab623bc"
+						"url": "http://localhost:9001/api/admins/delete_all_articles/658023fd4bd55b81bab623bc"
 					},
 					"response": []
 				}
