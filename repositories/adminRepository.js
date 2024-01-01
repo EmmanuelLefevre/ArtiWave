@@ -20,8 +20,7 @@ class AdminRepository {
     static async getNonAdminUsers() {
         try {
             // Get non-admin users to delete
-            const usersToDelete = await User.find({ roles: { $ne: 'admin' } });
-            return usersToDelete;
+            return User.find({ roles: { $ne: 'admin' } });
         }
         catch (err) {
             throw err;
