@@ -49,7 +49,7 @@ class ArticlesRouter {
                 ArticleValidationRules,
                 ArticlesRouter.#validateCreateArticle,
                 CreateArticleLimiter,
-                (req, res, next) => {
+                async (req, res, next) => {
                     try {
                         // Successful validation, proceed
                         ArticlesController.createArticle(req, res, next);
@@ -65,10 +65,10 @@ class ArticlesRouter {
             .all(AllowedCurrentMethodCheck(['GET']))
             .get(
                 JwtCheck,
-                (req, res, next) => {
+                async (req, res, next) => {
                     try {
                         // Successful validation, proceed
-                        ArticlesController.getAllArticles(req, res, next);
+                        await ArticlesController.getAllArticles(req, res, next);
                     }
                     catch (err) {
                         next(new InternalServerError());
@@ -83,10 +83,10 @@ class ArticlesRouter {
                 JwtCheck,
                 ValidateURIParam('id'),
                 ArticlesRouter.#validateURIParam,
-                (req, res, next) => {
+                async (req, res, next) => {
                     try {
                         // Successful validation, proceed
-                        ArticlesController.getArticle(req, res, next);
+                        await ArticlesController.getArticle(req, res, next);
                     }
                     catch (err) {
                         next(new InternalServerError());
@@ -102,10 +102,10 @@ class ArticlesRouter {
                 JwtCheck,
                 ValidateURIParam('userId'),
                 ArticlesRouter.#validateURIParam,
-                (req, res, next) => {
+                async (req, res, next) => {
                     try {
                         // Successful validation, proceed
-                        ArticlesController.getArticlesByUser(req, res, next);
+                        await ArticlesController.getArticlesByUser(req, res, next);
                     }
                     catch (err) {
                         next(new InternalServerError());
@@ -122,10 +122,10 @@ class ArticlesRouter {
                 ValidateURIParam('id'),
                 ArticlesRouter.#validateURIParam,
                 ArticlesRouter.#validateUpdateArticle,
-                (req, res, next) => {
+                async (req, res, next) => {
                     try {
                         // Successful validation, proceed
-                        ArticlesController.updateArticle(req, res, next);
+                        await ArticlesController.updateArticle(req, res, next);
                     }
                     catch (err) {
                         next(new InternalServerError());
@@ -140,10 +140,10 @@ class ArticlesRouter {
                 JwtCheck,
                 ValidateURIParam('id'),
                 ArticlesRouter.#validateURIParam,
-                (req, res, next) => {
+                async (req, res, next) => {
                     try {
                         // Successful validation, proceed
-                        ArticlesController.deleteArticle(req, res, next);
+                        await ArticlesController.deleteArticle(req, res, next);
                     }
                     catch (err) {
                         next(new InternalServerError());
