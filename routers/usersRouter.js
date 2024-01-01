@@ -46,10 +46,10 @@ class UsersRouter {
                 UserValidationRules,
                 UsersRouter.#validateRegister,
                 RegisterLimiter,
-                (req, res, next) => {
+                async (req, res, next) => {
                     try {
                         // Successful validation, proceed
-                        UsersController.register(req, res, next);
+                        await UsersController.register(req, res, next);
                     }
                     catch (err) {
                         next(new InternalServerError());
@@ -63,10 +63,10 @@ class UsersRouter {
             .get(
                 JwtCheck,
                 PremiumCheck,
-                (req, res, next) => {
+                async (req, res, next) => {
                     try {
                         // Successful validation, proceed
-                        UsersController.getAllUsers(req, res, next);
+                        await UsersController.getAllUsers(req, res, next);
                     }
                     catch (err) {
                         next(new InternalServerError());
@@ -82,10 +82,10 @@ class UsersRouter {
                 JwtCheck,
                 ValidateURIParam('id'),
                 UsersRouter.#validateURIParam,
-                (req, res, next) => {
+                async (req, res, next) => {
                     try {
                         // Successful validation, proceed
-                        UsersController.getUser(req, res, next);
+                        await UsersController.getUser(req, res, next);
                     }
                     catch (err) {
                         next(new InternalServerError());
@@ -102,10 +102,10 @@ class UsersRouter {
                 ValidateURIParam('id'),
                 UsersRouter.#validateURIParam,
                 UsersRouter.#validateUpdateUser,
-                (req, res, next) => {
+                async (req, res, next) => {
                     try {
                         // Successful validation, proceed
-                        UsersController.updateUser(req, res, next);
+                        await UsersController.updateUser(req, res, next);
                     }
                     catch (err) {
                         next(new InternalServerError());
@@ -120,10 +120,10 @@ class UsersRouter {
                 JwtCheck,
                 ValidateURIParam('id'),
                 UsersRouter.#validateURIParam,
-                (req, res, next) => {
+                async (req, res, next) => {
                     try {
                         // Successful validation, proceed
-                        UsersController.deleteUser(req, res, next);
+                        await UsersController.deleteUser(req, res, next);
                     }
                     catch (err) {
                         next(new InternalServerError());
