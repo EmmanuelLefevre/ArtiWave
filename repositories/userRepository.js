@@ -74,7 +74,7 @@ class UserRepository {
     /*=== GET ALL USERS ===*/
     static async getAllUsers() {
         try {
-            return await User.find({}, 'id email nickname roles registeredAt updatedAt');
+            return User.find({}, 'id email nickname roles registeredAt updatedAt');
         }
         catch (err) {
             throw err;
@@ -84,7 +84,7 @@ class UserRepository {
     /*=== GET SINGLE USER ===*/
     static async getUserById(userId) {
         try {
-            return await User.findById(userId, { _id: 1, email: 1, nickname: 1, roles: 1, registeredAt: 1, updatedAt: 1 });
+            return User.findById(userId, { _id: 1, email: 1, nickname: 1, roles: 1, registeredAt: 1, updatedAt: 1 });
         }
         catch (err) {
             throw err;
@@ -94,12 +94,11 @@ class UserRepository {
     /*=== UPDATE USER ===*/
     static async updateUserById(userId, updatedData) {
         try {
-            const updatedUser = await User.findByIdAndUpdate(
+            return User.findByIdAndUpdate(
                 userId,
                 { $set: updatedData },
                 { new: true }
             );
-            return updatedUser;
         }
         catch (err) {
             if (err.code === 11000) {
