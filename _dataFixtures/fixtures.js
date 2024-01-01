@@ -8,7 +8,7 @@ const express = require('express');
 const argon2 = require('argon2');
 const { faker } = require('@faker-js/faker');
 
-const connectDB = require('./../db.config');
+const { connectDB } = require('./../db.config');
 
 const User = require('./../models/IUser');
 const Article = require('./../models/IArticle');
@@ -31,7 +31,7 @@ const memoryCost = parseInt(process.env.ARGON2_MEMORY_COST);
 /*=== USERS ===*/
 const password = 'Xxggxx!1';
 
-const createFixtures = async (res) => {
+const createFixtures = async () => {
     try {
         const hash = await argon2.hash(password, {
             saltLength: 8,
@@ -69,7 +69,7 @@ const createFixtures = async (res) => {
         ];
 
         // Drop users if collection not empty
-        deleteResult = await User.deleteMany({});
+        const deleteResult = await User.deleteMany({});
         console.log('\n-----------------------------------------\n');
         if (deleteResult.deletedCount > 0) {
             console.log('All users deleted!');
@@ -80,7 +80,7 @@ const createFixtures = async (res) => {
         console.log('Users added!');
 
         // Call createArticles() after users insert
-        await createArticles(res);
+        await createArticles();
         console.log('\n-----------------------------------------\n');
         console.log('ALL FIXTURES LOADED!');
 
