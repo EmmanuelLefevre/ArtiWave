@@ -12,14 +12,14 @@ const open = require('better-opn');
 
 /*============ LAUNCH SERVER ============*/
 const normalizePort = val => {
-    const port = parseInt(val, 10);
+    const parsedPort  = parseInt(val, 10);
 
-    if (isNaN(port)) {
+    if (isNaN(parsedPort )) {
         return val;
     }
 
-    if (port >= 0) {
-        return port;
+    if (parsedPort  >= 0) {
+        return parsedPort ;
     }
     return false;
 };
