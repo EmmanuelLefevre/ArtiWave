@@ -52,7 +52,7 @@ class ArticlesRouter {
                 async (req, res, next) => {
                     try {
                         // Successful validation, proceed
-                        ArticlesController.createArticle(req, res, next);
+                        await ArticlesController.createArticle(req, res, next);
                     }
                     catch (err) {
                         next(new InternalServerError());
