@@ -157,10 +157,9 @@ class ArticlesRouter {
 
     /*============ PRIVATE METHODS ============*/
 
-    static #validateURIParam(req, _res, next) {
+    static #validateCommon(req, next) {
         try {
             const errors = validationResult(req);
-
             if (!errors.isEmpty()) {
                 throw new ValidationError(errors.array());
             }
@@ -171,8 +170,16 @@ class ArticlesRouter {
             if (err instanceof ValidationError) {
                 return next(err);
             }
-            next(new InternalServerError());
+            next(new InternalServerError('Internal Server Error'));
         }
+    }
+
+    static #validateURIParam(req, _res, next) {
+        ArticlesRouter.#validateCommon(req, next);
+    }
+
+    static #validateCreateArticle(req, _res, next) {
+        ArticlesRouter.#validateCommon(req, next);
     }
 
     static #checkBodyParamPresence(req, _res, next) {
@@ -187,23 +194,6 @@ class ArticlesRouter {
         }
         catch (err) {
             if (err instanceof InvalidRequestError) {
-                return next(err);
-            }
-            next(new InternalServerError());
-        }
-    }
-
-    static #validateCreateArticle(req, _res, next) {
-        try {
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) {
-                throw new ValidationError(errors.array());
-            }
-
-            next();
-        }
-        catch (err) {
-            if (err instanceof ValidationError) {
                 return next(err);
             }
             next(new InternalServerError());
