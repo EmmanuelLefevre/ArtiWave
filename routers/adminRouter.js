@@ -36,9 +36,9 @@ class AdminRouter {
         adminRouter.route('/delete_all_users')
             .all(AllowedCurrentMethodCheck(['DELETE']))
             .delete(
-                (req, res, next) => {
+                async (req, res, next) => {
                     try {
-                        AdminController.deleteAllUsers(req, res, next);
+                        await AdminController.deleteAllUsers(req, res, next);
                     }
                     catch (err) {
                         next(new InternalServerError());
@@ -50,9 +50,9 @@ class AdminRouter {
         adminRouter.route('/delete_all_articles')
             .all(AllowedCurrentMethodCheck(['DELETE']))
             .delete(
-                (req, res, next) => {
+                async (req, res, next) => {
                     try {
-                        AdminController.deleteAllArticles(req, res, next);
+                        await AdminController.deleteAllArticles(req, res, next);
                     }
                     catch (err) {
                         next(new InternalServerError());
@@ -66,10 +66,10 @@ class AdminRouter {
             .delete(
                 ValidateURIParam('id'),
                 AdminRouter.#validateURIParam,
-                (req, res, next) => {
+                async (req, res, next) => {
                     try {
                         // Successful validation, proceed
-                        AdminController.deleteAllArticlesByUser(req, res, next);
+                        await AdminController.deleteAllArticlesByUser(req, res, next);
                     }
                     catch (err) {
                         next(new InternalServerError());
@@ -83,10 +83,10 @@ class AdminRouter {
             .patch(
                 ValidateURIParam('id'),
                 AdminRouter.#validateURIParam,
-                (req, res, next) => {
+                async (req, res, next) => {
                     try {
                         // Successful validation, proceed
-                        AdminController.invertUserRole(req, res, next);
+                        await AdminController.invertUserRole(req, res, next);
                     }
                     catch (err) {
                         next(new InternalServerError());
