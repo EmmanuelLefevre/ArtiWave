@@ -421,12 +421,14 @@ class ArticleController {
                 throw new ArticleNotFoundError();
             }
 
+            let deletedCount;
+
             // Check if the author's article matches the userId making the request
             if (article.author.toString() !== req.userId) {
                 // Check if the user is an admin
                 if (req.isAdmin) {
                     // Allow admin to delete articles of any user
-                    const deletedCount = await ArticleRepository.deleteArticleById(articleId);
+                    deletedCount = await ArticleRepository.deleteArticleById(articleId);
 
                     // Delete article
                     if (deletedCount > 0) {
@@ -445,7 +447,7 @@ class ArticleController {
             }
 
             // If the author matches, delete the article
-            const deletedCount = await ArticleRepository.deleteArticleById(articleId);
+            deletedCount = await ArticleRepository.deleteArticleById(articleId);
 
             // Delete article
             if (deletedCount > 0) {
