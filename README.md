@@ -97,6 +97,28 @@ npm run test
 ```shell
 npm run test:cov
 ```
+#### Launch Sonarqube server
+First give rights to the file  
+```shell
+chmod u+x sonar-server.sh
+```
+Start the server after opening docker desktop
+```shell
+./sonar-server.sh
+```
+Open a browser and open the URL => http://localhost:9000  
+Enter credentials Login: admin and Password: admin  
+Set a new password...  
+
+Give rights to the file  
+```shell
+chmod u+x scan.sh
+```
+Launch SonarQube tests
+```shell
+./scan.sh
+```
+
 
 
 ### 2. Docker
