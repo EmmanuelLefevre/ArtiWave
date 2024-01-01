@@ -103,7 +103,7 @@ const createArticles = async () => {
 
         // Drop articles if collection not empty
         console.log('\n-----------------------------------------\n');
-        deleteResult = await Article.deleteMany({});
+        const deleteResult = await Article.deleteMany({});
         if (deleteResult.deletedCount > 0) {
             console.log('All articles deleted!');
         }
