@@ -69,7 +69,7 @@ const createFixtures = async () => {
         ];
 
         // Drop users if collection not empty
-        const deleteResult = await User.deleteMany({});
+        const deleteResult = User.deleteMany({});
         console.log('\n-----------------------------------------\n');
         if (deleteResult.deletedCount > 0) {
             console.log('All users deleted!');
@@ -99,11 +99,11 @@ const createFixtures = async () => {
 const createArticles = async () => {
     try {
         // Get all users
-        const users = await User.find();
+        const users = User.find();
 
         // Drop articles if collection not empty
         console.log('\n-----------------------------------------\n');
-        const deleteResult = await Article.deleteMany({});
+        const deleteResult = Article.deleteMany({});
         if (deleteResult.deletedCount > 0) {
             console.log('All articles deleted!');
         }
