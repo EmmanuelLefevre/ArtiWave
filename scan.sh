@@ -1,5 +1,5 @@
 export SONAR_HOST=172.17.0.2:9000
-export SONAR_TOKEN=0255d5a41982774d4c3180fb09a562c5e93cda37
+export SONAR_TOKEN=f877cb73d5a723c32bdb54e1c0a8d9ca2192854f
 export REPO=$(pwd)
 export CONFIG_FILE=$(pwd)/sonar-project.properties
 
