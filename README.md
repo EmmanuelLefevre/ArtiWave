@@ -115,18 +115,18 @@ chmod u+x sonar-server.sh
 ![SonarQube update password](https://github.com/EmmanuelLefevre/img/blob/main/SonarQube%20update%20password.png)
 ##### 6. Create new project manually
 ProjectKey = ArtiWave
-##### 6. Generate a token
+##### 7. Generate a token
 ![SonarQube generate token](https://github.com/EmmanuelLefevre/img/blob/main/SonarQube%20generate%20token.png)
 ##### 8. Get the token
 ![SonarQube get token](https://github.com/EmmanuelLefevre/img/blob/main/SonarQube%20get%20token.png)
-##### 8. Provide the token in ArtiWave project
+##### 9. Provide the token in ArtiWave project
 Replace token by the created one in scan.sh file  
 ![ArtiWave provide token](https://github.com/EmmanuelLefevre/img/blob/main/ArtiWave%20provide%20token.png)
-##### 8. Give rights to the scan.sh file
+##### 10. Give rights to the scan.sh file
 ```shell
 chmod u+x scan.sh
 ```
-##### 9. Launch SonarQube tests
+##### 11. Launch SonarQube tests
 ```shell
 ./scan.sh
 ```
