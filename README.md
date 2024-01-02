@@ -55,6 +55,9 @@ npm install
 ```
 #### Generate keys for JWT
 ```shell
+cd api
+```
+```shell
 mkdircd _certs
 ```
 ```shell
