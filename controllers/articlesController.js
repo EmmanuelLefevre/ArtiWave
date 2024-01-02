@@ -94,12 +94,7 @@ class ArticleController {
             }
 
             // Return created article
-            if (createdArticle) {
-                return res.status(201).json(responseObject);
-            }
-            else {
-                throw new CreationFailedError();
-            }
+            return res.status(201).json(responseObject);
 
         }
         catch (err) {
@@ -216,13 +211,7 @@ class ArticleController {
             }
 
             // Return single article
-            if (article) {
-                return res.status(200).json(responseObject);
-            }
-            else {
-                throw new RecoveryFailedError();
-            }
-
+            return res.status(200).json(responseObject);
         }
         catch (err) {
             if (err instanceof CreationResponseObjectError ||
@@ -289,13 +278,7 @@ class ArticleController {
                 throw new ResponseValidationError();
             }
 
-            if (processedArticles.length > 0) {
-                return res.status(200).json(responseObject);
-            }
-            else {
-                throw new RecoveryFailedError();
-            }
-
+            return res.status(200).json(responseObject);
         }
         catch (err) {
             if (err instanceof CreationResponseObjectError ||
@@ -400,13 +383,7 @@ class ArticleController {
             }
 
             // Return updated article
-            if (article) {
-                return res.status(200).json(responseObject);
-            }
-            else {
-                throw new UpdateFailedError();
-            }
-
+            return res.status(200).json(responseObject);
         }
         catch (err) {
             if (err instanceof CreationResponseObjectError ||
@@ -441,12 +418,7 @@ class ArticleController {
                     deletedCount = await ArticleRepository.deleteArticleById(articleId);
 
                     // Delete article
-                    if (deletedCount > 0) {
-                        return res.sendStatus(204);
-                    }
-                    else {
-                        throw new DeletionFailedError();
-                    }
+                    return res.sendStatus(204);
                 }
                 else if (req.isUser) {
                     return res.status(403).json({ message: 'Only certified members are allowed to delete an article!' });
@@ -460,12 +432,7 @@ class ArticleController {
             deletedCount = await ArticleRepository.deleteArticleById(articleId);
 
             // Delete article
-            if (deletedCount > 0) {
-                return res.sendStatus(204);
-            }
-            else {
-                throw new DeletionFailedError();
-            }
+            return res.sendStatus(204);
         }
         catch (err) {
             if (err instanceof ArticleNotFoundError ||
