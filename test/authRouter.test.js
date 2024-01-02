@@ -14,7 +14,12 @@ const AuthController = require('../api/controllers/authController');
 /*============ AUTH ROUTER TESTS ============*/
 describe('AUTH ROUTER', () => {
     beforeEach(() => {
-        AuthController.resetRateLimit();
+        return new Promise(resolve => {
+            setTimeout(() => {
+                AuthController.resetRateLimit();
+                resolve();
+            }, 50000);
+        });
     });
 
     afterAll(async () => {
