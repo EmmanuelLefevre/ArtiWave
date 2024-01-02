@@ -77,12 +77,7 @@ class UserController {
             }
 
             // Return created user
-            if (registeredUser) {
-                return res.status(201).json(registeredUser);
-            }
-            else {
-                throw new CreationFailedError();
-            }
+            return res.status(201).json(registeredUser);
         }
         catch (err) {
             if (err instanceof CreationResponseObjectError ||
@@ -141,12 +136,7 @@ class UserController {
             }
 
             // Return all users
-            if (usersCount > 0) {
-                return res.status(200).json(responseObject);
-            }
-            else {
-                throw new RecoveryFailedError();
-            }
+            return res.status(200).json(responseObject);
         }
         catch (err) {
             if (err instanceof CreationResponseObjectError ||
@@ -197,12 +187,7 @@ class UserController {
             }
 
             // Return single user
-            if (user) {
-                return res.status(200).json(responseObject);
-            }
-            else {
-                throw new RecoveryFailedError();
-            }
+            return res.status(200).json(responseObject);
         }
         catch (err) {
             if (err instanceof CreationResponseObjectError ||
@@ -323,12 +308,7 @@ class UserController {
             }
 
             // Return updated user
-            if (user) {
-                return res.status(200).json(responseObject);
-            }
-            else {
-                throw new UpdateFailedError();
-            }
+            return res.status(200).json(responseObject);
         }
         catch (err) {
             if (err instanceof UserNotFoundError ||
@@ -380,12 +360,7 @@ class UserController {
             deletedCount = await UserRepository.deleteUserById(userId);
 
             // Delete article
-            if (deletedCount > 0) {
-                return res.sendStatus(204);
-            }
-            else {
-                throw new DeletionFailedError();
-            }
+            return res.sendStatus(204);
         }
         catch (err) {
             if (err instanceof UserNotFoundError ||
