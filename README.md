@@ -100,7 +100,7 @@ npm run test
 ```shell
 npm run test:cov
 ```
-#### Launch Sonarqube server
+#### Sonarqube analysis
 ##### 1. First give rights to the sonar-server.sh file:
 ```shell
 chmod u+x sonar-server.sh
@@ -112,15 +112,21 @@ chmod u+x sonar-server.sh
 ##### 3. Open a browser and open the URL => http://localhost:9000
 ##### 4. Enter credentials Login: admin and Password: admin
 ##### 5. Set a new password...
-![Connexion MongoDb VsCode extension step 1](https://github.com/EmmanuelLefevre/img/blob/main/SonarQube%20update%20password.png)
+![SonarQube update password](https://github.com/EmmanuelLefevre/img/blob/main/SonarQube%20update%20password.png)
 ##### 6. Create new project manually
-ProjectKey = ArtiWave  
-Insert created token in constant SONAR_TOKEN in the scan.sh file
-Give rights to the scan.sh file  
+ProjectKey = ArtiWave
+##### 6. Generate a token
+![SonarQube generate token](https://github.com/EmmanuelLefevre/img/blob/main/SonarQube%20generate%20token.png)
+##### 8. Get the token
+![SonarQube get token](https://github.com/EmmanuelLefevre/img/blob/main/SonarQube%20get%20token.png)
+##### 8. Provide token
+Insert created token in scan.sh file
+![ArtiWave provide token](https://github.com/EmmanuelLefevre/img/blob/main/ArtiWave%20provide%20token.png)
+##### 8. Give rights to the scan.sh file
 ```shell
 chmod u+x scan.sh
 ```
-Launch SonarQube tests
+##### 9. Launch SonarQube tests
 ```shell
 ./scan.sh
 ```
