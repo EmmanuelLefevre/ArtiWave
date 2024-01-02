@@ -16,6 +16,7 @@ const ArticleNotFoundError = require('../_errors/articleNotFoundError');
 const DeletionFailedError = require('../_errors/deletionFailedError');
 const InternalServerError = require('../_errors/internalServerError');
 const ResponseValidationError = require('../_errors/responseValidationError');
+const UpdateFailedError = require('../_errors/updateFailedError');
 const UserNotFoundError = require('../_errors/userNotFoundError');
 
 
@@ -34,15 +35,10 @@ class AdminController {
             }
 
             // Delete non-admin users and their owned articles
-            const deletionResult = await AdminRepository.deleteNonAdminsUsersAndTheirOwnedArticles(usersToDelete);
+            await AdminRepository.deleteNonAdminsUsersAndTheirOwnedArticles(usersToDelete);
 
             // Response
-            if (deletionResult > 0) {
-                return res.sendStatus(204);
-            }
-            else {
-                throw new DeletionFailedError();
-            }
+            return res.sendStatus(204);
         }
         catch (err) {
             if (err instanceof DeletionFailedError ||
@@ -63,15 +59,10 @@ class AdminController {
             }
 
             // Delete all articles except those owned by admin
-            const deletionResult = await AdminRepository.deleteAllArticlesExceptThoseOwnedByAdmin(req.userId);
+            await AdminRepository.deleteAllArticlesExceptThoseOwnedByAdmin(req.userId);
 
             // Response
-            if (deletionResult > 0) {
-                return res.sendStatus(204);
-            }
-            else {
-                throw new DeletionFailedError();
-            }
+            return res.sendStatus(204);
         }
         catch (err) {
             if (err instanceof ArticleNotFoundError ||
@@ -90,10 +81,12 @@ class AdminController {
         try {
             await AdminRepository.deleteAllArticlesByUser(userId);
 
+            // Response
             return res.sendStatus(204);
         }
         catch (err) {
             if (err instanceof ArticleNotFoundError ||
+                err instanceof DeletionFailedError ||
                 err instanceof UserNotFoundError) {
                 return next(err);
             }
@@ -137,6 +130,7 @@ class AdminController {
         }
         catch (err) {
             if (err instanceof ResponseValidationError ||
+                err instanceof UpdateFailedError ||
                 err instanceof UserNotFoundError) {
                 return next(err);
             }
