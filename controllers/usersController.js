@@ -334,14 +334,12 @@ class UserController {
                 throw new UserNotFoundError();
             }
 
-            let deletedCount;
-
             // Check if user matches userId making request
             if (user._id.toString() !== req.userId) {
                 // Check if user is admin
                 if (req.isAdmin) {
                     // Allow admin to delete any user
-                    deletedCount = await UserRepository.deleteUserById(userId);
+                    await UserRepository.deleteUserById(userId);
 
                     // Delete article
                     if (deletedCount > 0) {
@@ -357,7 +355,7 @@ class UserController {
             }
 
             // If user matches delete user
-            deletedCount = await UserRepository.deleteUserById(userId);
+            await UserRepository.deleteUserById(userId);
 
             // Delete article
             return res.sendStatus(204);
