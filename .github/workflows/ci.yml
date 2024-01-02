@@ -29,7 +29,7 @@ jobs:
         env:
           ME_CONFIG_MONGODB_ADMINUSERNAME: admin
           ME_CONFIG_MONGODB_ADMINPASSWORD: nimda
-          ME_CONFIG_MONGODB_URL: mongodb://admin:nimda@mongo:27017/
+          ME_CONFIG_MONGODB_URL: mongodb://admin:nimda@mongo:27017/artiwave
 
     steps:
       - name: Checkout
