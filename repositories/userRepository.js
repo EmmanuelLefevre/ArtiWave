@@ -10,8 +10,12 @@ const User = require('../models/IUser');
 
 // Errors
 const AccountAlreadyExistsError = require('../_errors/accountAlreadyExistsError');
+const CreationFailedError = require('../_errors/creationFailedError');
+const DeletionFailedError = require('../_errors/deletionFailedError');
 const InternalServerError = require('../_errors/internalServerError');
 const NicknameAlreadyUsedError = require('../_errors/nicknameAlreadyUsedError');
+const RecoveryFailedError = require('../_errors/recoveryFailedError');
+const UpdateFailedError = require('../_errors/updateFailedError');
 const UserNotFoundError = require('../_errors/userNotFoundError');
 
 
@@ -41,7 +45,7 @@ class UserRepository {
             return !!existingUser;
         }
         catch (err) {
-            throw err;
+            throw new RecoveryFailedError();
         }
     }
 
@@ -67,7 +71,7 @@ class UserRepository {
                     throw new NicknameAlreadyUsedError();
                 }
             }
-            throw err;
+            throw new CreationFailedError();
         }
     }
 
@@ -77,7 +81,7 @@ class UserRepository {
             return User.find({}, 'id email nickname roles registeredAt updatedAt');
         }
         catch (err) {
-            throw err;
+            throw new RecoveryFailedError();
         }
     }
 
@@ -87,7 +91,7 @@ class UserRepository {
             return User.findById(userId, { _id: 1, email: 1, nickname: 1, roles: 1, registeredAt: 1, updatedAt: 1 });
         }
         catch (err) {
-            throw err;
+            throw new RecoveryFailedError();
         }
     }
 
@@ -109,7 +113,7 @@ class UserRepository {
                     throw new NicknameAlreadyUsedError();
                 }
             }
-            throw err;
+            throw new UpdateFailedError();
         }
     }
 
@@ -126,7 +130,7 @@ class UserRepository {
             return result.deletedCount;
         }
         catch (err) {
-            throw err;
+            throw new DeletionFailedError();
         }
     }
 }
