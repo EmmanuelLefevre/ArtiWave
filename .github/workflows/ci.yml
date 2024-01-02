@@ -29,6 +29,12 @@ jobs:
           ME_CONFIG_MONGODB_ADMINPASSWORD: nimda
           ME_CONFIG_MONGODB_SERVER: mongo
 
+    env:
+      DB_NAME: artiwave
+      DB_HOST: localhost
+      DB_USERNAME: Admin
+      DB_PASSWORD: nimda
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
