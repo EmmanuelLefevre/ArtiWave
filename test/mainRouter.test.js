@@ -6,12 +6,12 @@
 /*============ IMPORT USED MODULES ============*/
 const request = require('supertest');
 const app = require('../app');
-const connectDB = require('../db.config');
+const connectDB = require('../api/db.config');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
 
 // Models
-const User = require('../models/IUser');
+const User = require('../api/models/IUser');
 
 
 /*============ MOCK EXPRESS RATE LIMIT ============*/
