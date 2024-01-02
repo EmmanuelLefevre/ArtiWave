@@ -27,14 +27,7 @@ jobs:
         env:
           ME_CONFIG_MONGODB_ADMINUSERNAME: admin
           ME_CONFIG_MONGODB_ADMINPASSWORD: nimda
-          ME_CONFIG_MONGODB_SERVER: mongo
-
-    env:
-      DB_PORT: 27017
-      DB_NAME: artiwave
-      DB_HOST: localhost
-      DB_USERNAME: Admin
-      DB_PASSWORD: nimda
+          ME_CONFIG_MONGODB_URL: mongodb://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}/
 
     steps:
       - name: Checkout
@@ -47,10 +40,6 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-
-      - name: Debug Database Connection
-        run: |
-          cat api/db.config.js
 
       - name: Run tests
         run: npm run test
