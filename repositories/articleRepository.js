@@ -9,6 +9,10 @@ const Article = require('../models/IArticle');
 
 // Errors
 const ArticleAlreadyExistsError = require('../_errors/articleAlreadyExistsError');
+const CreationFailedError = require('../_errors/creationFailedError');
+const DeletionFailedError = require('../_errors/deletionFailedError');
+const RecoveryFailedError = require('../_errors/recoveryFailedError');
+const UpdateFailedError = require('../_errors/updateFailedError');
 
 
 /*============ ARTICLE REPOSITORY ============*/
@@ -23,7 +27,7 @@ class ArticleRepository {
             if (err.code === 11000 && err.keyPattern.title) {
                 throw new ArticleAlreadyExistsError();
             }
-            throw err;
+            throw new CreationFailedError();
         }
     }
 
@@ -33,7 +37,7 @@ class ArticleRepository {
             return Article.find({}, 'id title content author createdAt updatedAt');
         }
         catch (err) {
-            throw err;
+            throw new RecoveryFailedError();
         }
     }
 
@@ -43,7 +47,7 @@ class ArticleRepository {
             return Article.findById(articleId, { _id: 1, title: 1, content: 1, author: 1, createdAt: 1, updatedAt: 1 });
         }
         catch (err) {
-            throw err;
+            throw new RecoveryFailedError();
         }
     }
 
@@ -53,7 +57,7 @@ class ArticleRepository {
             return Article.find({ author: userId }, { _id: 1, title: 1, content: 1, author: 1, createdAt: 1, updatedAt: 1 });
         }
         catch (err) {
-            throw err;
+            throw new RecoveryFailedError();
         }
     }
 
@@ -63,7 +67,7 @@ class ArticleRepository {
             return Article.countDocuments({ author: userId });
         }
         catch (err) {
-            throw err;
+            throw new RecoveryFailedError();
         }
     }
 
@@ -80,18 +84,18 @@ class ArticleRepository {
             if (err.code === 11000 && err.keyPattern.title) {
                 throw new ArticleAlreadyExistsError();
             }
-            throw err;
+            throw new UpdateFailedError();
         }
     }
 
     /*=== DELETE ARTICLE ===*/
     static async deleteArticleById(articleId) {
         try {
-            const result = Article.deleteOne({ _id: articleId });
+            const result = await Article.deleteOne({ _id: articleId });
             return result.deletedCount;
         }
         catch (err) {
-            throw err;
+            throw new DeletionFailedError();
         }
     }
 }
