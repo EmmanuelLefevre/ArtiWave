@@ -10,6 +10,9 @@ const Article = require('../models/IArticle');
 
 // Articles
 const ArticleNotFoundError = require('../_errors/articleNotFoundError');
+const DeletionFailedError = require('../_errors/deletionFailedError');
+const RecoveryFailedError = require('../_errors/recoveryFailedError');
+const UpdateFailedError = require('../_errors/updateFailedError');
 const UserNotFoundError = require('../_errors/userNotFoundError');
 
 
@@ -23,7 +26,7 @@ class AdminRepository {
             return User.find({ roles: { $ne: 'admin' } });
         }
         catch (err) {
-            throw err;
+            throw new RecoveryFailedError();
         }
     }
 
@@ -42,7 +45,7 @@ class AdminRepository {
             return deletionResult.deletedCount;
         }
         catch (err) {
-            throw err;
+            throw new DeletionFailedError();
         }
     }
 
@@ -68,7 +71,7 @@ class AdminRepository {
             return deletionResult.deletedCount;
         }
         catch (err) {
-            throw err;
+            throw new DeletionFailedError();
         }
     }
 
@@ -85,7 +88,7 @@ class AdminRepository {
             await Article.deleteMany({ author: userId });
         }
         catch (err) {
-            throw err;
+            throw new DeletionFailedError();
         }
     }
 
@@ -111,7 +114,7 @@ class AdminRepository {
             };
         }
         catch (err) {
-            throw err;
+            throw new UpdateFailedError();
         }
     }
 }
