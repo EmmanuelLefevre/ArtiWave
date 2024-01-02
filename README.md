@@ -112,6 +112,7 @@ Start the server after opening docker desktop
 Open a browser and open the URL => http://localhost:9000  
 Enter credentials Login: admin and Password: admin  
 Set a new password...  
+![Connexion MongoDb VsCode extension step 1](https://github.com/EmmanuelLefevre/img/blob/main/SonarQube%20update%20password.png)
 
 Give rights to the scan.sh file  
 ```shell
@@ -122,6 +123,3 @@ Launch SonarQube tests
 ./scan.sh
 ```
 
-
-
-### 2. Docker
