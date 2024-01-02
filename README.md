@@ -101,7 +101,7 @@ npm run test
 npm run test:cov
 ```
 ## SONARQUBE ANALYSIS
-#### 1. First give rights to the sonar-server.sh file:
+##### 1. First give rights to the sonar-server.sh file:
 ```shell
 chmod u+x sonar-server.sh
 ```
