@@ -1,0 +1,1 @@
+User Id:659451bb95d26b0ec50258f2 - IP:::1 - [02/01/2024 19:14:26] - method:DELETE - URI:/api/admins/delete_all_users - status-code:204 - 8.220ms

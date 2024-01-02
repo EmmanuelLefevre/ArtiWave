@@ -9,13 +9,13 @@ const cors = require('cors');
 const helmet = require('helmet');
 const sassMiddleware = require('node-sass-middleware');
 
-const { connectDB } = require('./db.config');
+const { connectDB } = require('./api/db.config');
 
-const { RequestsLimiter } = require('./middleware/rateLimiter');
-const AdminCheck = require('./middleware/adminCheck');
-const GlobalErrorHandler = require('./middleware/globalErrorHandler');
-const NotAllowedMethodError = require('./_errors/notAllowedMethodError');
-const NotFoundError = require('./_errors/notFoundError');
+const { RequestsLimiter } = require('./api/middleware/rateLimiter');
+const AdminCheck = require('./api/middleware/adminCheck');
+const GlobalErrorHandler = require('./api/middleware/globalErrorHandler');
+const NotAllowedMethodError = require('./api/_errors/notAllowedMethodError');
+const NotFoundError = require('./api/_errors/notFoundError');
 
 const swaggerSpec = require('./swagger');
 const swaggerUi = require('swagger-ui-express');
@@ -67,10 +67,10 @@ app.use(RequestsLimiter);
 
 
 /*============ IMPORT ROUTER MODULES ============*/
-const AuthRouter = require('./routers/authRouter');
-const UsersRouter = require('./routers/usersRouter');
-const ArticlesRouter = require('./routers/articlesRouter');
-const AdminRouter = require('./routers/adminRouter');
+const AuthRouter = require('./api/routers/authRouter');
+const UsersRouter = require('./api/routers/usersRouter');
+const ArticlesRouter = require('./api/routers/articlesRouter');
+const AdminRouter = require('./api/routers/adminRouter');
 
 
 /*============ DATABASE SINGLETON CONNEXION ============*/
@@ -78,13 +78,13 @@ connectDB();
 
 
 /*============ FAVICON ============*/
-app.use(favicon(path.join(__dirname, 'assets', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, 'api/assets', 'favicon.ico')));
 
 
 /*============ SCSS ============*/
 app.use(sassMiddleware({
-	src: path.join(__dirname, 'scss'),
-	dest: path.join(__dirname, 'public/css'),
+	src: path.join(__dirname, 'api/scss'),
+	dest: path.join(__dirname, 'api/public/css'),
 	indentedSyntax: false,
 	sourceMap: true,
     outputStyle: 'compressed'

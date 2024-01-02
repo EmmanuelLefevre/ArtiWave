@@ -5,7 +5,7 @@
 
 /*============ IMPORT USED MODULES ============*/
 const http = require('http');
-const app = require('./app');
+const app = require('../app');
 
 const open = require('better-opn');
 

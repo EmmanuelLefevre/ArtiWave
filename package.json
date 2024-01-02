@@ -7,9 +7,9 @@
     "node": "20.10.0"
   },
   "scripts": {
-    "start": "node -r dotenv/config server.js",
-    "dev": "nodemon -r dotenv/config server.js",
-    "fixtures": "node -r dotenv/config _dataFixtures/fixtures.js",
+    "start": "node -r dotenv/config api/server.js",
+    "dev": "nodemon -r dotenv/config api/server.js",
+    "fixtures": "node -r dotenv/config api/_dataFixtures/fixtures.js",
     "test": "jest --setupFiles dotenv/config",
     "test:cov": "jest --setupFiles dotenv/config --coverage"
   },
