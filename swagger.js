@@ -9,7 +9,7 @@ const options = {
         info: {
         title: 'API',
         version: '1.0.0',
-        description: 'Application Blog',
+        description: 'ArtiWave',
         },
     },
     apis: ['./routers/authRouter.js',
