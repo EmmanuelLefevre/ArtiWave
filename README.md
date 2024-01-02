@@ -119,7 +119,7 @@ ProjectKey = ArtiWave
 ![SonarQube generate token](https://github.com/EmmanuelLefevre/img/blob/main/SonarQube%20generate%20token.png)
 ##### 8. Get the token
 ![SonarQube get token](https://github.com/EmmanuelLefevre/img/blob/main/SonarQube%20get%20token.png)
-##### 8. Provide token
+##### 8. Provide the token in ArtiWave project
 Insert created token in scan.sh file
 ![ArtiWave provide token](https://github.com/EmmanuelLefevre/img/blob/main/ArtiWave%20provide%20token.png)
 ##### 8. Give rights to the scan.sh file
