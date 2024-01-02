@@ -181,7 +181,8 @@ class UserController {
                     responseValidationSchema = UserResponseValidationRoleAdmin;
                     responseObject = user
                     break;
-                default:
+                case 'certified':
+                case 'user':
                     responseValidationSchema = UserResponseValidationBase;
                     responseObject = user
                     break;
@@ -301,7 +302,8 @@ class UserController {
                         data: user
                     };
                     break;
-                default:
+                case 'certified':
+                case 'user':
                     responseValidationSchema = UserUpdatedResponseValidationBase;
                     responseObject = {
                         data: user
