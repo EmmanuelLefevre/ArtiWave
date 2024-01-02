@@ -6,7 +6,7 @@
 /*============ IMPORT USED MODULES ============*/
 const request = require('supertest');
 const app = require('../app');
-const connectDB = require('../api/db.config');
+const { closeDB } = require('../api/db.config');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
 
@@ -31,7 +31,7 @@ describe('MAIN ROUTER', () => {
     });
 
     afterAll(async () => {
-        await connectDB.closeDB();
+        await closeDB();
     })
 
     /*----------- ENTRY ----------*/
