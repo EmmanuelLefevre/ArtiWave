@@ -6,9 +6,9 @@
 /*============ IMPORT USED MODULES ============*/
 const request = require('supertest');
 const app = require('../app');
-const connectDB = require('../db.config');
+const connectDB = require('../api/db.config');
 
-const AuthController = require('../controllers/authController');
+const AuthController = require('../api/controllers/authController');
 
 
 /*============ AUTH ROUTER TESTS ============*/
