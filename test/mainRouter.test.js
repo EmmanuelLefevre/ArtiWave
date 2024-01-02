@@ -26,10 +26,6 @@ jest.mock('express-rate-limit', () => {
 
 /*============ MAIN ROUTER TESTS ============*/
 describe('MAIN ROUTER', () => {
-    beforeAll(() => {
-        jest.resetModules();
-    });
-
     afterAll(async () => {
         await closeDB();
     })
