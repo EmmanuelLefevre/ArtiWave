@@ -10,7 +10,7 @@ const { closeDB } = require('../api/db.config');
 
 const AuthController = require('../api/controllers/authController');
 
-
+jest.useFakeTimers('legacy');
 /*============ AUTH ROUTER TESTS ============*/
 describe('AUTH ROUTER', () => {
     beforeEach(() => {
