@@ -1,9 +1,9 @@
 package-lock.json
 /node_modules
-/_logs/articles/_articlesLogs.txt
-/_logs/auth/_authLogs.txt
-/_logs/users/_usersLogs.txt
-/_logs/admins/_adminsLogs.txt
+/api/_logs/articles/_articlesLogs.txt
+/api/_logs/auth/_authLogs.txt
+/api/_logs/users/_usersLogs.txt
+/api/_logs/admins/_adminsLogs.txt
 /_certs
 /coverage
 /opt
