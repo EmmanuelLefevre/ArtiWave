@@ -78,9 +78,11 @@ class ArticleController {
                     responseValidationSchema = ArticleResponseValidationRoleAdmin;
                     responseObject = createdArticle;
                     break;
-                default:
+                case 'certified':
+                case 'user':
                     responseValidationSchema = ArticleResponseValidationBase;
                     responseObject = createdArticle;
+                    break;
             }
 
             // Validate response format
@@ -137,11 +139,13 @@ class ArticleController {
                         data: articles
                     };
                     break;
-                default:
+                case 'certified':
+                case 'user':
                     responseValidationSchema = ArticlesResponseValidationBase;
                     responseObject = {
                         data: articles
                     };
+                    break;
             }
 
             // Add dataCount to the responseObject
@@ -196,9 +200,11 @@ class ArticleController {
                     responseValidationSchema = ArticleResponseValidationRoleAdmin;
                     responseObject = article;
                     break;
-                default:
+                case 'certified':
+                case 'user':
                     responseValidationSchema = ArticleResponseValidationBase;
                     responseObject = article;
+                    break;
             }
 
             // Validate response format
@@ -263,11 +269,13 @@ class ArticleController {
                         data: processedArticles
                     };
                     break;
-                default:
+                case 'certified':
+                case 'user':
                     responseValidationSchema = ArticlesResponseValidationBase;
                     responseObject = {
                         data: processedArticles
                     };
+                    break;
             }
 
             // Add dataCount to the responseObject
@@ -371,11 +379,13 @@ class ArticleController {
                         data: article
                     };
                     break;
-                default:
+                case 'certified':
+                case 'user':
                     responseValidationSchema = ArticleUpdatedResponseValidationBase;
                     responseObject = {
                         data: article
                     };
+                    break;
             }
 
             // Add modified property to the responseObject
