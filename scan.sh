@@ -6,7 +6,7 @@ export CONFIG_FILE=$(pwd)/sonar-project.properties
 docker run \
     --rm \
     -e SONAR_HOST_URL="http://${SONAR_HOST}" \
-    -e SONAR_SCANNER_OPTS="-Dsonar.projectKey=expressBlog" \
+    -e SONAR_SCANNER_OPTS="-Dsonar.projectKey=ArtiWave" \
     -e SONAR_LOGIN="${SONAR_TOKEN}" \
     -v "${REPO}:/usr/src" \
     -v $CONFIG_FILE:/opt/sonar-scanner/conf/sonar-project.properties \
