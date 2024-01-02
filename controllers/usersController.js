@@ -342,12 +342,7 @@ class UserController {
                     await UserRepository.deleteUserById(userId);
 
                     // Delete article
-                    if (deletedCount > 0) {
-                        return res.sendStatus(204);
-                    }
-                    else {
-                        throw new DeletionFailedError();
-                    }
+                    return res.sendStatus(204);
                 }
                 else {
                     return res.status(403).json({ message: 'You are not allowed to delete a user other than yourself!' });
