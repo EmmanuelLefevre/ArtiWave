@@ -30,9 +30,11 @@ jobs:
           ME_CONFIG_MONGODB_SERVER: mongo
 
     env:
-      DB_NAME: test
-      DB_USERNAME: test
-      DB_PASSWORD: test
+      DB_PORT: 27017
+      DB_NAME: artiwave
+      DB_HOST: localhost
+      DB_USERNAME: Admin
+      DB_PASSWORD: nimda
 
     steps:
       - name: Checkout
