@@ -29,7 +29,7 @@ const timeCost = parseInt(process.env.ARGON2_TIME_COST);
 const memoryCost = parseInt(process.env.ARGON2_MEMORY_COST);
 
 /*=== USERS ===*/
-const password = 'Xxggxx!1';
+const password = process.env.PASSWORD_FIXTURE;
 
 const createFixtures = async () => {
     try {
