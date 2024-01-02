@@ -45,7 +45,7 @@ app.use((req, res, next) => {
 	}
 	else {
 		cors({
-			origin: "http://localhost:9000",
+			origin: "http://localhost:9001",
 			methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
 			allowedHeaders: "Origin, X-Requested-With, x-access-token, role, Content, Accept, Content-Type, Authorization"
 		})
