@@ -1,0 +1,50 @@
+name: ArtiWave Continuous Integration
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  tests:
+    if: ${{!contains(github.event.head_commit.message, '#code')}}
+    runs-on: ubuntu-latest
+
+    services:
+      mongo:
+        image: mongo
+        ports:
+          - 27017:27017
+        env:
+          MONGO_INITDB_ROOT_USERNAME: admin
+          MONGO_INITDB_ROOT_PASSWORD: nimda
+
+      mongo-express:
+        image: mongo-express
+        ports:
+          - 8081:8081
+        env:
+          ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+          ME_CONFIG_MONGODB_ADMINPASSWORD: nimda
+          ME_CONFIG_MONGODB_SERVER: mongo
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.10.0
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm run test
+
+  okdeploy:
+    needs: [tests]
+    if: ${{github.event_name== 'push' && github.ref_name == 'main'}}
+    uses: ./.github/workflows/cd.yml
