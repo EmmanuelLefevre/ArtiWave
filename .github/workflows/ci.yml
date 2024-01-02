@@ -1,10 +1,6 @@
 name: ArtiWave Continuous Integration
 
 on:
-  workflow_dispatch:
-    inputs:
-      mail-notifications:
-        default: 'false'
   push:
     branches: ["main"]
   pull_request:
