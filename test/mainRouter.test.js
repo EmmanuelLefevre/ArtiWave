@@ -6,7 +6,7 @@
 /*============ IMPORT USED MODULES ============*/
 const request = require('supertest');
 const app = require('../app');
-const { closeDB, connectDB } = require('../api/db.config');
+const { closeDB } = require('../api/db.config');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
 
@@ -26,8 +26,7 @@ jest.mock('express-rate-limit', () => {
 
 /*============ MAIN ROUTER TESTS ============*/
 describe('MAIN ROUTER', () => {
-    beforeAll(async () => {
-        await connectDB();
+    beforeAll(() => {
         jest.resetModules();
     });
 
