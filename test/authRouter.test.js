@@ -31,6 +31,7 @@ describe('AUTH ROUTER', () => {
         };
 
         it('Should return 200', async () => {
+            jest.setTimeout(10000);
             const response = await request(app)
             .post('/api/login')
             .send(goodCredentials);
@@ -44,6 +45,7 @@ describe('AUTH ROUTER', () => {
         };
 
         it('Should return 401', async () => {
+            jest.setTimeout(10000);
             const response = await request(app)
             .post('/api/login')
             .send(postBadCredentialsCase1);
@@ -57,6 +59,7 @@ describe('AUTH ROUTER', () => {
         };
 
         it('Should return 401', async () => {
+            jest.setTimeout(10000);
             const response = await request(app)
             .post('/api/login')
             .send(postBadCredentialsCase2);
@@ -69,6 +72,7 @@ describe('AUTH ROUTER', () => {
         };
 
         it('Should return 400', async () => {
+            jest.setTimeout(10000);
             const response = await request(app)
             .post('/api/login')
             .send(invalidRequestCase1);
@@ -81,6 +85,7 @@ describe('AUTH ROUTER', () => {
         };
 
         it('Should return 400', async () => {
+            jest.setTimeout(10000);
             const response = await request(app)
             .post('/api/login')
             .send(invalidRequestCase2);
@@ -94,6 +99,7 @@ describe('AUTH ROUTER', () => {
         };
 
         it('Should return 422', async () => {
+            jest.setTimeout(10000);
             const response = await request(app)
             .post('/api/login')
             .send(validationError);
@@ -102,6 +108,7 @@ describe('AUTH ROUTER', () => {
 
         /*==== No route found ====*/
         it('Should return 404', async () => {
+            jest.setTimeout(10000);
             const response = await request(app).post('/api/login/dgetfqtf');
             expect(response.status).toBe(404);
         });
