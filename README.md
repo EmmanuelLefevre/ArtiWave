@@ -1,4 +1,7 @@
-# BLOG
+# ArtiWave
+## INTRODUCTION
+ArtiWave is a back-end blogging application developped with Express. It uses MongoDB as well as the Mongoose ORM. 
+It has JWT authentication and allows you to perform CRUD operations on articles depending on your role.
 ## INSTALLATION
 ### 1. Local
 #### Database
@@ -10,7 +13,7 @@
 mongosh
 ```
 ```shell
-use blog
+use artiwave
 ```
 ```shell
 db.createCollection("users")
@@ -24,10 +27,10 @@ db.createCollection("articles")
 mongosh
 ```
 ```shell
-use blog
+use artiwave
 ```
 ```shell
-db.createUser({ user: "Admin", pwd: "nimda", roles: [{ role: "readWrite", db: "blog" }] })
+db.createUser({ user: "Admin", pwd: "nimda", roles: [{ role: "readWrite", db: "artiwave" }] })
 ```
 [MongoDb create a user documentation](https://www.mongodb.com/docs/manual/tutorial/create-users/)
 ***
@@ -87,7 +90,7 @@ npm run dev
 ```
 #### Swagger doc
 ```
-localhost:9000/swagger-doc
+localhost:9001/swagger-doc
 ```
 #### Launch tests
 ```shell
@@ -98,7 +101,7 @@ npm run test
 npm run test:cov
 ```
 #### Launch Sonarqube server
-First give rights to the file  
+First give rights to the sonar-server.sh file  
 ```shell
 chmod u+x sonar-server.sh
 ```
@@ -110,7 +113,7 @@ Open a browser and open the URL => http://localhost:9000
 Enter credentials Login: admin and Password: admin  
 Set a new password...  
 
-Give rights to the file  
+Give rights to the scan.sh file  
 ```shell
 chmod u+x scan.sh
 ```
