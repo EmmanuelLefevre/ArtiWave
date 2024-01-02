@@ -101,19 +101,19 @@ npm run test
 npm run test:cov
 ```
 #### Launch Sonarqube server
-First give rights to the sonar-server.sh file  
+##### 1. First give rights to the sonar-server.sh file:
 ```shell
 chmod u+x sonar-server.sh
 ```
-Start the server after opening docker desktop
+##### 2. Start the server after opening docker desktop:
 ```shell
 ./sonar-server.sh
 ```
-Open a browser and open the URL => http://localhost:9000  
-Enter credentials Login: admin and Password: admin  
-Set a new password...  
-![Connexion MongoDb VsCode extension step 1](https://github.com/EmmanuelLefevre/img/blob/main/SonarQube%20update%20password.png)  
-Create new project manually  
+##### 3. Open a browser and open the URL => http://localhost:9000
+##### 4. Enter credentials Login: admin and Password: admin
+##### 5. Set a new password...
+![Connexion MongoDb VsCode extension step 1](https://github.com/EmmanuelLefevre/img/blob/main/SonarQube%20update%20password.png)
+##### 6. Create new project manually
 ProjectKey = ArtiWave  
 Insert created token in constant SONAR_TOKEN in the scan.sh file
 Give rights to the scan.sh file  
