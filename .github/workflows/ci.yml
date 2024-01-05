@@ -10,6 +10,10 @@ jobs:
   tests:
     if: ${{!contains(github.event.head_commit.message, '#code')}}
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: ['20.10.0']
+        mongodb-version: ['7.0.4']
 
     services:
       mongo:
@@ -18,15 +22,6 @@ jobs:
           MONGO_INITDB_ROOT_USERNAME: admin
           MONGO_INITDB_ROOT_PASSWORD: nimda
 
-      mongo-express:
-        image: mongo-express
-        ports:
-          - 8081:8081
-        env:
-          ME_CONFIG_MONGODB_ADMINUSERNAME: admin
-          ME_CONFIG_MONGODB_ADMINPASSWORD: nimda
-          ME_CONFIG_MONGODB_URL: mongodb://admin:nimda@mongo:27017/
-
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -34,7 +29,15 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 20.10.0
+          node-version: ${{ matrix.node-version }}
+
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.10.0
+        with:
+          mongodb-version: ${{ matrix.mongodb-version }}
+          mongodb-username: admin
+          mongodb-password: nimda
+          mongodb-db: artiwave
 
       - name: Install dependencies
         run: npm install
