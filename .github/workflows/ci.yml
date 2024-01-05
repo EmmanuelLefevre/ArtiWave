@@ -15,6 +15,13 @@ jobs:
         node-version: ['20.10.0']
         mongodb-version: ['7.0.4']
 
+    services:
+      mongo:
+        image: mongo
+        env:
+          MONGO_INITDB_ROOT_USERNAME: admin
+          MONGO_INITDB_ROOT_PASSWORD: nimda
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -28,7 +35,7 @@ jobs:
         uses: supercharge/mongodb-github-action@1.10.0
         with:
           mongodb-version: ${{ matrix.mongodb-version }}
-          mongodb-username: Admin
+          mongodb-username: admin
           mongodb-password: nimda
           mongodb-db: artiwave
 
