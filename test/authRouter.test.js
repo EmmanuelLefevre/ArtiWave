@@ -6,15 +6,14 @@
 /*============ IMPORT USED MODULES ============*/
 const request = require('supertest');
 const app = require('../app');
-const { closeDB, connectDB } = require('../api/db.config');
+const { closeDB } = require('../api/db.config');
 
 const AuthController = require('../api/controllers/authController');
 
 
 /*============ AUTH ROUTER TESTS ============*/
 describe('AUTH ROUTER', () => {
-    beforeEach(async () => {
-        await connectDB();
+    beforeEach(() => {
         AuthController.resetRateLimit();
     });
 
