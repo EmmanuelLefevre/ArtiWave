@@ -93,7 +93,7 @@ npm run dev
 ```
 #### Swagger doc
 ```
-localhost:9001/swagger-doc
+localhost:9001/api/swagger-doc
 ```
 #### Launch tests
 ```shell
