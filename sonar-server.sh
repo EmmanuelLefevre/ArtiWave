@@ -1,10 +1,13 @@
+# Create directories to store SonarQube configuration, data, logs and extensions.
 mkdir -p ./opt/sonarqube/conf
 mkdir -p ./opt/sonarqube/data
 mkdir -p ./opt/sonarqube/logs
 mkdir -p ./opt/sonarqube/extensions
 
+# Sets the SONARQUBE_DIR environment variable with the absolute path of the previously created directory
 export SONARQUBE_DIR=$(pwd)/opt
 
+# Start a SonarQube Docker container
 docker run --detach \
     -p 9000:9000 \
     -d \
@@ -17,6 +20,7 @@ docker run --detach \
     -v $SONARQUBE_DIR/extensions:/opt/sonarqube/extensions \
 sonarqube:8.7.1-community
 
+# Message indicating that the SonarQube server is ready and display the IP address of the server in the Docker network.
 echo " "
 echo "###############"
 echo "SONARQUBE Server is ready!"
