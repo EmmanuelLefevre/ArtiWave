@@ -1,3 +1,0 @@
-:root{--bg-background-color: rgb(0,212,255);--gradient-start: 0, 212, 255;--gradient-end: 9, 9, 121;--body-text: 'roboto';--body-font-weight-regular: 400}html,body{height:100%;margin:0}body{font-family:var(--body-text);font-weight:var(--body-font-weight-regular);background:linear-gradient(180deg, rgba(var(--gradient-start), 1) 35%, rgba(var(--gradient-end), 1) 100%)}
-
-/*# sourceMappingURL=main.css.map */

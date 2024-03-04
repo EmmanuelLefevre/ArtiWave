@@ -58,5 +58,5 @@ server.on('listening', () => {
 
 server.listen(port, () => {
 	console.log('The server is running. Have fun!');
-	open(`http://localhost:${port}/api`);
+	open(`http://localhost:${port}`);
 });

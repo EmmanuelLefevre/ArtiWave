@@ -7,7 +7,6 @@
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
-const sassMiddleware = require('node-sass-middleware');
 
 const { connectDB } = require('./api/db.config');
 
@@ -82,21 +81,13 @@ app.use(favicon(path.join(__dirname, 'api/assets', 'favicon.ico')));
 
 
 /*============ SCSS ============*/
-app.use(sassMiddleware({
-	src: path.join(__dirname, 'api/scss'),
-	dest: path.join(__dirname, 'api/public/css'),
-	indentedSyntax: false,
-	sourceMap: true,
-    outputStyle: 'compressed'
-}));
-
 app.use(express.static(path.join(__dirname, 'public')));
 
 
 /*============ MAIN ROUTER PARAMETERS ============*/
 
 /*=== HOME ===*/
-app.get('/api', (_req, res) => res.send(`Application is online!`))
+app.get('/', (_req, res) => res.sendFile(path.join(__dirname, 'public/views/index.html')));
 
 /*=== AUTH ===*/
 app.use('/api/login', AuthRouter);
