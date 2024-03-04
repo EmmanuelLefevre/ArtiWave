@@ -8,8 +8,9 @@
   },
   "scripts": {
     "start": "node -r dotenv/config api/server.js",
-    "dev": "nodemon -r dotenv/config api/server.js",
-    "sass": "sass --no-source-map --watch scss/main.scss public/css/main.css",
+    "sass-watch": "sass --no-source-map --watch scss/main.scss public/css/main.css",
+    "nodemon-watch": "nodemon -r dotenv/config api/server.js",
+    "dev": "npm-run-all --parallel sass-watch nodemon-watch",
     "fixtures": "node -r dotenv/config api/_dataFixtures/fixtures.js",
     "test": "jest --setupFiles dotenv/config",
     "test:cov": "jest --setupFiles dotenv/config --coverage"
@@ -38,6 +39,7 @@
     "better-opn": "^3.0.2",
     "jest": "^29.7.0",
     "nodemon": "^3.0.2",
+    "npm-run-all": "^4.1.5",
     "supertest": "^6.3.3",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0"
