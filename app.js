@@ -78,7 +78,7 @@ connectDB();
 
 
 /*============ FAVICON ============*/
-app.use(favicon(path.join(__dirname, 'api/assets', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, 'public/assets', 'favicon.ico')));
 
 
 /*============ SCSS ============*/
