@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "node -r dotenv/config api/server.js",
-    "dev": "nodemon -r dotenv/config api/server.js & npm run sass",
+    "dev": "nodemon -r dotenv/config api/server.js",
     "sass": "sass --no-source-map --watch scss/main.scss public/css/main.css",
     "fixtures": "node -r dotenv/config api/_dataFixtures/fixtures.js",
     "test": "jest --setupFiles dotenv/config",
