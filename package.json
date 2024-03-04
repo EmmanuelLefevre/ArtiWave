@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "node -r dotenv/config api/server.js",
-    "sass-watch": "sass --no-source-map --watch scss/main.scss public/css/main.css",
+    "sass-watch": "sass --no-source-map --watch api/scss/main.scss public/css/main.css",
     "nodemon-watch": "nodemon -r dotenv/config api/server.js",
     "dev": "npm-run-all --parallel sass-watch nodemon-watch",
     "fixtures": "node -r dotenv/config api/_dataFixtures/fixtures.js",
