@@ -35,6 +35,7 @@ app.use(helmet({
 app.disable('x-powered-by');
 app.use((_req, res, next) => {
 	res.setHeader('X-XSS-Protection', '1; mode=block');
+	res.setHeader("Content-Security-Policy", "script-src 'self' https://unpkg.com;");
 	next();
 });
 
