@@ -10,15 +10,23 @@
   <body>
     <div class="login-div">
       <button hx-get="/loginForm"
-        hx-target="#formContainer"
-        hx-trigger="click"
-        hx-swap="outerHTML"
-        hx-indicator="dots"
-        aria-label="Bouton vers le formulaire de connexion"
-        class="login-button">
+              hx-target="#formLoginContainer"
+              hx-trigger="click"
+              aria-label="Bouton vers le formulaire de connexion"
+              id="login-button"
+              class="login-button">
         <span>Connexion</span>
       </button>
     </div>
+    <div id="formLoginContainer"></div>
+    <script>
+      document.addEventListener("htmx:afterSwap", function(event) {
+        // Check if login form has been loaded
+        if (event.target.id === "formLoginContainer") {
+          // Hide login button
+          document.getElementById("login-button").style.display = "none";
+        }
+      });
+    </script>
   </body>
-  <div id="formContainer"></div>
 </html>
