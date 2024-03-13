@@ -90,6 +90,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 /*=== HOME ===*/
 app.get('/', (_req, res) => res.sendFile(path.join(__dirname, 'public/views/index.html')));
 
+/*=== LOGIN FORM ===*/
+app.get('/loginForm', (_req, res) => res.sendFile(path.join(__dirname, 'public/views/login/loginForm.html')));
+
 /*=== AUTH ===*/
 app.use('/api/login', AuthRouter);
 
