@@ -149,7 +149,7 @@ body {
     }
     .user-box {
       position: relative;
-      input {
+      input, textarea {
         width: 100%;
         padding: 10px 0;
         font-size: 16px;
@@ -160,15 +160,29 @@ body {
         outline: none;
         background: transparent;
         transition: width 0.2s linear 0.2s;
+        ~ span.input-focus-border {
+          display: block;
+          width: 0;
+          height: 2px;
+          background: linear-gradient(to right, #027efb, #b621fe 60%);
+          position: absolute;
+          bottom: 30px;
+          left: 0;
+          transition: all 0.125s cubic-bezier(0.2, 0, 0.03, 1);
+        }
         &:focus {
           outline: none;
-          border-bottom: 1px solid var(--main-purple);
-        }
-        &:focus ~ label {
-          top: -20px;
-          left: 0;
-          color: var(--main-purple);
-          font-size: 14px;
+          color: var(--black);
+          ~ label {
+            top: -20px;
+            left: 0;
+            color: var(--main-purple);
+            font-size: 14px;
+          }
+          ~ span.input-focus-border {
+            width: 100%;
+            transition: all 0.125s cubic-bezier(0.2, 0, 0.03, 1);
+          }
         }
       }
       label {
@@ -189,36 +203,4 @@ body {
       text-align: center;
     }
   }
-}
-
-.effect-16 ~ .focus-border{
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background-color: #3399FF;
-  transition: 0.4s;
-}
-.effect-16:focus ~ .focus-border,
-.has-content.effect-16 ~ .focus-border{
-  width: 100%;
-  transition: 0.4s;
-}
-.effect-16 ~ label{
-  position: absolute;
-  left: 0;
-  width: 100%;
-  top: 9px;
-  color: #aaa;
-  transition: 0.3s;
-  z-index: -1;
-  letter-spacing: 0.5px;
-}
-.effect-16:focus ~ label,
-.has-content.effect-16 ~ label{
-  top: -16px;
-  font-size: 12px;
-  color: #3399FF;
-  transition: 0.3s;
 }
