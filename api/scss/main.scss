@@ -1,10 +1,11 @@
-/*------Color-Palette------*/
 :root {
-  /*------ Main Colors------*/
+  /*======COLOR PALETTE======*/
+  /*------Main------*/
   --black: #000;
   --white: #fff;
   --main-blue: #027efb;
   --main-purple: #b621fe;
+  --second-blue: #1fd1f9;
   /*------Text------*/
   --button-text: var(--main-blue);
   --label-text: var(--main-purple);
@@ -13,17 +14,20 @@
   --border-button-hover: var(--main-blue);
   --border-input: var(--main-blue);
   /*------Gradient------*/
-  --gradient1: #1fd1f9;
+  --gradient1: var(--second-blue);
   --gradient2: var(--main-purple);
   /*------Input------*/
   --focus-input-border: var(--main-purple);
 
-  /*------Semantic Fonts------*/
+
+  /*======SEMANTIC FONTS======*/
   /*------Roboto------*/
   --body-text: 'roboto';
   --body-font-weight-regular: 400;
 
-  /*------Shadows------*/
+
+  /*======SHADOWS======*/
+
 }
 
 
