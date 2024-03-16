@@ -83,7 +83,7 @@ connectDB();
 app.use(favicon(path.join(__dirname, 'public/assets', 'favicon.ico')));
 
 
-/*============ SCSS ============*/
+/*============ SERVING STATIC FILES FROM PUBLIC DIRECTORY ============*/
 app.use(express.static(path.join(__dirname, 'public')));
 
 
