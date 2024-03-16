@@ -52,6 +52,7 @@ body {
     font-size: 16px;
     cursor: pointer;
     background-image: linear-gradient(315deg, var(--gradient1) 0%, var(--gradient2) 74%);
+    background-image: -webkit-linear-gradient(315deg, var(--gradient1) 0%, var(--gradient2) 74%);
     width: 130px;
     height: 40px;
     line-height: 42px;
@@ -98,6 +99,7 @@ body {
         left: 0;
         top: 0;
         background: linear-gradient(var(--gradient1) 0%, var(--gradient2) 0%);
+        background: -webkit-linear-gradient(var(--gradient1) 0%, var(--gradient2) 0%);
         transition: all 0.3s ease;
       }
       &:before {
@@ -141,14 +143,14 @@ body {
     z-index: 9999;
     .h2-form {
       font-size: 33px;
+      text-align: center;
       margin: 0 0 35px 0;
       padding: 0;
-      background: -webkit-linear-gradient(var(--gradient2), var(--gradient1));
+      background: linear-gradient(var(--gradient2) 40%, var(--gradient1));
+      background: -webkit-linear-gradient(var(--gradient2) 40%, var(--gradient1));
       background-clip: text;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      // color: var(--main-blue);
-      text-align: center;
       font-variant: small-caps;
     }
     .user-box {
@@ -172,6 +174,7 @@ body {
           bottom: 30px;
           left: 0;
           background: linear-gradient(to right, var(--gradient1), var(--gradient2) 60%);
+          background: -webkit-linear-gradient(to right, var(--gradient1), var(--gradient2) 60%);
         }
         &:hover ~ label {
           color: var(--main-purple);
@@ -182,6 +185,7 @@ body {
           width: 100%;
           height: 2px;
           background: linear-gradient(to right, var(--gradient1), var(--gradient2) 60%);
+          background: -webkit-linear-gradient(to right, var(--gradient1), var(--gradient2) 60%);
           bottom: 30px;
           left: 0;
           transition: all 0.5s cubic-bezier(0.2, 0, 0.03, 1);
