@@ -6,10 +6,12 @@
   --main-blue: #027efb;
   --main-purple: #b621fe;
   --second-blue: #1fd1f9;
+  --third-blue: #1c75e9;
   /*------Text------*/
   --button-text: var(--main-blue);
   --label-text: var(--main-purple);
   --placeholder-text: var(--main-purple);
+  --link-text: var(--third-blue);
   /*------Border------*/
   --button-border-hover: var(--main-blue);
   /*------Gradient------*/
@@ -33,9 +35,6 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
-  a {
-    text-decoration: none;
-  }
 }
 
 input:-webkit-autofill,
@@ -51,11 +50,19 @@ body {
   font-family: var(--body-text);
   font-weight: var(--body-font-weight-regular);
 
+  a {
+    text-decoration: none;
+    &:visited {
+      color: var(--link-text);
+    }
+  }
+
   .login-div {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
   }
+
 
   /*------Buttons------*/
   button {
@@ -143,10 +150,10 @@ body {
     width: 350px;
     padding: 20px 0 40px 0;
     transform: translate(-50%, -50%);
-    border-top: 2px solid var(--main-blue);
-    border-left: 2px solid var(--main-blue);
-    border-bottom: 2px solid var(--gradient2);
-    border-right: 2px solid var(--gradient2);
+    border-top: 3px solid var(--main-blue);
+    border-left: 3px solid var(--main-blue);
+    border-bottom: 3px solid var(--gradient2);
+    border-right: 3px solid var(--gradient2);
     box-shadow: 0 15px 25px rgba(0,0,0,.6);
     box-sizing: border-box;
     border-radius: 10px;
@@ -155,6 +162,30 @@ body {
       display: flex;
       justify-content: flex-end;
       width: 300px;
+      .close-form-link {
+        display: block;
+        position: relative;
+        .close-form-icon {
+          transition: 400ms ease-in 100ms;
+          &:hover {
+            transform: rotate(180deg);
+          }
+        }
+        &:hover::before {
+          content: "";
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          border: 3px solid transparent;
+          background: linear-gradient(white, white) padding-box,
+                      conic-gradient(from 68deg, var(--gradient1), var(--gradient2)) border-box;
+          transition: all 0.5s ease;
+        }
+      }
     }
     .h2-form {
       font-size: 33px;
