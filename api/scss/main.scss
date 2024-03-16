@@ -141,7 +141,7 @@ body {
     z-index: 9999;
     .h2-form {
       font-size: 33px;
-      margin: 0 0 30px;
+      margin: 0 0 35px 0;
       padding: 0;
       color: var(--main-blue);
       text-align: center;
@@ -153,7 +153,7 @@ body {
         width: 100%;
         padding: 10px 0;
         font-size: 16px;
-        color: var(--main-purple);
+        color: var(--black);
         margin-bottom: 30px;
         border: none;
         border-bottom: 1px solid var(--black);
@@ -162,10 +162,22 @@ body {
         transition: width 0.2s linear 0.2s;
         ~ span.input-focus-border {
           display: block;
+          position: absolute;
           width: 0;
           height: 2px;
+          bottom: 30px;
+          left: 0;
           background: linear-gradient(to right, var(--gradient1), var(--gradient2) 60%);
+        }
+        &:hover ~ label {
+          color: var(--main-purple);
+        }
+        &:hover ~ span.input-focus-border {
+          display: block;
           position: absolute;
+          width: 100%;
+          height: 2px;
+          background: linear-gradient(to right, var(--gradient1), var(--gradient2) 60%);
           bottom: 30px;
           left: 0;
           transition: all 0.5s cubic-bezier(0.2, 0, 0.03, 1);
@@ -174,20 +186,35 @@ body {
           outline: none;
           color: var(--black);
           ~ label {
+            font-size: 14px;
             top: -20px;
             left: 0;
             color: var(--main-purple);
-            font-size: 14px;
           }
           ~ span.input-focus-border {
             width: 100%;
             transition: all 0.5s cubic-bezier(0.2, 0, 0.03, 1);
           }
         }
+        &::placeholder {
+          color: transparent;
+        }
+        &:not(:placeholder-shown) ~ label {
+          font-size: 14px;
+          top: -20px;
+          left: 0;
+          color: var(--main-purple);
+        }
+        &:valid ~ label {
+          font-size: 14px;
+          color: var(--main-purple);
+          top: -20px;
+          left: 0;
+        }
       }
       label {
         position: absolute;
-        top:0;
+        top: 0;
         left: 0;
         padding: 10px 0;
         font-size: 16px;
