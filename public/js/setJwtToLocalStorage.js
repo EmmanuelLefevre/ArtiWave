@@ -17,7 +17,7 @@ document.getElementById('loginForm').addEventListener('htmx:afterSwap', function
     else if (event.detail.xhr.status === 401) {
         // Do something for bad credentials
     }
-    else { //LoginLimiterError || InternalServerError || ResponseValidationError || UserNotFoundError
+    else { //LoginLimiterError || InternalServerError || ResponseValidationError || UserNotFoundError || Unprocessable Entity
         // Do something
     }
 });
