@@ -32,7 +32,11 @@ app.use(helmet({
 	crossOriginResourcePolicy: { policy: "cross-origin"},
 	xContentTypeOptions: true
 }));
+
+/*=== DISABLE 'X-POWERED-BY' HEADER ===*/
 app.disable('x-powered-by');
+
+/*=== ADDITIONAL SECURITY HEADERS ===*/
 app.use((_req, res, next) => {
 	res.setHeader('X-XSS-Protection', '1; mode=block');
 	res.setHeader("Content-Security-Policy", "script-src 'self' https://unpkg.com;");
@@ -40,18 +44,16 @@ app.use((_req, res, next) => {
 });
 
 /*=== CORS ===*/
-app.use((req, res, next) => {
-	if (req.method === 'OPTIONS' || req.method === 'HEAD') {
+app.use(cors());
+app.use((req,res,next)=>{
+    res.header('Access-Control-Allow-Headers, Access-Control-Allow-Origin', 'Origin, X-Requested-with, x-access-token, role, Content, Content_Type, Accept, Authorization','http://localhost:9001');
+    if(req.method === 'OPTIONS') {
+        res.header('Access-Control-Allow-Methods','GET, POST, PUT, PATCH, DELETE');
+    }
+	if (req.method === 'HEAD') {
 		throw new NotAllowedMethodError();
 	}
-	else {
-		cors({
-			origin: "http://localhost:9001",
-			methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
-			allowedHeaders: "Origin, X-Requested-With, x-access-token, role, Content, Accept, Content-Type, Authorization"
-		})
-		(req, res, next);
-	}
+    next();
 });
 
 /*=== SWAGGER ===*/
