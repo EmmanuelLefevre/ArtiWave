@@ -80,7 +80,7 @@ connectDB();
 
 
 /*============ FAVICON ============*/
-app.use(favicon(path.join(__dirname, 'public/assets', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, 'public/img/favicon', 'favicon.ico')));
 
 
 /*============ SERVING STATIC FILES FROM PUBLIC DIRECTORY ============*/
