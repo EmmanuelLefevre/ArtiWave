@@ -1,34 +1,50 @@
 <form id="loginForm"
       class="form">
+  <div class="close-form-container">
+    <a href=""
+       id="close-form-link"
+       class="close-form-link">
+      <img src="img/icons/cross.svg"
+           class="close-form-icon"
+           alt="Fermer le formulaire">
+    </a>
+  </div>
   <h2 class="h2-form">Login</h2>
-  <div class="user-box">
+  <div class="user-input">
     <input type="email"
            id="email"
            name="email"
            autocomplete="on"
            placeholder="Email"
+           aria-label="Champ de saisie de l'email"
            required>
     <span class="input-border"></span>
     <label for="email">Email</label>
   </div>
-  <div class="user-box">
+  <div class="user-input">
     <input type="password"
            id="password"
            name="password"
            autocomplete="off"
            placeholder="Password"
+           aria-label="Champ de saisie du mot de passe"
            required>
     <span class="input-border"></span>
     <label for="password">Password</label>
   </div>
+  <div class="forgotten-password">
+    <a href="#">Forget Password?</a>
+  </div>
   <button type="submit"
           hx-post="http://localhost:9001/api/login"
           hx-swap="none"
-          class="submit-button-form">
+          class="submit-button-form"
+          aria-label="Bouton de connexion">
     <span>Submit</span>
   </button>
-  <p class="message">Not registered?
+  <p class="message">Not a Member?
   <br>
-  <a href="#">Create an account</a></p>
+  <a href="#">Signup</a></p>
 </form>
+<script src="js/closeLoginForm.js" defer></script>
 <script src="js/setJwtToLocalStorage.js" defer></script>
