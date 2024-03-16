@@ -14,7 +14,10 @@ document.getElementById('loginForm').addEventListener('htmx:afterSwap', function
         // Save nickname to local storage
         localStorage.setItem('nickname', nickname);
     }
-    // else {
-
-    // }
+    else if (event.detail.xhr.status === 401) {
+        // Do something for bad credentials
+    }
+    else { //LoginLimiterError || InternalServerError || ResponseValidationError || UserNotFoundError
+        // Do something
+    }
 });
