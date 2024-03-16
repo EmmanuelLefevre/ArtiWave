@@ -141,7 +141,7 @@ body {
     top: 45%;
     left: 50%;
     width: 350px;
-    padding: 40px;
+    padding: 20px 0 40px 0;
     transform: translate(-50%, -50%);
     border-top: 2px solid var(--main-blue);
     border-left: 2px solid var(--main-blue);
@@ -151,6 +151,11 @@ body {
     box-sizing: border-box;
     border-radius: 10px;
     z-index: 9999;
+    .close-form-container {
+      display: flex;
+      justify-content: flex-end;
+      width: 300px;
+    }
     .h2-form {
       font-size: 33px;
       text-align: center;
