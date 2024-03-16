@@ -143,7 +143,11 @@ body {
       font-size: 33px;
       margin: 0 0 35px 0;
       padding: 0;
-      color: var(--main-blue);
+      background: -webkit-linear-gradient(var(--gradient2), var(--gradient1));
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      // color: var(--main-blue);
       text-align: center;
       font-variant: small-caps;
     }
