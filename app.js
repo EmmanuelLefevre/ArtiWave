@@ -47,7 +47,7 @@ app.use((_req, res, next) => {
 app.use(cors());
 app.use((req,res,next)=>{
     res.header('Access-Control-Allow-Headers, Access-Control-Allow-Origin', 'Origin, X-Requested-with, x-access-token, role, Content, Content_Type, Accept, Authorization','http://localhost:9001');
-    if(req.method === 'OPTIONS') {
+    if (req.method === 'OPTIONS') {
         res.header('Access-Control-Allow-Methods','GET, POST, PUT, PATCH, DELETE');
     }
 	if (req.method === 'HEAD') {
