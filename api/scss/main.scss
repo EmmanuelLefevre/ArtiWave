@@ -11,13 +11,10 @@
   --label-text: var(--main-purple);
   --placeholder-text: var(--main-purple);
   /*------Border------*/
-  --border-button-hover: var(--main-blue);
-  --border-input: var(--main-blue);
+  --button-border-hover: var(--main-blue);
   /*------Gradient------*/
   --gradient1: var(--second-blue);
   --gradient2: var(--main-purple);
-  /*------Input------*/
-  --focus-input-border: var(--main-purple);
 
 
   /*======SEMANTIC FONTS======*/
@@ -79,7 +76,7 @@ body {
       content: "";
       right: 0;
       bottom: 0;
-      background: var(--border-button-hover);
+      background: var(--button-border-hover);
       transition: all 0.3s ease;
     }
     &:before {
@@ -176,7 +173,7 @@ body {
         outline: none;
         background: transparent;
         transition: width 0.2s linear 0.2s;
-        ~ span.input-focus-border {
+        ~ span.input-border {
           display: block;
           position: absolute;
           width: 0;
@@ -188,7 +185,7 @@ body {
         &:hover ~ label {
           color: var(--main-purple);
         }
-        &:hover ~ span.input-focus-border {
+        &:hover ~ span.input-border {
           display: block;
           position: absolute;
           width: 100%;
@@ -207,7 +204,7 @@ body {
             left: 0;
             color: var(--main-purple);
           }
-          ~ span.input-focus-border {
+          ~ span.input-border {
             width: 100%;
             transition: all 0.5s cubic-bezier(0.2, 0, 0.03, 1);
           }
@@ -227,11 +224,12 @@ body {
           top: -20px;
           left: 0;
         }
-        // &:-webkit-autofill {
-        //   background-image: none !important;
-        //   background-color: initial !important;
-        //   color: initial !important;
-        // }
+        &:valid ~ span.input-border {
+          font-size: 14px;
+          color: var(--main-purple);
+          top: -20px;
+          left: 0;
+        }
       }
       label {
         position: absolute;
