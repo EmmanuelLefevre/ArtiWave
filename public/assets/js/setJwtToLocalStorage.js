@@ -4,15 +4,15 @@ document.getElementById('loginForm').addEventListener('htmx:afterSwap', function
         // Get JSON response
         const response = JSON.parse(event.detail.xhr.responseText);
 
-        // Get JWT from response
-        const jwt = response.access_token;
-        // Save JWT to local storage
-        localStorage.setItem('jwt', jwt);
+        // Get token from response
+        const token = response.access_token;
+        // Save token to local storage
+        localStorage.setItem('access_token', token);
 
         // Get user nickname from response
-        const nickname = response.nickname;
-        // Save nickname to local storage
-        localStorage.setItem('nickname', nickname);
+        const userNickname = response.nickname;
+        // Save user nickname to local storage
+        localStorage.setItem('user_nickname', userNickname);
     }
     else if (event.detail.xhr.status === 401) {
         // Do something for bad credentials
