@@ -77,6 +77,14 @@ body {
           width: 45px;
           height: auto;
           margin: 10px 20px;
+          border-radius: 50%;
+          background-image: linear-gradient(315deg, var(--gradient1) 0%, var(--gradient2) 74%);
+        }
+        a {
+          cursor: pointer;
+        }
+        a:nth-child(2) {
+          margin-right: 20px;
         }
       }
       .nav-right-section {
