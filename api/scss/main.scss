@@ -111,8 +111,11 @@ body {
             color: var(--main-purple);
             margin: 0 15px;
             &:hover {
-              color: var(--main-blue);
+              color: var(--white);
             }
+          }
+          a.active {
+            border-bottom: 1px solid var(--main-purple);
           }
         }
         .nav-right-section {
