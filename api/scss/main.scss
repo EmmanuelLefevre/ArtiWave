@@ -3,13 +3,13 @@
   /*------Main------*/
   --black: #000;
   --white: #fff;
+  --grey: #d4d4d4;
   --main-blue: #027efb;
   --main-purple: #b621fe;
   --second-blue: #1fd1f9;
   --third-blue: #1c75e9;
   /*------Background------*/
-  --main-bg: var(--white);
-  --nav-bg: #f3f0f0;
+  --main-bg: var(--black);
   /*------Text------*/
   --button-text: var(--main-blue);
   --label-text: var(--main-purple);
@@ -23,9 +23,17 @@
 
 
   /*======SEMANTIC FONTS======*/
-  /*------Roboto------*/
-  --body-text: 'roboto';
-  --body-font-weight-regular: 400;
+  /*------Arial------*/
+  --body-text: 'arial';
+  --body-font-text-weight-regular: 400;
+  /*------Arial------*/
+  --body-title: 'roboto';
+  --body-font-title-weight-regular: 400;
+
+  /*======FONTS SIZE======*/
+  /*------Mobile------*/
+  /*------Small Desktop------*/
+  /*------Large desktop------*/
 
 
   /*======SHADOWS======*/
@@ -51,10 +59,11 @@ input:-webkit-autofill:active {
 /*------Tags------*/
 body {
   font-family: var(--body-text);
-  font-weight: var(--body-font-weight-regular);
+  font-weight: var(--body-font-text-weight-regular);
   background-color: var(--main-bg);
 
   a {
+    cursor: pointer;
     text-decoration: none;
     &:visited {
       color: var(--link-text);
@@ -63,7 +72,16 @@ body {
 
   /*------Header------*/
   header {
-    background-color: var(--nav-bg);
+    position: relative;
+    &:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background-image: linear-gradient(to right, transparent, #fff, transparent);
+    }
     nav {
       display: flex;
       justify-content: space-between;
@@ -80,16 +98,18 @@ body {
           border-radius: 50%;
           background-image: linear-gradient(315deg, var(--gradient1) 0%, var(--gradient2) 74%);
         }
-        a {
-          cursor: pointer;
-        }
-        a:nth-child(2) {
-          margin-right: 20px;
-        }
       }
-      .nav-right-section {
+      .nav-center-section {
         display: flex;
         align-items: center;
+        a {
+          font-family: var(--body-text);
+          color: var(--main-purple);
+          margin: 0 15px;
+          &:hover {
+            color: var(--white);
+          }
+        }
       }
     }
   }
@@ -172,12 +192,12 @@ body {
 
   /*------Forms------*/
   .form {
-    position: absolute;
+    position: fixed;
     display: flex;
     flex-direction: column;
     align-items: center;
     background: var(--white);
-    top: 45%;
+    top: 50%;
     left: 50%;
     width: 350px;
     padding: 20px 0 40px 0;
@@ -220,6 +240,8 @@ body {
       }
     }
     .h2-form {
+      font-family: var(--body-title);
+      font-weight: var(--body-font-title-weight-regular);
       font-size: 33px;
       text-align: center;
       margin: 0 0 35px 0;
@@ -299,7 +321,7 @@ body {
         &:valid ~ span.input-border {
           font-size: 14px;
           color: var(--main-purple);
-          top: -20px;
+          top: 37px;
           left: 0;
         }
       }
