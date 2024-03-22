@@ -1,0 +1,26 @@
+<nav>
+	<div class="nav-left-section">
+		<a type="button"
+				aria-label="Bouton vers la page accueil"
+				class="nav-logo">
+			<img src="assets/img/logo/ArtiWave-logo.png"
+						alt="Logo du site Artiwave">
+		</a>
+		<a type="button"
+				aria-label="Bouton vers la page d'accueil">Accueil
+		</a>
+		<a type="button"
+				aria-label="Bouton vers la page des articles">Articles
+		</a>
+	</div>
+	<div class="nav-right-section">
+		<button hx-get="/login-component"
+						hx-swap="outerHTML"
+						type="button"
+						id="login-button"
+						class="login-button"
+						aria-label="Bouton vers le formulaire de connexion">
+			<span>Connexion</span>
+		</button>
+	</div>
+</nav>
