@@ -81,7 +81,7 @@ body {
       left: 0;
       width: 100%;
       height: 1px;
-      background-image: linear-gradient(to right, transparent, #fff, transparent);
+      background-image: linear-gradient(to right, transparent, var(--second-blue), var(--main-purple), var(--second-blue), transparent);
     }
     nav {
       height: 80px;
