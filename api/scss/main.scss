@@ -43,6 +43,7 @@
 
 /*------Reset------*/
 html, body {
+  width: 100%;
   height: 100%;
   margin: 0;
   padding: 0;
@@ -106,10 +107,11 @@ body {
           justify-content: center;
           a {
             font-family: var(--body-text);
+            text-transform: uppercase;
             color: var(--main-purple);
             margin: 0 15px;
             &:hover {
-              color: var(--white);
+              color: var(--main-blue);
             }
           }
         }
@@ -353,8 +355,12 @@ body {
     }
     .forgotten-password {
       justify-content: flex-start;
+      font-size: 15px;
       width: 200px;
       margin-bottom: 15px;
     }
+  }
+  .register-link {
+    font-size: 15px;
   }
 }
