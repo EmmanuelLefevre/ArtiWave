@@ -3,23 +3,13 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="assets/css/main.css">
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
     <title>Artiwave</title>
   </head>
   <body>
-    <header>
-
+    <header hx-get="/navbar-component"
+            hx-trigger="load">
     </header>
-    <div class="login-div">
-      <button hx-get="/loginForm"
-              hx-swap="outerHTML"
-              type="button"
-              id="login-button"
-              class="login-button"
-              aria-label="Bouton vers le formulaire de connexion">
-        <span>Connexion</span>
-      </button>
-    </div>
   </body>
 </html>
