@@ -80,21 +80,27 @@ connectDB();
 
 
 /*============ FAVICON ============*/
-app.use(favicon(path.join(__dirname, 'public/img/favicon', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, 'public/assets/img/favicon', 'ArtiWave-favicon-32px.ico')));
 
 
 /*============ SERVING STATIC FILES FROM PUBLIC DIRECTORY ============*/
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-/*============ MAIN ROUTER PARAMETERS ============*/
-
+/*============ ROUTER PARAMETERS ============*/
 /*=== HOME ===*/
 app.get('/', (_req, res) => res.sendFile(path.join(__dirname, 'public/views/index.html')));
 
-/*=== LOGIN FORM ===*/
-app.get('/loginForm', (_req, res) => res.sendFile(path.join(__dirname, 'public/views/login/loginForm.html')));
 
+/*============ HTML ============*/
+/*=== LOGIN FORM ===*/
+app.get('/login-component', (_req, res) => res.sendFile(path.join(__dirname, 'public/views/components/login/login.component.html')));
+
+/*=== NAVBAR COMPONENT ===*/
+app.get('/navbar-component', (_req, res) => res.sendFile(path.join(__dirname, 'public/views/components/navbar/navbar.component.html')));
+
+
+/*============ MAIN ============*/
 /*=== AUTH ===*/
 app.use('/api/login', AuthRouter);
 
@@ -111,6 +117,7 @@ app.use('/api/admins', AdminCheck, AdminRouter);
 app.get('*', (_req, _res) => {
 	throw new NotFoundError();
 });
+
 
 
 /*============ GLOBAL ERROR HANDLER MIDDLEWARE ============*/
