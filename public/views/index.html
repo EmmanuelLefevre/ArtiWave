@@ -8,13 +8,16 @@
     <title>Artiwave</title>
   </head>
   <body>
+    <header>
+
+    </header>
     <div class="login-div">
-      <button type="button"
-              hx-get="/loginForm"
+      <button hx-get="/loginForm"
               hx-swap="outerHTML"
-              aria-label="Bouton vers le formulaire de connexion"
+              type="button"
               id="login-button"
-              class="login-button">
+              class="login-button"
+              aria-label="Bouton vers le formulaire de connexion">
         <span>Connexion</span>
       </button>
     </div>
