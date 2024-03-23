@@ -9,10 +9,12 @@
 		</div>
 		<div class="nav-center-section">
 			<a href="/"
-				 class="nav-link"
+				 id="home-link"
+				 class="nav-link active"
 				 aria-label="Bouton vers la page d'accueil">Accueil
 			</a>
-			<a href="/articles"
+			<a hx-get="/api/articles"
+				 id="articles-link"
 				 class="nav-link"
 				 aria-label="Bouton vers la page des articles">Articles
 			</a>
@@ -29,5 +31,3 @@
 		</div>
 	</div>
 </nav>
-
-<script src="assets/js/activeNavLink.js" defer></script>
