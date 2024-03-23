@@ -1,6 +1,6 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
     const closeIcon = document.getElementById('close-form-link');
-    closeIcon.addEventListener('click', function () {
+    closeIcon.addEventListener('click', function() {
         // Perform an AJAX request to retrieve the initial content of the page
         fetch('/index.html')
             .then(response => response.text())
