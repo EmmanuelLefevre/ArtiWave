@@ -3,15 +3,19 @@
   /*------Main------*/
   --black: #000;
   --white: #fff;
-  --grey: #d4d4d4;
+  --grey: #bebebe;
+  --grey-light: #e9e9e9;
   --main-blue: #027efb;
   --main-purple: #b621fe;
   --second-blue: #1fd1f9;
   --third-blue: #1c75e9;
   /*------Background------*/
   --main-bg: var(--black);
+  --hover-button-bg: var(--grey-light);
   /*------Text------*/
-  --button-text: var(--main-blue);
+  --nav-text-link: var(--grey);
+  --button-text: var(--grey-light);
+  --hover-button-text: var(--main-blue);
   --label-text: var(--main-purple);
   --placeholder-text: var(--main-purple);
   --link-text: var(--third-blue);
@@ -20,15 +24,29 @@
   /*------Gradient------*/
   --gradient1: var(--second-blue);
   --gradient2: var(--main-purple);
-
+  --gradient-effect: linear-gradient(315deg, var(--gradient1) 0%, var(--gradient2) 74%);
 
   /*======SEMANTIC FONTS======*/
   /*------Arial------*/
   --body-text: 'arial';
   --body-font-text-weight-regular: 400;
-  /*------Arial------*/
-  --body-title: 'roboto';
-  --body-font-title-weight-regular: 400;
+  /*------Roboto------*/
+  --body-title-h2: 'roboto';
+  --body-font-title-h2-weight-bold: 900;
+  /*------Hello Radea------*/
+  @font-face {
+    font-family: 'Hello Radea';
+    font-weight: normal;
+    src: url('../fonts/HelloRadea.woff') format('woff');
+  }
+  --hello-radea-font: 'Hello Radea';
+  /*------PP Editorial Old------*/
+  @font-face {
+    font-family: 'PP Editorial Old';
+    font-weight: 400;
+    src: url('../fonts/PPEditorialOld.otf') format('otf');
+  }
+  --playfair-display-font: 'PP Editorial Old';
 
   /*======FONTS SIZE======*/
   /*------Mobile------*/
@@ -92,6 +110,7 @@ body {
         .nav-left-section {
           display: flex;
           justify-content: flex-start;
+          align-items: center;
           width: 100%;
           height: 80px;
           .nav-logo img {
@@ -99,22 +118,37 @@ body {
             height: auto;
             margin: 17px 20px;
             border-radius: 50%;
-            background-image: linear-gradient(315deg, var(--gradient1) 0%, var(--gradient2) 74%);
+            background-image: var(--gradient-effect);
+          }
+          p {
+            font-family: var(--hello-radea-font);
+            font-size: 45px;
+            background-image: var(--gradient-effect);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin: 0 0 15px 0;
           }
         }
         .nav-center-section {
           display: flex;
           justify-content: center;
           a {
-            font-family: var(--body-text);
-            text-transform: uppercase;
-            color: var(--main-purple);
+            font-family: var(--playfair-display-font);
+            font-size: 17px;
+            color: var(--nav-text-link);
             margin: 0 15px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
             &:hover {
-              color: var(--white);
+              color: var(--main-purple);
+              border-bottom: 1px solid var(--main-purple);
             }
           }
-          a.active {
+          a.active:hover {
+            color: var(--main-purple);
+          }
+          .nav-link.active {
             border-bottom: 1px solid var(--main-purple);
           }
         }
@@ -127,14 +161,13 @@ body {
     }
   }
 
-
   /*------Buttons------*/
   button {
     position: relative;
-    color: var(--white);
+    color: var(--button-text);
     font-size: 16px;
     cursor: pointer;
-    background-image: linear-gradient(315deg, var(--gradient1) 0%, var(--gradient2) 74%);
+    background-image: var(--gradient-effect);
     width: 130px;
     height: 40px;
     line-height: 42px;
@@ -162,7 +195,7 @@ body {
       height: 2px;
     }
     &:hover {
-      background: var(--white);
+      background: var(--hover-button-bg);
     }
     &:hover:before {
       height: 100%;
@@ -192,7 +225,7 @@ body {
         width: 0%;
       }
       &:hover {
-        color: var(--button-text);
+        color: var(--hover-button-text);
       }
       &:hover:before {
         height: 100%;
@@ -253,8 +286,8 @@ body {
       }
     }
     .h2-form {
-      font-family: var(--body-title);
-      font-weight: var(--body-font-title-weight-regular);
+      font-family: var(--body-title-h2);
+      font-weight: var(--body-font-title-h2-weight-bold);
       font-size: 33px;
       text-align: center;
       margin: 0 0 35px 0;
