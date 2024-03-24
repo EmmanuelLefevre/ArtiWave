@@ -1,4 +1,6 @@
 document.getElementById('login-form').addEventListener('htmx:afterSwap', function(event) {
+    let logoutButton;
+
     // Check if request was successfull
     if (event.detail.xhr.status === 200) {
         // Get JSON response
@@ -14,7 +16,7 @@ document.getElementById('login-form').addEventListener('htmx:afterSwap', functio
         loginForm.parentNode.removeChild(loginForm);
 
         // Get logout button
-        const logoutButton = logoutButton();
+        logoutButton = createLogoutButton();
 
         // Add disconnect button to navigation bar
         const button = document.querySelector('.nav-right-section');
