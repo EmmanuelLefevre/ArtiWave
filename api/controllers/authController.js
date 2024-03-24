@@ -80,8 +80,7 @@ class AuthController {
 
                     // Set response
                     const response = {
-                        access_token: token,
-                        nickname: user.nickname
+                        access_token: token
                     };
 
                     // Validate response format
