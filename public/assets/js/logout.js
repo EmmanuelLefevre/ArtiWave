@@ -15,12 +15,12 @@ function handleDisconnection() {
 	window.location.href = '/';
 
 	// Get login button
-	loginButton = createLoginButton();
+	loginButton = new LoginButton();
 
 	// Select logout button
 	const logoutButton = document.getElementById('logout-button');
 
 	// Replace disconnection button by login one
-	loginButton.parentNode.replaceChild(loginButton, logoutButton);
+	logoutButton.replaceButton(loginButton);
 }
 
