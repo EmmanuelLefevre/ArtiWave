@@ -11,17 +11,8 @@ const { object, string, array, number } = require('yup');
 
 /*=== TOKEN RESPONSE VALIDATION ===*/
 const UserTokenResponseValidation = object({
-    access_token: string().required(),
-    nickname: string().required(),
-}).test(
-    'contains-only-allowed-keys',
-    (value) => {
-        const allowedKeys = ['access_token', 'nickname'];
-        const actualKeys = Object.keys(value);
-        const extraKeys = actualKeys.filter(key => !allowedKeys.includes(key));
-        return extraKeys.length === 0;
-    }
-);
+    access_token: string().required()
+});
 
 
 /*=== REGISTER RESPONSE VALIDATION ===*/
