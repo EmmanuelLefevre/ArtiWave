@@ -14,21 +14,21 @@ document.getElementById('login-form').addEventListener('htmx:afterSwap', functio
         loginForm.parentNode.removeChild(loginForm);
 
         // Create the button element
-        const disconnectionButton = document.createElement('button');
-        disconnectionButton.setAttribute('id', 'disconnection-button');
-        disconnectionButton.setAttribute('type', 'submit');
-        disconnectionButton.setAttribute('aria-label', 'Bouton de déconnexion');
+        const logoutButton = document.createElement('button');
+        logoutButton.setAttribute('id', 'logout-button');
+        logoutButton.setAttribute('type', 'submit');
+        logoutButton.setAttribute('aria-label', 'Bouton de déconnexion');
 
         // Create the span element for the label
         const spanLabel = document.createElement('span');
         spanLabel.textContent = 'Déconnexion';
 
         // Append the span to the button
-        disconnectionButton.appendChild(spanLabel);
+        logoutButton.appendChild(spanLabel);
 
         // Add disconnect button to navigation bar
         const navRightSection = document.querySelector('.nav-right-section');
-        navRightSection.appendChild(disconnectionButton);
+        navRightSection.appendChild(logoutButton);
 
     }
     else if (event.detail.xhr.status === 401) {
