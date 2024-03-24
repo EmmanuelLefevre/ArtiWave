@@ -15,7 +15,9 @@
 				 aria-label="Bouton vers la page d'accueil">Home
 			</a>
 			<a hx-get="/api/articles"
-				 id="articles-list"
+				 hx-target="#articles-list"
+				 hx-swap="outerHTML"
+				 id="articles-list-button"
 				 class="nav-link"
 				 aria-label="Bouton vers la page des articles">Articles
 			</a>
