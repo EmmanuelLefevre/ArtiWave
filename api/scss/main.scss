@@ -13,14 +13,14 @@
   --main-bg: var(--black);
   --hover-button-bg: var(--grey-light);
   /*------Text------*/
-  --nav-text-link: var(--grey);
-  --button-text: var(--grey-light);
-  --hover-button-text: var(--main-blue);
-  --label-text: var(--main-purple);
-  --placeholder-text: var(--main-purple);
-  --link-text: var(--third-blue);
+  --body-text-color: var(--grey);
+  --nav-link-text-color: var(--grey);
+  --button-text-color: var(--grey-light);
+  --hover-button-text-color: var(--main-blue);
+  --label-text-color: var(--main-purple);
+  --link-text-color: var(--third-blue);
   /*------Border------*/
-  --button-border-hover: var(--main-blue);
+  --button-hover-border-color: var(--main-blue);
   /*------Gradient------*/
   --gradient1: var(--second-blue);
   --gradient2: var(--main-purple);
@@ -80,12 +80,13 @@ body {
   font-family: var(--body-text);
   font-weight: var(--body-font-text-weight-regular);
   background-color: var(--main-bg);
+  color: var(--body-text-color);
 
   a {
     cursor: pointer;
     text-decoration: none;
     &:visited {
-      color: var(--link-text);
+      color: var(--link-text-color);
     }
   }
 
@@ -136,7 +137,7 @@ body {
           a {
             font-family: var(--playfair-display-font);
             font-size: 17px;
-            color: var(--nav-text-link);
+            color: var(--nav-link-text-color);
             margin: 0 15px;
             letter-spacing: 2px;
             text-transform: uppercase;
@@ -165,7 +166,7 @@ body {
   /*------Buttons------*/
   button {
     position: relative;
-    color: var(--button-text);
+    color: var(--button-text-color);
     font-size: 16px;
     cursor: pointer;
     background-image: var(--gradient-effect);
@@ -184,7 +185,7 @@ body {
       content: "";
       right: 0;
       bottom: 0;
-      background: var(--button-border-hover);
+      background: var(--button-hover-border-color);
       transition: all 0.3s ease;
     }
     &:before {
@@ -226,7 +227,7 @@ body {
         width: 0%;
       }
       &:hover {
-        color: var(--hover-button-text);
+        color: var(--hover-button-text-color);
       }
       &:hover:before {
         height: 100%;
@@ -343,7 +344,7 @@ body {
             font-size: 14px;
             top: -20px;
             left: 0;
-            color: var(--main-purple);
+            color: var(--label-text-color);
           }
           ~ span.input-border {
             width: 100%;
@@ -357,11 +358,11 @@ body {
           font-size: 14px;
           top: -20px;
           left: 0;
-          color: var(--main-purple);
+          color: var(--label-text-color);
         }
         &:valid ~ label {
           font-size: 14px;
-          color: var(--main-purple);
+          color: var(--label-text-color);
           top: -20px;
           left: 0;
         }
@@ -389,6 +390,7 @@ body {
     p.message {
       text-align: center;
       margin: 16px 0 0 0;
+      color: var(--black);
     }
     .forgotten-password {
       justify-content: flex-start;
