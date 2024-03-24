@@ -16,12 +16,11 @@ document.getElementById('login-form').addEventListener('htmx:afterSwap', functio
         loginForm.parentNode.removeChild(loginForm);
 
         // Get logout button
-        logoutButton = createLogoutButton();
+        logoutButton = new LogoutButton();
 
         // Add disconnect button to navigation bar
-        const button = document.querySelector('.nav-right-section');
-        button.appendChild(logoutButton);
-
+        const tagClass = document.querySelector('.nav-right-section');
+        logoutButton.addButtonTo(tagClass);
     }
     else if (event.detail.xhr.status === 401) {
         // Do something for bad credentials
