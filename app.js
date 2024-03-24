@@ -65,7 +65,7 @@ app.use(express.urlencoded({ extended: true }));
 
 
 /*============ REQUESTS RATE-LIMITER ============*/
-app.use(RequestsLimiter);
+// app.use(RequestsLimiter);
 
 
 /*============ IMPORT ROUTER MODULES ============*/
