@@ -1,3 +1,5 @@
+/* ========== BUTTON CLASS ==========*/
+
 class Button {
   constructor(text, id, ariaLabel) {
     this.button = document.createElement('button');
@@ -24,7 +26,7 @@ class Button {
 
 }
 
-// Create login button
+
 class LoginButton extends Button {
   constructor() {
     super('Connexion', 'login-button', 'Bouton vers le formulaire de connexion');
@@ -33,7 +35,7 @@ class LoginButton extends Button {
   }
 }
 
-// Create logout button
+
 class LogoutButton extends Button {
   constructor() {
     super('Déconnexion', 'logout-button', 'Bouton de déconnexion');
