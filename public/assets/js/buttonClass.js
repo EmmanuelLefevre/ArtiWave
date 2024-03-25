@@ -42,4 +42,9 @@ class LogoutButton extends Button {
   constructor() {
     super('Déconnexion', 'logout-button', 'Bouton de déconnexion');
   }
+
+  // Render logout button in DOM
+  render() {
+    return this.button;
+  }
 }
