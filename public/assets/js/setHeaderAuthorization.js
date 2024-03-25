@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Check if token exists
         if (token) {
             // Build Authorization value
-            let authorizationValue = `Bearer ${token}`;
+            const authorizationValue = `Bearer ${token}`;
 
             // Set authorization header in request
             event.detail.headers["Authorization"] = authorizationValue;
