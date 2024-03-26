@@ -23,4 +23,3 @@ function handleDisconnection() {
 	// Replace disconnection button by login one
 	logoutButton.replaceButton(loginButton);
 }
-
