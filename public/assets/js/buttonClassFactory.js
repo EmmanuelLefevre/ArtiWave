@@ -1,4 +1,4 @@
-/* ========== BUTTON CLASS ==========*/
+/* ========== BUTTON CLASS FACTORY ==========*/
 
 class Button {
   constructor(text, id, ariaLabel) {
