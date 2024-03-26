@@ -11,24 +11,22 @@ nav
       p ArtiWave
     .nav-center-section
       a.nav-link.active(
-        aria-label="Bouton vers la page d'accueil"
-        href="/"
         id="home-link"
+        aria-label="Bouton vers la page d'accueil"
       ) Home
       a.nav-link(
-        aria-label="Bouton vers la page des articles"
-        href="/api/articles"
         hx-get="/api/articles"
         hx-target="#articles-list"
         hx-swap="outerHTML"
         id="articles-list-button"
+        aria-label="Bouton vers la page des articles"
       ) Articles
     .nav-right-section
       button(
-        aria-label="Bouton vers le formulaire de connexion"
         hx-get="/api/login-component"
         hx-swap="outerHTML"
         id="login-button"
         type="submit"
+        aria-label="Bouton vers le formulaire de connexion"
       )
         span Connexion
