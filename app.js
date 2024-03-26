@@ -27,6 +27,14 @@ const favicon = require('serve-favicon');
 /*============ APP INITIALIZATION ============*/
 const app = express();
 
+
+/*============ SERVING STATIC FILES FROM PUBLIC DIRECTORY ============*/
+app.use(express.static('public'));
+
+/*=== SET VIEW ENGINE ===*/
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, '/public/views'));
+
 /*=== HELMET ===*/
 app.use(helmet({
 	crossOriginResourcePolicy: { policy: "cross-origin"},
@@ -83,24 +91,18 @@ connectDB();
 app.use(favicon(path.join(__dirname, 'public/assets/img/favicon', 'ArtiWave-favicon-32px.ico')));
 
 
-/*============ SERVING STATIC FILES FROM PUBLIC DIRECTORY ============*/
-app.use(express.static(path.join(__dirname, 'public')));
-
-
 /*============ ROUTER PARAMETERS ============*/
-/*=== HOME ===*/
-app.get('/', (_req, res) => res.sendFile(path.join(__dirname, 'public/views/index.html')));
+/*---------- HOME ----------*/
+/*=== INDEX ===*/
+app.get('/', (_req, res) => res.render('index'));
 
 
-/*============ HTML ============*/
-/*=== LOGIN FORM ===*/
-app.get('/login-component', (_req, res) => res.sendFile(path.join(__dirname, 'public/views/components/login/login.component.html')));
-
-/*=== NAVBAR COMPONENT ===*/
-app.get('/navbar-component', (_req, res) => res.sendFile(path.join(__dirname, 'public/views/components/navbar/navbar.component.html')));
+/*---------- HTML TEMPLATES ----------*/
+// /*=== LOGIN FORM COMPONENT ===*/
+app.get('/login-component', (_req, res) => res.render('components/login.component'));
 
 
-/*============ MAIN ============*/
+/*---------- API ----------*/
 /*=== AUTH ===*/
 app.use('/api/login', AuthRouter);
 
