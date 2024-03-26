@@ -1,0 +1,50 @@
+form#login-form.form
+  .close-form-container
+    a.close-form-link(
+      href=""
+      id="close-form-link"
+    )
+      img.close-form-icon(
+        src="assets/img/icons/cross.svg"
+        alt="Fermer le formulaire"
+      )
+  h2.h2-form Login
+  .user-input
+    input(
+      type="email"
+      id="email"
+      name="email"
+      autocomplete="on"
+      placeholder="Email"
+      aria-label="Champ de saisie de l'email"
+      required
+    )
+    span.input-border
+    label(for="email") Email
+  .user-input
+    input(
+      type="password"
+      id="password"
+      name="password"
+      autocomplete="off"
+      placeholder="Password"
+      aria-label="Champ de saisie du mot de passe"
+      required
+    )
+    span.input-border
+    label(for="password") Password
+  .forgotten-password
+    a(href="#") Forget Password?
+  button.submit-button-form(
+    type="submit"
+    hx-post="http://localhost:9001/api/login"
+    hx-swap="none"
+    aria-label="Bouton de connexion"
+  )
+    span Submit
+  p.message Not a Member?
+    br
+    a.register-link(href="#") Signup
+
+script(src="assets/js/closeLoginFormButton.js", defer)
+script(src="assets/js/login.js", defer)
