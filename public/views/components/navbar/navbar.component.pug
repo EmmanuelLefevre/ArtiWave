@@ -3,7 +3,6 @@ nav
     .nav-left-section
       a.nav-logo(
         aria-label="Bouton vers la page accueil"
-        href="#"
       )
         img(
           src="assets/img/logo/ArtiWave-logo-L.png"
@@ -27,12 +26,9 @@ nav
     .nav-right-section
       button(
         aria-label="Bouton vers le formulaire de connexion"
-        href="#"
         hx-get="/login-component"
         hx-swap="outerHTML"
         id="login-button"
         type="submit"
       )
         span Connexion
-
-script(src="assets/js/logout.js", defer)
