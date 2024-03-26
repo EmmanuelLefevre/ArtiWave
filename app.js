@@ -27,14 +27,6 @@ const favicon = require('serve-favicon');
 /*============ APP INITIALIZATION ============*/
 const app = express();
 
-
-/*============ SERVING STATIC FILES FROM PUBLIC DIRECTORY ============*/
-app.use(express.static('public'));
-
-/*=== SET VIEW ENGINE ===*/
-app.set('view engine', 'pug');
-app.set('views', path.join(__dirname, '/public/views'));
-
 /*=== HELMET ===*/
 app.use(helmet({
 	crossOriginResourcePolicy: { policy: "cross-origin"},
@@ -89,6 +81,14 @@ connectDB();
 
 /*============ FAVICON ============*/
 app.use(favicon(path.join(__dirname, 'public/assets/img/favicon', 'ArtiWave-favicon-32px.ico')));
+
+
+/*============ SERVING STATIC FILES FROM PUBLIC DIRECTORY ============*/
+app.use(express.static('public'));
+
+/*=== SET VIEW ENGINE ===*/
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, '/public/views'));
 
 
 /*============ ROUTER PARAMETERS ============*/
