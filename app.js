@@ -99,7 +99,7 @@ app.get('/', (_req, res) => res.render('index'));
 
 /*---------- HTML TEMPLATES ----------*/
 // /*=== LOGIN FORM COMPONENT ===*/
-app.get('/api/login-component', (_req, res) => res.render('components/login/login.component'));
+app.get('/api/login-component', (_req, res) => res.render('/components/login/login.component'));
 
 
 /*---------- API ----------*/
