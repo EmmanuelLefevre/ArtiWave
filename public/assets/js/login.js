@@ -11,6 +11,14 @@ document.getElementById('login-form').addEventListener('htmx:afterSwap', functio
         // Save token to local storage
         setAccessToken(token);
 
+        // Decode token
+        const decodedToken = parseToken(token);
+
+        // Get nickname from decoded token
+        const nickname = getNicknameFromToken(decodedToken);
+        console.log(nickname);
+        // Snackbar with nickname
+
         // Close the form
         const loginForm = document.getElementById('login-form');
         loginForm.parentNode.removeChild(loginForm);
