@@ -16,19 +16,19 @@ document.getElementById('login-form').addEventListener('htmx:afterSwap', functio
 
         // Get nickname from decoded token
         const nickname = getNicknameFromToken(decodedToken);
-        console.log(nickname);
+
         // Snackbar with nickname
 
         // Close the form
         const loginForm = document.getElementById('login-form');
         loginForm.parentNode.removeChild(loginForm);
 
-        // Get logout button
+        // Create logout button instance
         logoutButton = new LogoutButton();
 
         // Add disconnect button to navigation bar
-        const tagClass = document.querySelector('.nav-right-section');
-        logoutButton.addButtonTo(tagClass);
+        const parentElement = document.querySelector('.nav-right-section');
+        logoutButton.createButton(parentElement);
     }
     else if (event.detail.xhr.status === 401) {
         // Do something for bad credentials
