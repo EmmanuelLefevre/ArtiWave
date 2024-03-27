@@ -17,7 +17,7 @@ document.getElementById('login-form').addEventListener('htmx:afterSwap', functio
         // Get nickname from decoded token
         const nickname = getNicknameFromToken(decodedToken);
 
-        // Snackbar with nickname
+        // Snackbar info with nickname
 
         // Close the form
         const loginForm = document.getElementById('login-form');
