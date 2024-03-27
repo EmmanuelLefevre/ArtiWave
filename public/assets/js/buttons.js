@@ -15,12 +15,12 @@ class Button {
     this.button.appendChild(spanLabel);
   }
 
-  // Create button method
+  // Create button
   createButton(parentElement) {
     parentElement.appendChild(this.button);
   }
 
-  // Replace button method
+  // Replace button
   replaceButton(newButton) {
     const parentElement = this.button.parentNode;
     parentElement.replaceChild(newButton.button, this.button);
