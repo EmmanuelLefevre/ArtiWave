@@ -10,9 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(error => {
             console.error('Error retrieving initial page content :', error);
-            // const errorMessage = document.createElement('div');
-            // errorMessage.textContent = "Error retrieving initial page content!";
-            // document.body.appendChild(errorMessage);
+            // Snackbar warning
         });
     });
 });
