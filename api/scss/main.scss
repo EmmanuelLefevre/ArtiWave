@@ -65,6 +65,8 @@
   @import 'tags/header.scss';
   /*------Button------*/
   @import 'tags/button.scss';
+  /*------Link------*/
+  @import 'tags/link.scss';
   /*------Form------*/
   @import 'tags/form.scss';
   /*------Snackbar------*/
@@ -90,19 +92,10 @@ input:-webkit-autofill:active {
   -webkit-background-clip: text !important;
 }
 
-/*------Tags------*/
+/*------Body------*/
 body {
   font-family: var(--body-text);
   font-weight: var(--body-font-text-weight-regular);
   background-color: var(--main-bg);
   color: var(--body-text-color);
-
-  a {
-    cursor: pointer;
-    text-decoration: none;
-    &:visited {
-      color: var(--link-text-color);
-    }
-  }
-
 }
