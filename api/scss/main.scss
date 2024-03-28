@@ -61,6 +61,10 @@
 
 
   /*======IMPORTS======*/
+  /*------Responsive Small Desktop------*/
+  @import 'responsive/responsive.small.desktop.scss';
+  /*------Responsive Large Desktop------*/
+  @import 'responsive/responsive.large.desktop.scss';
   /*------Header------*/
   @import 'tags/header.scss';
   /*------Button------*/
