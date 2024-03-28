@@ -1,0 +1,7 @@
+a {
+  cursor: pointer;
+  text-decoration: none;
+  &:visited {
+    color: var(--link-text-color);
+  }
+}
