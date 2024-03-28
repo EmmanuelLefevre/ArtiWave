@@ -5,6 +5,7 @@
   --white: #fff;
   --grey: #bebebe;
   --grey-light: #e9e9e9;
+  --grey-dark: #646464;
   --main-blue: #027efb;
   --main-purple: #b621fe;
   --second-blue: #1fd1f9;
@@ -20,7 +21,7 @@
   --hover-button-text-color: var(--main-blue);
   --label-text-color: var(--main-purple);
   --link-text-color: var(--third-blue);
-  --snackbar-text-color: var(--main-blue);
+  --snackbar-text-color: var(--grey-dark);
   /*------Border------*/
   --button-hover-border-color: var(--main-blue);
   /*------Gradient------*/
