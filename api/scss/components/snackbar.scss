@@ -1,0 +1,29 @@
+/*------Snackbar------*/
+#snackbar {
+  position: absolute;
+  color: var(--snackbar-text-color);
+  text-align: center;
+  width: auto;
+  height: auto;
+  margin: 20px 20px 0 0;
+  padding: 10px 20px;
+  border-top: 2px solid var(--main-blue);
+  border-left: 2px solid var(--main-blue);
+  border-bottom: 2px solid var(--gradient2);
+  border-right: 2px solid var(--gradient2);
+  box-sizing: border-box;
+  border-radius: 5px;
+  background: var(--snackbar-bg);
+  z-index: 9999;
+  &.snackbar-info {
+    right: 0;
+  }
+  &.snackbar-success {
+    right: 0;
+    bottom: 0;
+  }
+  // &.snackbar-warning {
+  // }
+  // &.snackbar-alert {
+  // }
+}
