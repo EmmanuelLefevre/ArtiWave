@@ -12,6 +12,7 @@
   /*------Background------*/
   --main-bg: var(--black);
   --hover-button-bg: var(--grey-light);
+  --snackbar-bg: var(--grey-light);
   /*------Text------*/
   --body-text-color: var(--grey);
   --nav-link-text-color: var(--grey);
@@ -19,6 +20,7 @@
   --hover-button-text-color: var(--main-blue);
   --label-text-color: var(--main-purple);
   --link-text-color: var(--third-blue);
+  --snackbar-text-color: var(--main-blue);
   /*------Border------*/
   --button-hover-border-color: var(--main-blue);
   /*------Gradient------*/
@@ -51,11 +53,120 @@
   /*======FONTS SIZE======*/
   /*------Mobile------*/
   /*------Small Desktop------*/
-  /*------Large desktop------*/
+  /*------Large Desktop------*/
 
 
   /*======SHADOWS======*/
 
+
+  /*======ANIMATIONS======*/
+  /*------Slide Left------*/
+  .slide-left {
+    animation: slide-left 0.5s ease-in-out;
+  }
+  @keyframes slide-left {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+  @-webkit-keyframes slide-left {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+  /*------Slide Bottom------*/
+  .slide-bottom {
+    animation: slide-bottom 0.5s ease-in-out;
+  }
+  @keyframes slide-bottom {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+  @-webkit-keyframes slide-bottom {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+  /*------Bounce------*/
+  .bounce {
+    animation: bounce 0.5s ease-in-out;
+  }
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-30px);
+    }
+    60% {
+      transform: translateY(-15px);
+    }
+  }
+  @-webkit-keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-30px);
+    }
+    60% {
+      transform: translateY(-15px);
+    }
+  }
+  /*------Fade In------*/
+  .fade-in {
+    animation: fade-in 0.5s ease-in-out;
+  }
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @-webkit-keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  /*------Head Shake------*/
+  .headskahe {
+    animation: headshake 0.5s ease-in-out;
+  }
+  $shake-intensity: 1%;
+  @keyframes headshake {
+    25% {
+      transform: translateX($shake-intensity);
+    }
+    75% {
+      transform: translateX($shake-intensity * -1);
+    }
+  }
+  @-webkit-keyframes headshake {
+    25% {
+      transform: translateX($shake-intensity);
+    }
+    75% {
+      transform: translateX($shake-intensity * -1);
+    }
+  }
 }
 
 
@@ -254,7 +365,6 @@ body {
     border-left: 3px solid var(--main-blue);
     border-bottom: 3px solid var(--gradient2);
     border-right: 3px solid var(--gradient2);
-    box-shadow: 0 15px 25px rgba(0,0,0,.6);
     box-sizing: border-box;
     border-radius: 10px;
     z-index: 9999;
@@ -391,6 +501,9 @@ body {
       text-align: center;
       margin: 16px 0 0 0;
       color: var(--black);
+      .register-link {
+        font-size: 15px;
+      }
     }
     .forgotten-password {
       justify-content: flex-start;
@@ -399,7 +512,35 @@ body {
       margin-bottom: 15px;
     }
   }
-  .register-link {
-    font-size: 15px;
+
+  /*------Snackbar------*/
+  #snackbar {
+    position: absolute;
+    color: var(--snackbar-text-color);
+    text-align: center;
+    width: auto;
+    height: auto;
+    margin: 20px 20px 0 0;
+    padding: 10px 20px;
+    border-top: 2px solid var(--main-blue);
+    border-left: 2px solid var(--main-blue);
+    border-bottom: 2px solid var(--gradient2);
+    border-right: 2px solid var(--gradient2);
+    box-sizing: border-box;
+    border-radius: 5px;
+    background: var(--snackbar-bg);
+    z-index: 9999;
+    &.snackbar-info {
+      right: 0;
+    }
+    &.snackbar-success {
+      right: 0;
+      bottom: 0;
+    }
+    // &.snackbar-warning {
+    // }
+    // &.snackbar-alert {
+    // }
   }
+
 }
