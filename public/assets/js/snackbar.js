@@ -32,6 +32,13 @@ class SnackbarInfo extends Snackbar {
 }
 
 
+class SnackbarSuccess extends Snackbar {
+  constructor(message) {
+    super(message, 'snackbar-success', 'Notification de validation');
+  }
+}
+
+
 class SnackbarWarning extends Snackbar {
   constructor(message) {
     super(message, 'snackbar-warning', 'Notification d\'avertissement');
