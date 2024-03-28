@@ -8,6 +8,8 @@ document.addEventListener('click', function(event) {
 function handleDisconnection() {
 	let loginButton;
 
+	// Snackbar
+
 	// Delete token from local storage
 	deleteAccessToken();
 
