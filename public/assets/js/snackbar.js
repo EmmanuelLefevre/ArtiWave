@@ -28,7 +28,7 @@ class Snackbar {
 
 class SnackbarInfo extends Snackbar {
   constructor(message) {
-    super(message, 'snackbar', 'snackbar-info', 'Notification d\'information', 'slide-up', '3000');
+    super(message, 'snackbar', 'snackbar-info', 'Notification d\'information', 'slide-left', '3000');
   }
 }
 
