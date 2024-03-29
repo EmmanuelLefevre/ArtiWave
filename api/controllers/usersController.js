@@ -341,7 +341,7 @@ class UserController {
                     // Allow admin to delete any user
                     await UserRepository.deleteUserById(userId);
 
-                    // Delete article
+                    // Delete user
                     return res.sendStatus(204);
                 }
                 else {
@@ -352,7 +352,7 @@ class UserController {
             // If user matches delete user
             await UserRepository.deleteUserById(userId);
 
-            // Delete article
+            // Delete user
             return res.sendStatus(204);
         }
         catch (err) {
