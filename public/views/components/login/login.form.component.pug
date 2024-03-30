@@ -1,4 +1,7 @@
-form#login-form.form
+form#login-form.form(
+  hx-post="api/login"
+  hx-swap="none"
+)
   .close-form-container
     a.close-form-link(
       href=""
@@ -21,6 +24,7 @@ form#login-form.form
     )
     span.input-border
     label(for="email") Email
+  span#error-email.error-message
   .user-input
     input(
       type="password"
@@ -33,12 +37,11 @@ form#login-form.form
     )
     span.input-border
     label(for="password") Password
+  span#error-password.error-message
   .forgotten-password
     a(href="#") Forget Password?
   button.submit-button-form(
     type="submit"
-    hx-post="api/login"
-    hx-swap="none"
     aria-label="Bouton de connexion"
   )
     span Submit
@@ -46,6 +49,6 @@ form#login-form.form
     br
     a.register-link(href="#") Signup
 
-script(src="assets/js/formValidation.js", defer)
+script(src="assets/js/form.js", defer)
 script(src="assets/js/closeLoginFormButton.js", defer)
 script(src="assets/js/login.js", defer)
