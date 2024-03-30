@@ -95,20 +95,34 @@ class FormValidator {
   }
 
   setStatus(field, message, status) {
+    const successIcon = field.parentElement.querySelector('.icon-success');
+    const errorIcon = field.parentElement.querySelector('.icon-error');
     const errorMessage = document.querySelector(`#error-${field.id}`);
 
     if (status === 'success') {
-      errorMessage.innerText = '';
-      field.classList.remove('headshake');
-      // Add any other logic for success here
+      if (errorIcon) {
+        errorIcon.classList.add('hidden');
+      }
+      if (errorMessage) {
+        errorMessage.innerText = '';
+        field.classList.remove('headshake');
+        field.classList.remove('invalid');
+        field.classList.add('valid');
+      }
+      successIcon.classList.remove('hidden');
     }
 
     if (status === 'error') {
+      if (successIcon) {
+        successIcon.classList.add('hidden');
+      }
       if (message) {
         errorMessage.innerText = message;
+        field.classList.add('headshake');
+        field.classList.add('invalid');
+        field.classList.remove('valid');
       }
-      field.classList.add('headshake');
-      // Add any other logic for error here
+      errorIcon.classList.remove('hidden');
     }
   }
 }
