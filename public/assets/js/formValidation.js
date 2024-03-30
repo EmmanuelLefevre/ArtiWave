@@ -9,7 +9,7 @@ function validateInput(input) {
     if (input.value.trim() === '') {
       // Display error message
       input.classList.add('headshake');
-      return false;
+      return true;
     }
     else {
       // Remove any previous error messages
