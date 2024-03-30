@@ -10,6 +10,8 @@
   --main-purple: #b621fe;
   --second-blue: #1fd1f9;
   --third-blue: #1c75e9;
+  --valid: rgb(0, 236, 0);
+  --invalid: rgb(219, 0, 0);
   /*------Background------*/
   --main-bg: var(--black);
   --hover-button-bg: var(--grey-light);
@@ -81,12 +83,19 @@
 
 
 /*------Reset------*/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+/*------Preset------*/
 html, body {
   width: 100%;
   height: 100%;
-  margin: 0;
-  padding: 0;
 }
+
 
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
@@ -95,6 +104,7 @@ input:-webkit-autofill:active {
   background-clip: text !important;
   -webkit-background-clip: text !important;
 }
+
 
 /*------Body------*/
 body {
