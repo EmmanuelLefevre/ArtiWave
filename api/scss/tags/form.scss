@@ -61,7 +61,7 @@
   }
   .user-input {
     position: relative;
-    width: 200px;
+    width: 240px;
     input, textarea {
       width: 100%;
       padding: 10px 0;
@@ -100,7 +100,7 @@
         color: var(--black);
         ~ label {
           font-size: 14px;
-          top: -20px;
+          top: -25px;
           left: 0;
           color: var(--label-text-color);
         }
@@ -114,14 +114,14 @@
       }
       &:not(:placeholder-shown) ~ label {
         font-size: 14px;
-        top: -20px;
+        top: -25px;
         left: 0;
         color: var(--label-text-color);
       }
       &:valid ~ label {
         font-size: 14px;
         color: var(--label-text-color);
-        top: -20px;
+        top: -25px;
         left: 0;
       }
       &:valid ~ span.input-border {
@@ -130,6 +130,14 @@
         top: 37px;
         left: 0;
       }
+    }
+    input.invalid + span.input-border {
+      background: var(--invalid);
+      transition: all 0.5s cubic-bezier(0.2, 0, 0.03, 1);
+    }
+    input.valid + span.input-border {
+      background: var(--valid);
+      transition: all 0.5s cubic-bezier(0.2, 0, 0.03, 1);
     }
     label {
       position: absolute;
@@ -141,9 +149,19 @@
       pointer-events: none;
       transition: top 0.5s, font-size 0.5s, color 0.5s;
     }
+    img.hidden {
+      display: none;
+    }
+    img.icon {
+      position: absolute;
+      top: 7px;
+      right: 3px;
+      pointer-events: none;
+      z-index: 2;
+    }
   }
   span.error-message {
-    color: red;
+    color: var(--invalid);
     width: 200px;
     height: 10px;
     text-align: center;
