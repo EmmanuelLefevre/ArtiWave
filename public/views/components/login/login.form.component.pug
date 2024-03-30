@@ -1,6 +1,7 @@
 form#login-form.form(
   hx-post="api/login"
   hx-swap="none"
+  novalidate
 )
   .close-form-container
     a.close-form-link(
@@ -24,6 +25,14 @@ form#login-form.form(
     )
     span.input-border
     label(for="email") Email
+    img.icon.icon-success.hidden(
+      src="assets/img/icons/icon-success.svg"
+      alt="Champ de saisie valide"
+    )
+    img.icon.icon-error.hidden(
+      src="assets/img/icons/icon-error.svg"
+      alt="Champ de saisie invalide"
+    )
   span#error-email.error-message
   .user-input
     input(
@@ -37,6 +46,15 @@ form#login-form.form(
     )
     span.input-border
     label(for="password") Password
+    img.icon.icon-success.hidden(
+      src="assets/img/icons/icon-success.svg"
+      alt="Champ de saisie valide"
+    )
+    img.icon.icon-error.hidden(
+      src="assets/img/icons/icon-error.svg"
+      alt="Champ de saisie invalide"
+    )
+
   span#error-password.error-message
   .forgotten-password
     a(href="#") Forget Password?
