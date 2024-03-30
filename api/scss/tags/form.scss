@@ -50,7 +50,7 @@
     font-weight: var(--body-font-title-h2-weight-bold);
     font-size: 33px;
     text-align: center;
-    margin: 0 0 35px 0;
+    margin: 0 0 40px 0;
     padding: 0;
     background: linear-gradient(var(--gradient2) 40%, var(--gradient1));
     background: -webkit-linear-gradient(var(--gradient2) 40%, var(--gradient1));
@@ -66,7 +66,6 @@
       width: 100%;
       padding: 10px 0;
       font-size: 16px;
-      color: var(--black);
       margin-bottom: 30px;
       border: none;
       border-bottom: 1px solid var(--black);
@@ -83,7 +82,7 @@
         background: linear-gradient(to right, var(--gradient1), var(--gradient2) 60%);
       }
       &:hover ~ label {
-        color: var(--main-purple);
+        animation: bounce 1.2s ease-in-out;
       }
       &:hover ~ span.input-border {
         display: block;
@@ -102,7 +101,6 @@
           font-size: 14px;
           top: -25px;
           left: 0;
-          color: var(--label-text-color);
         }
         ~ span.input-border {
           width: 100%;
@@ -116,11 +114,9 @@
         font-size: 14px;
         top: -25px;
         left: 0;
-        color: var(--label-text-color);
       }
       &:valid ~ label {
         font-size: 14px;
-        color: var(--label-text-color);
         top: -25px;
         left: 0;
       }
@@ -145,7 +141,7 @@
       left: 0;
       padding: 10px 0;
       font-size: 16px;
-      color: var(--black);
+      color: var(--label-text-color);
       pointer-events: none;
       transition: top 0.5s, font-size 0.5s, color 0.5s;
     }
@@ -181,7 +177,7 @@
   .forgotten-password {
     justify-content: flex-start;
     font-size: 15px;
-    width: 200px;
+    width: 240px;
     margin-bottom: 15px;
   }
 }
