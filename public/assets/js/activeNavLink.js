@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (currentPath === homePath) {
         setActiveLink('home-link');
     } else if (currentPath === articlesPath) {
-        setActiveLink('articles-link');
+        setActiveLink('articles-list-link');
     }
 
 });
