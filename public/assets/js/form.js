@@ -16,8 +16,8 @@ class FormValidator {
         self.fields.forEach(field => {
           const input = document.querySelector(`#${field}`);
           self.validateFields(input);
-        })
-    })
+        });
+    });
   }
 
   validateOnEntry() {
@@ -27,23 +27,20 @@ class FormValidator {
 
       input.addEventListener('input', _event => {
         self.validateFields(input);
-      })
-    })
+      });
+    });
   }
 
   validateFields(field) {
     // Check presence of values
-    // if (field.value.trim() === "") {
-    //   var siblingElement = field.nextElementSibling;
-    //   while (siblingElement && siblingElement.tagName !== "label") {
-    //     siblingElement = siblingElement.nextElementSibling;
-    //   }
-    //   console.log(siblingElement);
-    //   this.setStatus(field, `${siblingElement.innerText} cannot be blank!`, "error");
-    // }
-    // else {
-    //   this.setStatus(field, null, "success");
-    // }
+    if (field.value.trim() === "") {
+      var labelvalue = field.nextElementSibling.nextElementSibling.innerText;
+      console.log(labelvalue);
+      this.setStatus(field, `${labelvalue} cannot be blank!`, "error");
+    }
+    else {
+      this.setStatus(field, null, "success");
+    }
 
     // Check for valid email
     if (field.type === "email") {
@@ -127,7 +124,7 @@ class FormValidator {
   }
 }
 
-const form = document.querySelector('form');
+const form = document.querySelector('.form');
 const fields = ["email", "password"];
 
 const validator = new FormValidator(form, fields);
