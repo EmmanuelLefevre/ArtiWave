@@ -12,11 +12,19 @@ class FormValidator {
   validateOnSubmit() {
     let self = this;
     this.form.addEventListener('submit', e => {
-        e.preventDefault();
-        self.fields.forEach(field => {
-          const input = document.querySelector(`#${field}`);
+      e.preventDefault();
+      self.fields.forEach(field => {
+        const input = document.querySelector(`#${field}`);
+        // Check if fields are empty first
+        if (input.value.trim() === "") {
+          const labelvalue = input.nextElementSibling.nextElementSibling.innerText;
+          self.setStatus(input, `${labelvalue} cannot be blank!`, "error");
+        }
+        else {
+          // If not empty, then proceed with other validations
           self.validateFields(input);
-        });
+        }
+      });
     });
   }
 
@@ -32,16 +40,6 @@ class FormValidator {
   }
 
   validateFields(field) {
-    // Check presence of values
-    if (field.value.trim() === "") {
-      var labelvalue = field.nextElementSibling.nextElementSibling.innerText;
-      console.log(labelvalue);
-      this.setStatus(field, `${labelvalue} cannot be blank!`, "error");
-    }
-    else {
-      this.setStatus(field, null, "success");
-    }
-
     // Check for valid email
     if (field.type === "email") {
       const regex = /\S+@\S+\.\S+/;
