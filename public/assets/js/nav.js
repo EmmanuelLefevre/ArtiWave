@@ -21,20 +21,9 @@ document.addEventListener('DOMContentLoaded', function() {
 	// Check current path and call the setActiveLink function consequently
 	if (currentPath === homePath) {
 		setActiveLink('home-link');
-	} else if (currentPath === articlesPath) {
+	}
+	else if (currentPath === articlesPath) {
 		setActiveLink('articles-list-link');
 	}
-
-	/* Disabled Nav Link */
-	function disabledNavLink() {
-		var disabledLink = document.getElementById('articles-list-link');
-		var userConnected = getConnectionStatus();
-
-		if (!userConnected) {
-			disabledLink.style.display = 'none';
-		}
-	}
-
-	window.onload = disabledNavLink;
 
 });
