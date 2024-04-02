@@ -11,7 +11,7 @@ const rateLimiter = require('express-rate-limit');
 
 /*=== REQUEST LIMITER ===*/
 const RequestsLimiter = rateLimiter({
-    max: 10,
+    max: 100,
     windowMs: 1000, // 1 seconde
     message:"Stop that Mr Robot!",
     standartHeaders: false,
