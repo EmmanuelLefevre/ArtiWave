@@ -35,11 +35,11 @@
 				{
 					"name": "Register",
 					"request": {
-						"method": "PUT",
+						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"email\": \"test2@yahoo.fr\",\r\n  \"nickname\": \"Manu2\",\r\n  \"password\": \"Xxggxx!1\"\r\n}",
+							"raw": "{\r\n  \"email\": \"test@yahoo.fr\",\r\n  \"nickname\": \"Manu\",\r\n  \"password\": \"Xxggxx!1\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -81,7 +81,7 @@
 						"auth": {
 							"type": "bearer",
 							"bearer": {
-								"token": ""
+								"token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OTQ1MjhmYzhkN2RkOGE5M2U4N2ZlYyIsInJvbGVzIjoiYWRtaW4iLCJuaWNrbmFtZSI6IkVtbWFudWVsIiwicmVnaXN0ZXJlZEF0IjoiMjAyMy0wOC0wM1QwMjo0NDoxMC4wNzBaIiwiaWF0IjoxNzEyNTg4OTk0LCJleHAiOjE3MTI3NjE3OTR9.M_qeGWzeIWVTBf1suUVtfQWxe9EK5YDyuaZHoxO1NyosgWVc3iSc8pYb9UsHSl_xJUdcGcm1JmppnHzgzfuUOTo4aFUap15XumRrIGDP8BW4MuZpnOP1sT_q1pMWOFOJfiKqUiznuwO76zOjInOrAcp7guvfKH1dQ8ZtsfANZh2vgFxoS0NdsrC5fkElIBCDerlOThl3FLs0NrDzZ8phOUXvQttHI-nGd2IQ7AYpZMkJrpIscpksiCcwjt-dbWOjYWvr4-UJ5UXezaHBmuIrDfbuVO2Y4cjPCunS2ZTIqO3IhAaq59SEWcTUEWEEzk8S3W4xIFHJStaq2i6Ts8r4MeusyNkKa9jX22BQRugs4nctkHRgxnrjwRK-C0sGzj1slanLDDZwKZvPZDUQfESmvHcYIWepwXz8lrUjQicKj_g5-43VVW5EfEbpBHnRTCY8Ou_RCH0C8F9sI4PMvuPhFCr5tIMT4eK-q5t76ywUhdCGHwBfpEM1VigQOr-ar4bqpVIWku9D8DdO3bLchrGZWvXEdXpw1mgs7HYiPy6yChayI_0mKe7wK6dUG0a3skIXEL7OwN1F083uhtjW1D1_NaN7cHi1s2Ml3ZYjzEx1pEAvDk4sbCk-mWRIuwnL3CdAD7krwgu24d5V8NhajPEyLKkJjdNJqiJsbfiWvVQVXVg"
 							}
 						},
 						"method": "GET",
