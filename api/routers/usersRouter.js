@@ -41,8 +41,8 @@ class UsersRouter {
 
         /*=== REGISTER ===*/
         usersRouter.route('/register')
-            .all(AllowedCurrentMethodCheck(['PUT']))
-            .put(
+            .all(AllowedCurrentMethodCheck(['POST']))
+            .post(
                 UserValidationRules,
                 UsersRouter.#validateRegister,
                 RegisterLimiter,
