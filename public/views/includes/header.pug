@@ -1,0 +1,54 @@
+header
+  nav
+    .nav-container
+      .nav-left-section
+        a.nav-logo(
+          aria-label="Bouton vers la page accueil"
+        )
+          img(
+            src="assets/img/logo/ArtiWave-logo-L.png"
+            alt="Logo du site Artiwave"
+          )
+        p ArtiWave
+      .nav-center-section
+        a.nav-link.active(
+          id="home-link"
+          aria-label="Bouton vers la page d'accueil"
+        ) Home
+        a.nav-link(
+          href="#articles"
+          hx-get="/api/articles"
+          hx-target="#articles-list"
+          hx-swap="outerHTML"
+          id="articles-list-link"
+          aria-label="Bouton vers la page des articles"
+        ) Articles
+      .nav-right-section
+        button(
+          href="#login"
+          hx-get="/api/login-component"
+          hx-swap="outerHTML"
+          id="login-button"
+          type="submit"
+          aria-label="Bouton vers le formulaire de connexion"
+        )
+          span Connexion
+        //- if !isConnected
+        //-   button(
+        //-     href="#login"
+        //-     hx-get="/api/login-component"
+        //-     hx-swap="outerHTML"
+        //-     id="login-button"
+        //-     type="submit"
+        //-     aria-label="Bouton vers le formulaire de connexion"
+        //-   )
+        //-     span Connexion
+        //- else
+        //-   button(
+        //-     id="logout-button"
+        //-     type="submit"
+        //-     aria-label="Bouton de déconnexion"
+        //-   )
+        //-     span Déconnexion
+
+  script(src="assets/js/logout.js")
