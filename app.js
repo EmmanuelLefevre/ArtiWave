@@ -75,6 +75,7 @@ app.use(RequestsLimiter);
 
 /*============ IMPORT ROUTER MODULES ============*/
 const IndexRouter = require('./api/routers/indexRouter');
+const HomeRouter = require('./api/routers/homeRouter');
 const AuthRouter = require('./api/routers/authRouter');
 const UsersRouter = require('./api/routers/usersRouter');
 const ArticlesRouter = require('./api/routers/articlesRouter');
@@ -101,6 +102,9 @@ app.set('view engine', 'pug');
 /*============ ROUTER PARAMETERS ============*/
 /*---------- INDEX ----------*/
 app.use("/", IndexRouter);
+
+/*---------- HOME ----------*/
+app.use("/home", HomeRouter);
 
 /*---------- AUTH ----------*/
 app.use('/api/login', AuthRouter);
