@@ -6,9 +6,6 @@
 /*============ IMPORT USED MODULES ============*/
 var express = require('express');
 
-// Controller
-const IndexController = require('../controllers/indexController');
-
 // Middleware
 const AllowedCurrentMethodCheck = require('../middleware/allowedCurrentMethodCheck');
 
@@ -22,7 +19,9 @@ class IndexRouter {
 
 		indexRouter.route('/')
 			.all(AllowedCurrentMethodCheck(['GET']))
-			.get(IndexController.index);
+				.get((_req, res) => {
+					res.redirect('/home');
+				});
 
 		return indexRouter;
 	}
