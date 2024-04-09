@@ -127,7 +127,6 @@ app.get('*', (_req, _res) => {
 });
 
 
-
 /*============ GLOBAL ERROR HANDLER MIDDLEWARE ============*/
 app.use(GlobalErrorHandler);
 
