@@ -86,17 +86,18 @@ const AdminRouter = require('./api/routers/adminRouter');
 connectDB();
 
 
+/*============ SET VIEW ENGINE ============*/
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, '/public/views'));
+// app.locals.cache = false;
+
+
 /*============ SERVING STATIC FILES FROM PUBLIC DIRECTORY ============*/
 app.use(express.static(path.join(__dirname, 'public')));
 
 
 /*============ FAVICON ============*/
 app.use(favicon(path.join(__dirname, 'public/assets/img/favicon', 'ArtiWave-favicon-32px.ico')));
-
-
-/*============ SET VIEW ENGINE ============*/
-app.set('views', path.join(__dirname, '/public/views'));
-app.set('view engine', 'pug');
 
 
 /*============ ROUTER PARAMETERS ============*/
