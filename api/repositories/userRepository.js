@@ -4,6 +4,8 @@
 
 
 /*============ IMPORT USED MODULES ============*/
+const argon2 = require('argon2');
+
 // Models
 const Article = require('../models/IArticle');
 const User = require('../models/IUser');
@@ -131,6 +133,27 @@ class UserRepository {
         }
         catch (err) {
             throw new DeletionFailedError();
+        }
+    }
+
+    /*=== CHECK PASSWORD ===*/
+    static async isPasswordDifferent(userId, newPassword) {
+        try {
+            // Get user password
+            const user = await User.findById(userId);
+            if (!user) {
+                throw new UserNotFoundError();
+            }
+
+            const currentPassword = user.password;
+
+            // Check if new password is different from current password
+            const passwordsMatch = await argon2.verify(currentPassword, newPassword);
+
+            return !passwordsMatch;
+        }
+        catch (err) {
+            throw new UpdateFailedError();
         }
     }
 }
