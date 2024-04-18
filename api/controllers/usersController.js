@@ -217,13 +217,23 @@ class UserController {
             // Save original user data
             const originalUserData = user.toObject();
 
-            // If password parameter hash it before insert
             if ('password' in req.body) {
-                req.body.password = await argon2.hash(req.body.password, {
-                    saltLength: 8,
-                    timeCost: timeCost,
-                    memoryCost: memoryCost
-                });
+                const newPassword = req.body.password;
+
+                // Check if new password is different from current password
+                const isDifferent = await UserRepository.isPasswordDifferent(userId, newPassword);
+
+                if (isDifferent) {
+                    // Hash password before insert
+                    req.body.password = await argon2.hash(req.body.password, {
+                        saltLength: 8,
+                        timeCost: timeCost,
+                        memoryCost: memoryCost
+                    });
+                }
+                else {
+                    return res.status(400).json({ message: 'Password hasn\'t been changed!' });
+                }
             }
 
             // Set updatedAt to the current date
