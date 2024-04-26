@@ -4,7 +4,7 @@ package-lock.json
 /api/_logs/auth/_authLogs.txt
 /api/_logs/users/_usersLogs.txt
 /api/_logs/admins/_adminsLogs.txt
-/_certs
+api/_certs
 /coverage
 /opt
 /.scannerwork
