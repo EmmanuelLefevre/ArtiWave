@@ -90,7 +90,7 @@ connectDB();
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, '/public/views'));
 // app.locals.cache = false;
-// app.locals.compileDebug = true;
+app.locals.compileDebug = true;
 
 /*============ SERVING STATIC FILES FROM PUBLIC DIRECTORY ============*/
 app.use(express.static(path.join(__dirname, 'public')));
