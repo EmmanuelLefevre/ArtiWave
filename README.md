@@ -1,13 +1,15 @@
 # ArtiWave
 ## INTRODUCTION
-ArtiWave is a back-end blogging application developped with Express. It uses MongoDB as well as the Mongoose ORM. 
+ArtiWave is a back-end blogging application developped with Express. It uses MongoDB as well as the Mongoose ORM.
 It has JWT authentication and allows you to perform CRUD operations on articles depending on your role.
 ## INSTALLATION
 ### 1. Local
 #### Database
-- Install MongoDb Compass and Mongosh shell.  
-[MongoDb shell download](https://www.mongodb.com/try/download/shell)  
-[MongoDb Compass download](https://www.mongodb.com/try/download/compass)  
+- Install MongoDb Community Server as a service.
+[MongoDb Community Server download](https://www.mongodb.com/try/download/community)
+- Install MongoDb Compass and Mongosh Shell.
+[MongoDb Shell download](https://www.mongodb.com/try/download/shell)
+[MongoDb Compass download](https://www.mongodb.com/try/download/compass)
 - Create database with Mongosh:
 ```shell
 mongosh
@@ -75,19 +77,19 @@ openssl rsa -check -in _certs/pvt.pem
 make lf
 ```
 #### Launch server
-If NVM is locally installed on your computer and you're not confident that you're on the required Node v20.10.0 LTS you could execute this command line =>  
+If NVM is locally installed on your computer and you're not confident that you're on the required Node v20.10.0 LTS you could execute this command line =>
 ```shell
 nvm use 20.10.0
 ```
-Or check your version with =>  
+Or check your version with =>
 ```shell
 node -v
 ```
-Then you could launch server with makefile =>  
+Then you could launch server with makefile =>
 ```shell
 make dev
 ```
-Otherwise with NPM  
+Otherwise with NPM
 ```shell
 npm run dev
 ```
@@ -123,7 +125,7 @@ ProjectKey = ArtiWave
 ##### 8. Get the token
 ![SonarQube get token](https://github.com/EmmanuelLefevre/img/blob/main/SonarQube%20get%20token.png)
 ##### 9. Provide the token in ArtiWave project
-Replace token by the created one in scan.sh file  
+Replace token by the created one in scan.sh file
 ![ArtiWave provide token](https://github.com/EmmanuelLefevre/img/blob/main/ArtiWave%20provide%20token.png)
 ##### 10. Give rights to the scan.sh file
 ```shell
