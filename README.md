@@ -5,9 +5,9 @@ It has JWT authentication and allows you to perform CRUD operations on articles 
 ## INSTALLATION
 ### 1. Local
 #### Database
-- Install MongoDb Community Server as a service.
+- Install MongoDb Community Server as a service.  
 [MongoDb Community Server download](https://www.mongodb.com/try/download/community)
-- Install MongoDb Compass and Mongosh Shell.
+- Install MongoDb Compass and Mongosh Shell.  
 [MongoDb Shell download](https://www.mongodb.com/try/download/shell)
 [MongoDb Compass download](https://www.mongodb.com/try/download/compass)
 - Create database with Mongosh:
