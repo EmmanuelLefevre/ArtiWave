@@ -10,7 +10,7 @@ It has JWT authentication and allows you to perform CRUD operations on articles 
 - Install Mongosh Shell.  
 [MongoDb Shell download](https://www.mongodb.com/try/download/shell)
 - Install MongoDb Compass.  
-[MongoDb Compass download](https://www.mongodb.com/try/download/compass)
+[MongoDb Compass download](https://www.mongodb.com/try/download/compass)  
 - Create database with Mongosh:
 ```shell
 mongosh
@@ -24,7 +24,7 @@ db.createCollection("users")
 ```shell
 db.createCollection("articles")
 ```
-[MongoDb create a database documentation](https://www.mongodb.com/docs/manual/core/databases-and-collections/)
+[MongoDb create a database documentation](https://www.mongodb.com/docs/manual/core/databases-and-collections/)  
 - Create an authentication
 ```shell
 mongosh
@@ -35,8 +35,7 @@ use artiwave
 ```shell
 db.createUser({ user: "Admin", pwd: "nimda", roles: [{ role: "readWrite", db: "artiwave" }] })
 ```
-[MongoDb create a user documentation](https://www.mongodb.com/docs/manual/tutorial/create-users/)
-***
+[MongoDb create a user documentation](https://www.mongodb.com/docs/manual/tutorial/create-users/)  
 - Connexion to database
 ##### 1. Connexion with Mongosh:
 ```shell
