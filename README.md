@@ -24,7 +24,7 @@ db.createCollection("users")
 ```shell
 db.createCollection("articles")
 ```
-[MongoDb create a database documentation](https://www.mongodb.com/docs/manual/core/databases-and-collections/)  
+[MongoDb create a database documentation](https://www.mongodb.com/docs/manual/core/databases-and-collections/)
 - Create an authentication
 ```shell
 mongosh
@@ -35,7 +35,7 @@ use artiwave
 ```shell
 db.createUser({ user: "Admin", pwd: "nimda", roles: [{ role: "readWrite", db: "artiwave" }] })
 ```
-[MongoDb create a user documentation](https://www.mongodb.com/docs/manual/tutorial/create-users/)  
+[MongoDb create a user documentation](https://www.mongodb.com/docs/manual/tutorial/create-users/)
 - Connexion to database
 ##### 1. Connexion with Mongosh:
 ```shell
