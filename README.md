@@ -42,8 +42,8 @@ db.createUser({ user: "Admin", pwd: "nimda", roles: [{ role: "readWrite", db: "a
 db.auth("Admin","nimda")
 ```
 ##### 2. Or connexion with MongoDb VsCode extension:
-![Connexion MongoDb VsCode extension step 1](https://github.com/EmmanuelLefevre/img/blob/main/MongoDb%20VsCode%20extension%20connexion%20step%201.png)
-![Connexion MongoDb VsCode extension step 2](https://github.com/EmmanuelLefevre/img/blob/main/MongoDb%20VsCode%20extension%20connexion%20step%202.png)
+![Connexion MongoDb VsCode extension step 1](https://github.com/EmmanuelLefevre/MarkdownImg/blob/main/mongodb_vscode_extension_connexion_step_1.png)  
+![Connexion MongoDb VsCode extension step 2](https://github.com/EmmanuelLefevre/MarkdownImg/blob/main/mongodb_vscode_extension_connexion_step_2.png)
 ***
 #### Clone and install project
 ```shell
@@ -117,16 +117,16 @@ chmod u+x sonar-server.sh
 ##### 3. Open a browser and open the URL => http://localhost:9000
 ##### 4. Enter credentials Login: admin and Password: admin
 ##### 5. Set a new password...
-![SonarQube update password](https://github.com/EmmanuelLefevre/img/blob/main/SonarQube%20update%20password.png)
+![SonarQube update password](https://github.com/EmmanuelLefevre/MarkdownImg/blob/main/sonarqube_update_password.png)
 ##### 6. Create new project manually
 ProjectKey = ArtiWave
 ##### 7. Generate a token
-![SonarQube generate token](https://github.com/EmmanuelLefevre/img/blob/main/SonarQube%20generate%20token.png)
+![SonarQube generate token](https://github.com/EmmanuelLefevre/MarkdownImg/blob/main/sonarqube_generate_token.png)
 ##### 8. Get the token
-![SonarQube get token](https://github.com/EmmanuelLefevre/img/blob/main/SonarQube%20get%20token.png)
+![SonarQube get token](https://github.com/EmmanuelLefevre/MarkdownImg/blob/main/sonarqube_get_token.png)
 ##### 9. Provide the token in ArtiWave project
 Replace token by the created one in scan.sh file
-![ArtiWave provide token](https://github.com/EmmanuelLefevre/img/blob/main/ArtiWave%20provide%20token.png)
+![ArtiWave provide token](https://github.com/EmmanuelLefevre/MarkdownImg/blob/main/artiwave_provide_token.png)
 ##### 10. Give rights to the scan.sh file
 ```shell
 chmod u+x scan.sh
