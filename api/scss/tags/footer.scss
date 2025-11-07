@@ -1,0 +1,11 @@
+footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 64px;
+  background: var(--gradient-effect);
+  div {
+    color: var(--white);
+  }
+}
