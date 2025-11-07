@@ -1,0 +1,9 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  padding: 32px 16px 32px 16px;
+  > :first-child {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+}
