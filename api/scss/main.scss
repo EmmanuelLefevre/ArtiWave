@@ -1,4 +1,34 @@
 :root {
+  /*======IMPORTS======*/
+  /*****------Components------*****/
+  /*------Layout------*/
+  @import 'components//layout.scss';
+  /*------Content------*/
+  @import 'components/content.scss';
+  /*------Snackbar------*/
+  @import 'components/snackbar.scss';
+
+  /*****------Tags------*****/
+  /*------Header------*/
+  @import 'tags/header.scss';
+  /*------Footer------*/
+  @import 'tags/footer.scss';
+  /*------Button------*/
+  @import 'tags/button.scss';
+  /*------Link------*/
+  @import 'tags/link.scss';
+  /*------Form------*/
+  @import 'tags/form.scss';
+
+  /*****------Animations------*****/
+  @import 'animations/animations.scss';
+
+  /*****------Responsive------*****/
+  /*------Responsive Small Desktop------*/
+  @import 'responsive/responsive.small.desktop.scss';
+  /*------Responsive Large Desktop------*/
+  @import 'responsive/responsive.large.desktop.scss';
+
   /*======COLOR PALETTE======*/
   /*------Main------*/
   --black: #000;
@@ -31,7 +61,8 @@
   --gradient2: var(--main-purple);
   --gradient-effect: linear-gradient(315deg, var(--gradient1) 0%, var(--gradient2) 74%);
 
-  /*======SEMANTIC FONTS======*/
+  /*======FONTS======*/
+  /*****------Semantics------*****/
   /*------Arial------*/
   --body-text: 'arial';
   --body-font-text-weight-regular: 400;
@@ -52,37 +83,16 @@
     src: url('../fonts/PPEditorialOld.otf') format('otf');
     --playfair-display-font: 'PP Editorial Old';
   }
-
-  /*======FONTS SIZE======*/
+  /*****------Sizes------*****/
   /*------Mobile------*/
   /*------Small Desktop------*/
   /*------Large Desktop------*/
 
-
   /*======SHADOWS======*/
-
-
-  /*======IMPORTS======*/
-  /*------Responsive Small Desktop------*/
-  @import 'responsive/responsive.small.desktop.scss';
-  /*------Responsive Large Desktop------*/
-  @import 'responsive/responsive.large.desktop.scss';
-  /*------Header------*/
-  @import 'tags/header.scss';
-  /*------Button------*/
-  @import 'tags/button.scss';
-  /*------Link------*/
-  @import 'tags/link.scss';
-  /*------Form------*/
-  @import 'tags/form.scss';
-  /*------Snackbar------*/
-  @import 'components/snackbar.scss';
-  /*------Animations------*/
-  @import 'animations/animations.scss';
 }
 
 
-/*------Reset------*/
+/*======Reset======*/
 * {
   margin: 0;
   padding: 0;
@@ -90,13 +100,11 @@
 }
 
 
-/*------Preset------*/
+/*======Preset======*/
 html, body {
   width: 100%;
   height: 100%;
 }
-
-
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
@@ -106,7 +114,7 @@ input:-webkit-autofill:active {
 }
 
 
-/*------Body------*/
+/*======Body======*/
 body {
   font-family: var(--body-text);
   font-weight: var(--body-font-text-weight-regular);
