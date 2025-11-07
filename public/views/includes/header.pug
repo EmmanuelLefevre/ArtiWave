@@ -33,22 +33,22 @@ header
           aria-label="Bouton vers le formulaire de connexion"
         )
           span Connexion
-        //- if !isConnected
-        //-   button(
-        //-     href="#login"
-        //-     hx-get="/api/login-component"
-        //-     hx-swap="outerHTML"
-        //-     id="login-button"
-        //-     type="submit"
-        //-     aria-label="Bouton vers le formulaire de connexion"
-        //-   )
-        //-     span Connexion
-        //- else
-        //-   button(
-        //-     id="logout-button"
-        //-     type="submit"
-        //-     aria-label="Bouton de déconnexion"
-        //-   )
-        //-     span Déconnexion
+            if !isConnected
+              button(
+                href="#login"
+                hx-get="/api/login-component"
+                hx-swap="outerHTML"
+                id="login-button"
+                type="submit"
+                aria-label="Bouton vers le formulaire de connexion"
+              )
+                span Connexion
+            else
+              button(
+                id="logout-button"
+                type="submit"
+                aria-label="Bouton de déconnexion"
+              )
+                span Déconnexion
 
   script(src="assets/js/logout.js")
