@@ -1,15 +1,15 @@
 /* ========== BUTTON ==========*/
 
 class Button {
-  constructor(text, id, ariaLabel) {
+  constructor(label, id, ariaLabel) {
     this.button = document.createElement('button');
     this.button.setAttribute('id', id);
     this.button.setAttribute('type', 'submit');
     this.button.setAttribute('aria-label', ariaLabel);
 
-    // Create span text
+    // Create label text
     const spanLabel = document.createElement('span');
-    spanLabel.textContent = text;
+    spanLabel.textContent = label;
 
     // Add span to button
     this.button.appendChild(spanLabel);
@@ -32,7 +32,8 @@ class Button {
 class LoginButton extends Button {
   constructor() {
     super('Connexion', 'login-button', 'Bouton vers le formulaire de connexion');
-    this.button.setAttribute('hx-get', '/login-component');
+    this.button.setAttribute('href', '#login');
+    this.button.setAttribute('hx-get', '/api/login-component');
     this.button.setAttribute('hx-swap', 'outerHTML');
   }
 }
