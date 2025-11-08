@@ -4,10 +4,11 @@
 
 
 /*============ IMPORT USED MODULES ============*/
-var express = require('express');
+const express = require('express');
 
 // Controller
 const LayoutController = require('../controllers/layoutController');
+const ArticlesController = require('../controllers/articlesController');
 
 // Middleware
 const AllowedCurrentMethodCheck = require('../middleware/allowedCurrentMethodCheck');
@@ -17,14 +18,22 @@ const AllowedCurrentMethodCheck = require('../middleware/allowedCurrentMethodChe
 
 class LayoutRouter {
 	static init() {
-		// Express router
-		const layoutRouter = express.Router();
+		const router = express.Router();
 
-		layoutRouter.route('/')
+		router.route('/')
 			.all(AllowedCurrentMethodCheck(['GET']))
 			.get(LayoutController.index);
 
-		return layoutRouter;
+		// Fragments
+		router.route('/home-fragment')
+      .all(AllowedCurrentMethodCheck(['GET']))
+      .get(LayoutController.homeComponent);
+
+    router.route('/articles-fragment')
+      .all(AllowedCurrentMethodCheck(['GET']))
+      .get(ArticlesController.articlesComponent);
+
+		return router;
 	}
 }
 
