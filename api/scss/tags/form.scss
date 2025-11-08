@@ -9,8 +9,8 @@
   width: 350px;
   padding: 20px 0 40px 0;
   transform: translate(-50%, -50%);
-  border-top: 3px solid var(--main-blue);
-  border-left: 3px solid var(--main-blue);
+  border-top: 3px solid var(--main-first-color);
+  border-left: 3px solid var(--main-first-color);
   border-bottom: 3px solid var(--gradient2);
   border-right: 3px solid var(--gradient2);
   box-sizing: border-box;
@@ -122,7 +122,7 @@
       }
       &:valid ~ span.input-border {
         font-size: 14px;
-        color: var(--main-purple);
+        color: var(--second-color);
         top: 37px;
         left: 0;
       }
