@@ -505,6 +505,10 @@ class ArticleController {
 
         return true;
     }
+
+    static articlesComponent(_req, res) {
+        res.render('components/articles/articles-component', { layout: false });
+    }
 }
 
 

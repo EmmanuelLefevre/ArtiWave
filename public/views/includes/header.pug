@@ -3,6 +3,7 @@ header
     .nav-container
       .nav-left-section
         a.nav-logo(
+          href="/"
           aria-label="Bouton vers la page accueil"
         )
           img(
@@ -11,16 +12,21 @@ header
           )
         p ArtiWave
       .nav-center-section
-        a.nav-link.active(
+        a.nav-link(
+          href="/home-fragment"
+          hx-get="/home-fragment"
+          hx-target="#page-content"
+          hx-swap="innerHTML"
           id="home-link"
           aria-label="Bouton vers la page d'accueil"
         ) Home
+
         a.nav-link(
-          href="#articles"
-          hx-get="/api/articles"
-          hx-target="#articles-list"
-          hx-swap="outerHTML"
-          id="articles-list-link"
+          href="/articles-fragment"
+          hx-get="/articles-fragment"
+          hx-target="#page-content"
+          hx-swap="innerHTML"
+          id="articles-link"
           aria-label="Bouton vers la page des articles"
         ) Articles
       .nav-right-section

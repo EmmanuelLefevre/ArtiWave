@@ -7,11 +7,18 @@
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
+const path = require('path');
+const favicon = require('serve-favicon');
 
-// Database connection
-const { connectDB } = require('./api/db.config');
 
-// Middleware
+/*============ ROUTERS ============*/
+const AdminRouter = require('./api/routers/adminRouter');
+const AuthRouter = require('./api/routers/authRouter');
+const LayoutRouter = require('./api/routers/layoutRouter');
+const UsersRouter = require('./api/routers/usersRouter');
+
+
+/*============ MIDDLEWARES ============*/
 const { RequestsLimiter } = require('./api/middleware/rateLimiter');
 const AdminCheck = require('./api/middleware/adminCheck');
 const GlobalErrorHandler = require('./api/middleware/globalErrorHandler');
@@ -20,27 +27,30 @@ const GlobalErrorHandler = require('./api/middleware/globalErrorHandler');
 const NotAllowedMethodError = require('./api/_errors/notAllowedMethodError');
 const NotFoundError = require('./api/_errors/notFoundError');
 
-// Swagger documentation
-const swaggerSpec = require('./swagger');
-const swaggerUi = require('swagger-ui-express');
 
-const path = require('path');
-
-const favicon = require('serve-favicon');
+/*============ DATABASE SINGLETON CONNEXION ============*/
+const { connectDB } = require('./api/db.config');
+connectDB();
 
 
 /*============ APP INITIALIZATION ============*/
 const app = express();
 
+
+/*============ SWAGGER ============*/
+const swaggerSpec = require('./swagger');
+const swaggerUi = require('swagger-ui-express');
+app.use('/api/swagger-doc', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+
+/*============ SECURITY ============*/
 /*---------- HELMET ----------*/
 app.use(helmet({
 	crossOriginResourcePolicy: { policy: "cross-origin"},
 	xContentTypeOptions: true
 }));
-
 /*---------- DISABLE 'X-POWERED-BY' HEADER ----------*/
 app.disable('x-powered-by');
-
 /*---------- ADDITIONAL SECURITY HEADERS ----------*/
 app.use((_req, res, next) => {
 	res.setHeader('X-XSS-Protection', '1; mode=block');
@@ -53,7 +63,6 @@ app.use((_req, res, next) => {
 	);
 	next();
 });
-
 /*---------- CORS ----------*/
 app.use(cors());
 app.use((req, res, next) => {
@@ -68,74 +77,48 @@ app.use((req, res, next) => {
     next();
 });
 
-/*---------- SWAGGER ----------*/
-app.use('/api/swagger-doc', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-/*---------- OTHERS ----------*/
+/*============ PARSERS & STATIC ============*/
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-
-/*============ REQUESTS RATE-LIMITER ============*/
-app.use(RequestsLimiter);
-
-
-/*============ IMPORT ROUTER MODULES ============*/
-const IndexRouter = require('./api/routers/indexRouter');
-const LayoutRouter = require('./api/routers/layoutRouter');
-const AuthRouter = require('./api/routers/authRouter');
-const UsersRouter = require('./api/routers/usersRouter');
-const ArticlesRouter = require('./api/routers/articlesRouter');
-const AdminRouter = require('./api/routers/adminRouter');
-
-
-/*============ DATABASE SINGLETON CONNEXION ============*/
-connectDB();
-
-
-/*============ SET VIEW ENGINE ============*/
-app.set('view engine', 'pug');
-app.set('views', path.join(__dirname, '/public/views'));
-// app.locals.cache = false;
-app.locals.compileDebug = true;
-
-/*============ SERVING STATIC FILES FROM PUBLIC DIRECTORY ============*/
 app.use(express.static(path.join(__dirname, 'public')));
-
-
-/*============ FAVICON ============*/
 app.use(favicon(path.join(__dirname, 'public/assets/img/favicon', 'ArtiWave-favicon-32px.ico')));
 
 
+/*============ RATE-LIMITER ============*/
+app.use(RequestsLimiter);
+
+
+/*============ VIEW ENGINE ============*/
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, '/public/views'));
+app.locals.compileDebug = true;
+
+
 /*============ ROUTER PARAMETERS ============*/
-/*---------- INDEX ----------*/
-app.use("/", IndexRouter);
+app.get('/home', (_req, res) => res.redirect('/'));
+/*******---------- Layout ----------*******/
+app.use("/", LayoutRouter);
 
-/*---------- HOME ----------*/
-app.use("/home", LayoutRouter);
-
-/*---------- AUTH ----------*/
+/*******---------- API ----------*******/
+/*---------- Auth ----------*/
 app.use('/api/login', AuthRouter);
-
-/*---------- USERS ----------*/
+/*---------- Users ----------*/
 app.use('/api/users', UsersRouter);
-
-/*---------- ARTICLES ----------*/
-app.use('/api/articles', ArticlesRouter);
-
-/*---------- ADMINS ----------*/
+/*---------- Admins ----------*/
 app.use('/api/admins', AdminCheck, AdminRouter);
 
-/*---------- LOGIN FORM COMPONENT ----------*/
+/*******---------- COMPONENTS ----------*******/
+/*---------- Login form component ----------*/
 app.get('/login-component', (_req, res) => res.render('components/login/login-component.pug'));
 
+/*******---------- ERRORS ----------*******/
 /*---------- 404 ----------*/
-app.get('*', (_req, _res) => {
+app.all('*', (_req, _res) => {
 	throw new NotFoundError();
 });
 
-
-/*============ GLOBAL ERROR HANDLER MIDDLEWARE ============*/
+/*******---------- GLOBAL ERROR HANDLER MIDDLEWARE ----------*******/
 app.use(GlobalErrorHandler);
 
 
