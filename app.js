@@ -82,7 +82,7 @@ app.use(RequestsLimiter);
 
 /*============ IMPORT ROUTER MODULES ============*/
 const IndexRouter = require('./api/routers/indexRouter');
-const HomeRouter = require('./api/routers/homeRouter');
+const LayoutRouter = require('./api/routers/layoutRouter');
 const AuthRouter = require('./api/routers/authRouter');
 const UsersRouter = require('./api/routers/usersRouter');
 const ArticlesRouter = require('./api/routers/articlesRouter');
@@ -112,7 +112,7 @@ app.use(favicon(path.join(__dirname, 'public/assets/img/favicon', 'ArtiWave-favi
 app.use("/", IndexRouter);
 
 /*---------- HOME ----------*/
-app.use("/home", HomeRouter);
+app.use("/home", LayoutRouter);
 
 /*---------- AUTH ----------*/
 app.use('/api/login', AuthRouter);
