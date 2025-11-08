@@ -4,7 +4,6 @@ class Button {
   constructor(label, id, ariaLabel) {
     this.button = document.createElement('button');
     this.button.setAttribute('id', id);
-    this.button.setAttribute('type', 'submit');
     this.button.setAttribute('aria-label', ariaLabel);
 
     // Create label text
@@ -35,6 +34,7 @@ class LoginButton extends Button {
     this.button.setAttribute('href', '#login');
     this.button.setAttribute('hx-get', '/api/login-component');
     this.button.setAttribute('hx-swap', 'outerHTML');
+    this.button.setAttribute('type', 'submit');
   }
 }
 
@@ -42,6 +42,7 @@ class LoginButton extends Button {
 class LogoutButton extends Button {
   constructor() {
     super('Déconnexion', 'logout-button', 'Bouton de déconnexion');
+    this.button.setAttribute('type', 'button');
   }
 
   // Render logout button in DOM
