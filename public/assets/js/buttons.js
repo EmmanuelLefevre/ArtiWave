@@ -32,7 +32,7 @@ class LoginButton extends Button {
   constructor() {
     super('Connexion', 'login-button', 'Bouton vers le formulaire de connexion');
     this.button.setAttribute('href', '#login');
-    this.button.setAttribute('hx-get', '/api/login-component');
+    this.button.setAttribute('hx-get', '/login-component');
     this.button.setAttribute('hx-swap', 'outerHTML');
     this.button.setAttribute('type', 'submit');
   }
