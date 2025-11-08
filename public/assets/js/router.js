@@ -2,10 +2,10 @@ export function navigateToHome() {
   const mainContent = document.querySelector('main');
   if (!mainContent) return;
 
-  // Charger le contenu de la home via htmx
+  // Load home content via HTMX
   htmx.ajax('GET', '/', { target: 'main', swap: 'innerHTML' });
 
-  // Mettre à jour le lien actif
+  // Update active link
   const links = document.querySelectorAll('.nav-link');
   links.forEach(link => link.classList.remove('active'));
   const homeLink = document.getElementById('home-link');
