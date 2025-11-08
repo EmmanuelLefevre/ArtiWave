@@ -44,20 +44,27 @@ app.disable('x-powered-by');
 /*---------- ADDITIONAL SECURITY HEADERS ----------*/
 app.use((_req, res, next) => {
 	res.setHeader('X-XSS-Protection', '1; mode=block');
-	res.setHeader("Content-Security-Policy", "script-src 'self' https://unpkg.com;");
+	res.setHeader("Content-Security-Policy",
+		"default-src 'self'; \
+		script-src 'self' https://unpkg.com; \
+		style-src 'self' 'unsafe-inline'; \
+		img-src 'self' data:; \
+		connect-src 'self' *;"
+	);
 	next();
 });
 
 /*---------- CORS ----------*/
 app.use(cors());
-app.use((req,res,next)=>{
-    res.header('Access-Control-Allow-Headers, Access-Control-Allow-Origin', 'Origin, X-Requested-with, x-access-token, role, Content, Content_Type, Accept, Authorization','http://localhost:9001');
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:9001');
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, x-access-token, role, Content, Content-Type, Accept, Authorization');
     if (req.method === 'OPTIONS') {
-        res.header('Access-Control-Allow-Methods','GET, POST, PUT, PATCH, DELETE');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
     }
-	if (req.method === 'HEAD') {
-		throw new NotAllowedMethodError();
-	}
+    if (req.method === 'HEAD') {
+        throw new NotAllowedMethodError();
+    }
     next();
 });
 
@@ -120,7 +127,7 @@ app.use('/api/articles', ArticlesRouter);
 app.use('/api/admins', AdminCheck, AdminRouter);
 
 /*---------- LOGIN FORM COMPONENT ----------*/
-app.get('/api/login-component', (_req, res) => res.render('components/login/login.form.component.pug'));
+app.get('/login-component', (_req, res) => res.render('components/login/login-component.pug'));
 
 /*---------- 404 ----------*/
 app.get('*', (_req, _res) => {
