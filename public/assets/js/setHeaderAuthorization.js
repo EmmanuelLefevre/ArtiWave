@@ -12,9 +12,6 @@ document.addEventListener('DOMContentLoaded', function() {
             // Set authorization header in request
             event.detail.headers["Authorization"] = authorizationValue;
         }
-        else {
-            console.error("Access token is missing!");
-        }
     });
 });
 
@@ -35,9 +32,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 //                     // Set authorization header in request
 //                     event.detail.headers["Authorization"] = authorizationValue;
-//                 }
-//                 else {
-//                     console.error("Access token is missing!");
 //                 }
 //             });
 //         }
