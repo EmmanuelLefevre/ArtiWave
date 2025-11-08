@@ -1,18 +1,18 @@
 /* ========== SNACKBAR ==========*/
 
 class Snackbar {
-  constructor(message, id, snackbarClass, ariaLabel, animationClass = null, duration = null) {
+  constructor(message, snackbarInfoClass, ariaLabel, animationClass = null, duration = null) {
     this.snackbar = document.createElement('div');
     this.snackbar.textContent = message;
-    this.snackbar.setAttribute('id', id);
-    this.snackbar.classList.add(snackbarClass);
+
+    this.snackbar.classList.add('snackbar');
+    this.snackbar.classList.add(snackbarInfoClass);
     this.snackbar.setAttribute('aria-label', ariaLabel);
-    if (duration) {
-      this.duration = duration;
-    }
+
     if (animationClass) {
       this.snackbar.classList.add(animationClass);
     }
+    this.duration = duration;
   }
 
   // Create snackbar in DOM
@@ -28,27 +28,27 @@ class Snackbar {
 
 class SnackbarInfo extends Snackbar {
   constructor(message) {
-    super(message, 'snackbar', 'snackbar-info', 'Notification d\'information', 'slide-left', '3000');
+    super(message, 'snackbar-info', 'Notification d\'information', 'slide-left', 3000);
   }
 }
 
 
 class SnackbarSuccess extends Snackbar {
   constructor(message) {
-    super(message, 'snackbar', 'snackbar-success', 'Notification de validation');
+    super(message, 'snackbar-success', 'Notification de validation', 'slide-bottom', 3000);
   }
 }
 
 
 class SnackbarWarning extends Snackbar {
   constructor(message) {
-    super(message, 'snackbar', 'snackbar-warning', 'Notification d\'avertissement');
+    super(message, 'snackbar-warning', 'Notification d\'avertissement', null, 3000);
   }
 }
 
 
 class SnackbarAlert extends Snackbar {
   constructor(message) {
-    super(message, 'snackbar', 'snackbar-alert', 'Notification d\'alerte');
+    super(message, 'snackbar-alert', 'Notification d\'alerte', null, 3000);
   }
 }

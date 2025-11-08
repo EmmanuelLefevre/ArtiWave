@@ -1,4 +1,4 @@
-#snackbar {
+.snackbar {
   position: absolute;
   color: var(--snackbar-text-color);
   text-align: center;
@@ -6,8 +6,8 @@
   height: auto;
   margin: 20px 20px 0 0;
   padding: 10px 20px;
-  border-top: 2px solid var(--main-first-color);
-  border-left: 2px solid var(--main-first-color);
+  border-top: 2px solid var(--main-color);
+  border-left: 2px solid var(--main-color);
   border-bottom: 2px solid var(--gradient2);
   border-right: 2px solid var(--gradient2);
   box-sizing: border-box;
@@ -15,11 +15,12 @@
   background: var(--snackbar-bg);
   z-index: 9999;
   &.snackbar-info {
+    top: 80px;
     right: 0;
   }
   &.snackbar-success {
+    bottom: 80px;
     right: 0;
-    bottom: 0;
   }
   // &.snackbar-warning {
   // }
