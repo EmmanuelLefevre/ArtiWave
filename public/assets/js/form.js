@@ -7,24 +7,32 @@ class FormValidator {
   initialize() {
     this.validateOnEntry();
     this.validateOnSubmit();
+    this.toggleSubmitButton();
   }
 
   validateOnSubmit() {
     let self = this;
     this.form.addEventListener('submit', e => {
-      e.preventDefault();
+      let isFormValid = true;
       self.fields.forEach(field => {
         const input = document.querySelector(`#${field}`);
         // Check if fields are empty first
         if (input.value.trim() === "") {
           const labelvalue = input.nextElementSibling.nextElementSibling.innerText;
           self.setStatus(input, `${labelvalue} cannot be blank!`, "error");
+          isFormValid = false;
         }
         else {
           // If not empty, then proceed with other validations
           self.validateFields(input);
+          if (!input.classList.contains('valid')) {
+            isFormValid = false;
+          }
         }
       });
+      if (!isFormValid) {
+        e.preventDefault();
+      }
     });
   }
 
@@ -35,6 +43,7 @@ class FormValidator {
 
       input.addEventListener('input', _event => {
         self.validateFields(input);
+        self.toggleSubmitButton();
       });
     });
   }
@@ -120,6 +129,19 @@ class FormValidator {
       errorIcon.classList.remove('hidden');
     }
   }
+
+  toggleSubmitButton() {
+    const submitBtn = document.getElementById('submit-login-form-button');
+    if (!submitBtn) return;
+    let isFormValid = true;
+    this.fields.forEach(field => {
+      const input = document.querySelector(`#${field}`);
+      if (!input || !input.classList.contains('valid')) {
+        isFormValid = false;
+      }
+    });
+    submitBtn.disabled = !isFormValid;
+  }
 }
 
 const form = document.querySelector('.form');
@@ -127,3 +149,19 @@ const fields = ["email", "password"];
 
 const validator = new FormValidator(form, fields);
 validator.initialize();
+
+const insertSubmitButton = () => {
+  const submitLoginFormButton = document.querySelector('.submit-login-form');
+  if (!submitLoginFormButton) return;
+  submitLoginFormButton.innerHTML = '';
+  const submitBtn = new SubmitLoginFormButton();
+  submitBtn.createButton(submitLoginFormButton);
+};
+
+if (document.querySelector('.submit-login-form')) {
+  insertSubmitButton();
+}
+
+// Désactiver le bouton au chargement
+const submitBtnInit = document.getElementById('submit-login-form-button');
+if (submitBtnInit) submitBtnInit.disabled = true;
