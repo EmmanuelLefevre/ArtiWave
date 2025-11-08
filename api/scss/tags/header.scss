@@ -48,6 +48,7 @@ header {
           margin: 0 15px;
           letter-spacing: 2px;
           text-transform: uppercase;
+          user-select: none;
           &:hover {
             color: var(--second-color);
             border-bottom: 1px solid var(--second-color);
