@@ -6,7 +6,8 @@ window.onload = function() {
     if (getConnectionStatus()) {
         const logoutBtn = new LogoutButton();
         logoutBtn.createButton(navRightSection);
-    } else {
+    }
+    else {
         const loginBtn = new LoginButton();
         loginBtn.createButton(navRightSection);
     }
