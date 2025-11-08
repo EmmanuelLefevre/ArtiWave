@@ -50,3 +50,11 @@ class LogoutButton extends Button {
     return this.button;
   }
 }
+
+
+class SubmitLoginFormButton extends Button {
+  constructor() {
+    super('Se connecter', 'submit-login-form-button', 'Bouton pour soumettre le formulaire de connexion');
+    this.button.setAttribute('type', 'submit');
+  }
+}
