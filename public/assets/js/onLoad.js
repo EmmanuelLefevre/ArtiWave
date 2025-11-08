@@ -1,10 +1,16 @@
 window.onload = function() {
-    // If no artiwave_acces_token in local storage
+    const navRightSection = document.querySelector('.nav-right-section');
+    if (!navRightSection) return;
+
+    navRightSection.innerHTML = '';
     if (getConnectionStatus()) {
-        // Create button instance
-        const logoutButton = new LogoutButton();
-        // Select login button
-        const loginButton = document.getElementById('login-button');
-        loginButton.replaceWith(logoutButton.render());
+        const logoutBtn = new LogoutButton();
+        logoutBtn.createButton(navRightSection);
+    } else {
+        const loginBtn = new LoginButton();
+        loginBtn.createButton(navRightSection);
+    }
+    if (window.htmx) {
+        htmx.process(navRightSection);
     }
 };
