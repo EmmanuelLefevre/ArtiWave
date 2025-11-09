@@ -5,23 +5,21 @@ html(lang="fr")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
     link(rel="stylesheet", href="assets/css/main.css")
     script(src="https://unpkg.com/htmx.org@1.9.10")
+    script(src="assets/js/setActiveLink.js")
     script(src="assets/js/onLoad.js")
     title Artiwave
 
   body
     div.layout
       block header
-        include ../includes/header
+        include includes/header
 
-      main#page-content
+      main#main-content
         block main-content
-          //- include components/home/home-component
-          //- include #{initialComponent}
 
       block footer
-        include ../includes/footer
+        include includes/footer
 
-    script(src="assets/js/setActiveLink.js", defer)
     script(src="assets/js/buttons.js", defer)
     script(src="assets/js/snackbar.js", defer)
     script(src="assets/js/token.js", defer)
