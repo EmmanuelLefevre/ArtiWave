@@ -1,1 +1,16 @@
-include ../includes/articles.pug
+.articles-content
+  h1.gradient-text Articles à la une
+  if articles && articles.length > 0
+    .articles-list
+      each article in articles
+        .article-card
+          h2.gradient-text= article.title
+          p= article.content
+          div.infos
+            span #{article.authorNickname}
+            span.date-info Créé le : #{article.createdAtFormatted}
+            if article.updatedAtFormatted !== article.createdAtFormatted
+              span.date-info MAJ : #{article.updatedAtFormatted}
+  else
+    .no-articles
+      p.gradient-text Aucun article à afficher pour le moment.
