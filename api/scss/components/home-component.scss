@@ -1,0 +1,11 @@
+.home-content {
+  display: flex;
+  flex-direction: column;
+  padding: 32px;
+  h1 {
+    text-align: center;
+    width: fit-content;
+    margin: 0 auto 32px;
+    user-select: none;
+  }
+}
