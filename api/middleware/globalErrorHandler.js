@@ -33,6 +33,8 @@ const ValidationError = require('../_errors/validationError');
 /*============ GLOBAL ERROR HANDLER ============*/
 function GlobalErrorHandler(err, _req, res, _next) {
 
+    console.error(err.stack || err);
+
     const errorMessage = err.message;
     const statusCode = err.statusCode;
 
