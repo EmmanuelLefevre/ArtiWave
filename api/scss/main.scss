@@ -2,11 +2,13 @@
   /*======IMPORTS======*/
   /*****------Components------*****/
   /*------Layout------*/
-  @import 'components//layout.scss';
-  /*------Content------*/
-  @import 'components/content.scss';
+  @import 'layout.scss';
+  /*------Home------*/
+  @import 'components/home-component.scss';
+  /*------Articles------*/
+  @import 'components/articles-component.scss';
   /*------Snackbar------*/
-  @import 'components/snackbar.scss';
+  @import 'components/snackbar-component.scss';
 
   /*****------Tags------*****/
   /*------Header------*/
@@ -23,11 +25,6 @@
   /*****------Animations------*****/
   @import 'animations/animations.scss';
 
-  /*****------Responsive------*****/
-  /*------Responsive Small Desktop------*/
-  @import 'responsive/responsive.small.desktop.scss';
-  /*------Responsive Large Desktop------*/
-  @import 'responsive/responsive.large.desktop.scss';
 
   /*======COLOR PALETTE======*/
   /*------Main------*/
@@ -60,6 +57,7 @@
   --gradient1: var(--main-second-color);
   --gradient2: var(--second-color);
   --gradient-effect: linear-gradient(315deg, var(--gradient1) 0%, var(--gradient2) 74%);
+  --gradient-text-effect: linear-gradient(315deg, var(--gradient1) 0%, var(--gradient2) 100%);
 
   /*======FONTS======*/
   /*****------Semantics------*****/
@@ -83,13 +81,23 @@
     src: url('../fonts/PPEditorialOld.otf') format('otf');
     --playfair-display-font: 'PP Editorial Old';
   }
-  /*****------Sizes------*****/
-  /*------Mobile------*/
-  /*------Small Desktop------*/
-  /*------Large Desktop------*/
+
+  /*****------Sizes / mobile First------*****/
+  --h1-font-size: 26px;
+  --h2-font-size: 18px;
+  --p-font-size: 16px;
+  --button-label-font-size: 10px;
+
 
   /*======SHADOWS======*/
 }
+
+
+/*======Responsive======*/
+/*****------Small Desktop------*****/
+@import 'responsive/responsive.small.desktop.scss';
+/*****------Large Desktop------*****/
+@import 'responsive/responsive.large.desktop.scss';
 
 
 /*======Reset======*/
@@ -120,4 +128,26 @@ body {
   font-weight: var(--body-font-text-weight-regular);
   background-color: var(--main-bg);
   color: var(--body-text-color);
+  h1 {
+  font-size: var(--h1-font-size);
+  }
+  h2 {
+    font-size: var(--h2-font-size);
+  }
+  p {
+    font-size: var(--p-font-size);
+  }
+  button {
+    font-size: var(--button-label-font-size);
+  }
+}
+
+/*======UTILS======*/
+.gradient-text {
+  background: var(--gradient-text-effect);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
 }
