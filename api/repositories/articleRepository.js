@@ -21,7 +21,7 @@ class ArticleRepository {
     /*=== CREATE ARTICLE ===*/
     static async createArticle(newArticle) {
         try {
-            return newArticle.save();
+            return await newArticle.save();
         }
         catch (err) {
             if (err.code === 11000 && err.keyPattern.title) {
@@ -34,7 +34,7 @@ class ArticleRepository {
     /*=== GET ALL ARTICLES ===*/
     static async getAllArticles() {
         try {
-            return Article.find({}, 'id title content author createdAt updatedAt');
+            return await Article.find({}, 'id title content author createdAt updatedAt');
         }
         catch (err) {
             throw new RecoveryFailedError();
@@ -44,7 +44,7 @@ class ArticleRepository {
     /*=== GET SINGLE ARTICLE ===*/
     static async getArticleById(articleId) {
         try {
-            return Article.findById(articleId, { _id: 1, title: 1, content: 1, author: 1, createdAt: 1, updatedAt: 1 });
+            return await Article.findById(articleId, { _id: 1, title: 1, content: 1, author: 1, createdAt: 1, updatedAt: 1 });
         }
         catch (err) {
             throw new RecoveryFailedError();
@@ -54,7 +54,7 @@ class ArticleRepository {
     /*=== GET ARTICLES BY USER ===*/
     static async getAllArticlesByUserId(userId) {
         try {
-            return Article.find({ author: userId }, { _id: 1, title: 1, content: 1, author: 1, createdAt: 1, updatedAt: 1 });
+            return await Article.find({ author: userId }, { _id: 1, title: 1, content: 1, author: 1, createdAt: 1, updatedAt: 1 });
         }
         catch (err) {
             throw new RecoveryFailedError();
@@ -64,7 +64,7 @@ class ArticleRepository {
     /*=== GET ARTICLES COUNT BY USER ===*/
     static async getArticleCountByUser(userId) {
         try {
-            return Article.countDocuments({ author: userId });
+            return await Article.countDocuments({ author: userId });
         }
         catch (err) {
             throw new RecoveryFailedError();
@@ -74,7 +74,7 @@ class ArticleRepository {
     /*=== UPDATE ARTICLE ===*/
     static async updateArticleById(articleId, updatedData) {
         try {
-            return Article.findByIdAndUpdate(
+            return await Article.findByIdAndUpdate(
                 articleId,
                 { $set: updatedData },
                 { new: true }
