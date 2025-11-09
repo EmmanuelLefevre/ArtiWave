@@ -1,73 +1,32 @@
-// document.addEventListener("DOMContentLoaded", () => {
-//   const links = document.querySelectorAll(".nav-link");
-//   const contentContainer = document.getElementById("page-content");
-
-//   // Fonction pour charger une page
-//   async function loadPage(url) {
-//     try {
-//       const res = await fetch(url);
-//       const html = await res.text();
-//       contentContainer.innerHTML = html;
-//       // Met à jour la classe active
-//       links.forEach(link => link.classList.remove("active"));
-//       const activeLink = Array.from(links).find(link => link.getAttribute("href") === url);
-//       if (activeLink) activeLink.classList.add("active");
-//     }
-// 		catch (err) {
-//       contentContainer.innerHTML = "<p>Erreur lors du chargement de la page.</p>";
-//       console.error(err);
-//     }
-//   }
-
-//   // Par défaut, charger home.pug
-//   loadPage("/home");
-
-//   // Interception des clics sur les liens
-//   links.forEach(link => {
-//     link.addEventListener("click", e => {
-//       e.preventDefault();
-//       const url = link.getAttribute("href");
-//       loadPage(url);
-//     });
-//   });
-// });
-
-document.addEventListener('DOMContentLoaded', function() {
+function updateActiveLink() {
+	// Get current path from address bar
 	const currentPath = window.location.pathname;
-	const homePath = "/";
-	const articlesPath = "/articles";
 
-	// Function to add active class to the corresponding link
-	function setActiveLink(linkId) {
-		// Remove active class from all links
-		const links = document.querySelectorAll('.nav-link');
-		links.forEach(function(link) {
-			link.classList.remove('active');
-		});
-		// Add active class to the specified link
-		const activeLink = document.getElementById(linkId);
-		if (activeLink) {
-			activeLink.classList.add('active');
+	// Navigation link identifiers
+	const linkMap = {
+		'': 'home-link',
+		'/articles': 'articles-link',
+		// Other paths here...
+	};
+
+	// Remove 'active' class everywhere
+	document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+
+	// Adds 'active' class on the concerning link's path
+	const linkIdToActivate = linkMap[currentPath];
+	const activeLink = document.getElementById(linkIdToActivate);
+	if (activeLink) {
+		activeLink.classList.add('active');
+	}
+}
+
+document.addEventListener('DOMContentLoaded', updateActiveLink);
+if (window.htmx) {
+	// Event is triggered after a successful request
+	document.body.addEventListener('htmx:afterRequest', (evt) => {
+		// Check if target is indeed the main content
+		if (evt.detail.target.id === 'main-content') {
+			updateActiveLink();
 		}
-	}
-
-	// Check current path and call the setActiveLink function consequently
-	if (currentPath === homePath) {
-		setActiveLink('home-link');
-	}
-	else if (currentPath === articlesPath) {
-		setActiveLink('articles-list-link');
-	}
-
-});
-
-// document.addEventListener("htmx:afterSwap", (event) => {
-//   const links = document.querySelectorAll(".nav-link");
-//   links.forEach(link => link.classList.remove("active"));
-
-//   if (event.detail.target.id === "page-content") {
-//     const url = event.detail.xhr.responseURL;
-//     const activeLink = Array.from(links).find(link => link.href === url);
-//     if (activeLink) activeLink.classList.add("active");
-//   }
-// });
+	});
+}
