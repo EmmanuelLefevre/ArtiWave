@@ -80,7 +80,7 @@ class UserRepository {
     /*=== GET ALL USERS ===*/
     static async getAllUsers() {
         try {
-            return User.find({}, 'id email nickname roles registeredAt updatedAt');
+            return await User.find({}, 'id email nickname roles registeredAt updatedAt');
         }
         catch (err) {
             throw new RecoveryFailedError();
@@ -90,7 +90,7 @@ class UserRepository {
     /*=== GET SINGLE USER ===*/
     static async getUserById(userId) {
         try {
-            return User.findById(userId, { _id: 1, email: 1, nickname: 1, roles: 1, registeredAt: 1, updatedAt: 1 });
+            return await User.findById(userId, { _id: 1, email: 1, nickname: 1, roles: 1, registeredAt: 1, updatedAt: 1 });
         }
         catch (err) {
             throw new RecoveryFailedError();
@@ -100,7 +100,7 @@ class UserRepository {
     /*=== UPDATE USER ===*/
     static async updateUserById(userId, updatedData) {
         try {
-            return User.findByIdAndUpdate(
+            return await User.findByIdAndUpdate(
                 userId,
                 { $set: updatedData },
                 { new: true }
