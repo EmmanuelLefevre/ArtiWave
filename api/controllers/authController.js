@@ -94,6 +94,7 @@ class AuthController {
                     // Reset counter
                     AuthController.resetRateLimit();
 
+                    res.set('HX-Trigger', 'authStatusChanged');
                     return res.status(200).json(response);
                 }
                 catch (err) {
@@ -129,6 +130,20 @@ class AuthController {
             else {
                 throw new InternalServerError();
             }
+        }
+    }
+
+    /*=== LOGOUT ===*/
+    static logout(_req, res, _next) {
+        try {
+            res.clearCookie('access_token');
+            res.set('HX-Trigger', 'authStatusChanged');
+
+            return res.status(200).json({ message: "Déconnexion réussie." });
+
+        }
+        catch (err) {
+            throw new InternalServerError();
         }
     }
 
