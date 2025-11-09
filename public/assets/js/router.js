@@ -3,7 +3,7 @@ export function navigateToHome() {
   if (!mainContent) return;
 
   // Load home content via HTMX
-  htmx.ajax('GET', '/home-fragment', { target: '#page-content', swap: 'innerHTML' });
+  // htmx.ajax('GET', '/home', { target: '#main-content', swap: 'innerHTML' });
 
   // Update active link
   const links = document.querySelectorAll('.nav-link');
