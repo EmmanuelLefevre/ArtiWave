@@ -26,14 +26,14 @@ const articleSchema = new mongoose.Schema({
 		type: Schema.Types.ObjectId,
 		ref: 'User',
 		required: true,
-        immutable: true
+		immutable: true
 	},
-    createdAt: {
-        type: Date,
-        required: true,
+	createdAt: {
+		type: Date,
+		required: true,
 		default: Date.now,
-        immutable: true
-    },
+		immutable: true
+	},
 	updatedAt: {
 		type: Date,
 		default: Date.now,
