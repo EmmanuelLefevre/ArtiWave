@@ -8,10 +8,10 @@ const express = require('express');
 
 // Controller
 const LayoutController = require('../controllers/layoutController');
-const ArticlesController = require('../controllers/articlesController');
 
 // Middleware
 const AllowedCurrentMethodCheck = require('../middleware/allowedCurrentMethodCheck');
+const JwtCheck = require('../middleware/jwtCheck');
 
 
 /*============ EXPRESS REDIRECT TO LAYOUT ============*/
@@ -21,17 +21,16 @@ class LayoutRouter {
 		const router = express.Router();
 
 		router.route('/')
-			.all(AllowedCurrentMethodCheck(['GET']))
-			.get(LayoutController.index);
-
-		// Fragments
-		router.route('/home-fragment')
       .all(AllowedCurrentMethodCheck(['GET']))
-      .get(LayoutController.homeComponent);
+      .get(LayoutController.index);
 
-    router.route('/articles-fragment')
+    router.route('/home')
       .all(AllowedCurrentMethodCheck(['GET']))
-      .get(ArticlesController.articlesComponent);
+      .get(LayoutController.index);
+
+    router.route('/articles')
+      .all(AllowedCurrentMethodCheck(['GET']))
+      .get(JwtCheck, LayoutController.articlesPage);
 
 		return router;
 	}
