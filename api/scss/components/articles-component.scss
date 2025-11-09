@@ -1,0 +1,45 @@
+.articles-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  padding: 32px;
+  h1 {
+    color: var(--second-color);
+    width: fit-content;
+    margin: 0 auto 32px;
+    user-select: none;
+  }
+  .articles-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 600px;
+    margin: 0 auto;
+    .article-card {
+      h2 {
+        width: fit-content;
+        margin: 0 auto 16px;
+      }
+      p {
+        margin-bottom: 16px;
+      }
+      div.infos {
+        display: flex;
+        flex-direction: column;
+        text-align: right !important;
+        span:first-child {
+          color: var(--second-color);
+          width: fit-content;
+          margin-left: auto;
+        }
+      }
+    }
+  }
+  .no-articles {
+    p {
+      text-align: center;
+    }
+  }
+}
