@@ -13,9 +13,12 @@ const favicon = require('serve-favicon');
 
 /*============ ROUTERS ============*/
 const AdminRouter = require('./api/routers/adminRouter');
+const ArticlesRouter = require('./api/routers/articlesRouter');
 const AuthRouter = require('./api/routers/authRouter');
 const LayoutRouter = require('./api/routers/layoutRouter');
 const UsersRouter = require('./api/routers/usersRouter');
+
+const LayoutController = require('./api/controllers/layoutController');
 
 
 /*============ MIDDLEWARES ============*/
@@ -92,11 +95,10 @@ app.use(RequestsLimiter);
 /*============ VIEW ENGINE ============*/
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, '/public/views'));
+app.set('view cache', false);
 app.locals.compileDebug = true;
 
-
 /*============ ROUTER PARAMETERS ============*/
-app.get('/home', (_req, res) => res.redirect('/'));
 /*******---------- Layout ----------*******/
 app.use("/", LayoutRouter);
 
@@ -107,6 +109,16 @@ app.use('/api/login', AuthRouter);
 app.use('/api/users', UsersRouter);
 /*---------- Admins ----------*/
 app.use('/api/admins', AdminCheck, AdminRouter);
+/*---------- Articles ----------*/
+app.use('/api/articles', ArticlesRouter);
+
+app.get('/', (_req, res) => {
+	// Redirige la requête racine vers /home
+	res.redirect(302, '/home');
+});
+// app.get('/home', LayoutController.renderLayout);
+// app.get('/articles', LayoutController.renderLayout);
+// app.get('/login', LayoutController.renderLayout);
 
 /*******---------- COMPONENTS ----------*******/
 /*---------- Login form component ----------*/
@@ -114,7 +126,7 @@ app.get('/login-component', (_req, res) => res.render('components/login/login-co
 
 /*******---------- ERRORS ----------*******/
 /*---------- 404 ----------*/
-app.all('*', (_req, _res) => {
+app.getMaxListeners('*', (_req, _res) => {
 	throw new NotFoundError();
 });
 
